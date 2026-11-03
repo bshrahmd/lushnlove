@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LUSH Cosmetics &amp; Jewelleries | Beauty &amp; Gift Shop, Mahawewa</title>
   <meta name="description" content="Shop cosmetics, perfumes, 18K gold-plated jewellery &amp; gifts at LUSH Cosmetics &amp; Jewelleries, Mahawewa. Island-wide delivery across Sri Lanka.">
-  <link rel="canonical" href="https://[PUT YOUR WEB ADDRESS HERE]/">
+  <link rel="canonical" href="https://bshrahmd.github.io/lushnlove/">
   <link rel="icon" type="image/jpeg" href="./images/lush_logo.jpg">
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="LUSH Cosmetics &amp; Jewelleries | Beauty &amp; Gift Shop, Mahawewa">
   <meta property="og:description" content="Shop cosmetics, perfumes, 18K gold-plated jewellery &amp; gifts at LUSH Cosmetics &amp; Jewelleries, Mahawewa. Island-wide delivery across Sri Lanka.">
-  <meta property="og:url" content="https://[PUT YOUR WEB ADDRESS HERE]/">
-  <meta property="og:image" content="https://[PUT YOUR WEB ADDRESS HERE]/images/lush_logo.jpg">
+  <meta property="og:url" content="https://bshrahmd.github.io/lushnlove/">
+  <meta property="og:image" content="https://bshrahmd.github.io/lushnlove/images/lush_logo.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="LUSH Cosmetics &amp; Jewelleries | Beauty &amp; Gift Shop, Mahawewa">
   <meta name="twitter:description" content="Shop cosmetics, perfumes, 18K gold-plated jewellery &amp; gifts at LUSH Cosmetics &amp; Jewelleries, Mahawewa. Island-wide delivery across Sri Lanka.">
-  <meta name="twitter:image" content="https://[PUT YOUR WEB ADDRESS HERE]/images/lush_logo.jpg">
+  <meta name="twitter:image" content="https://bshrahmd.github.io/lushnlove/images/lush_logo.jpg">
 
   <!-- Schema.org Store Structured Data -->
   <script type="application/ld+json">
@@ -25,8 +25,8 @@
     "@context": "https://schema.org",
     "@type": "Store",
     "name": "LUSH Cosmetics & Jewelleries",
-    "url": "https://[PUT YOUR WEB ADDRESS HERE]/",
-    "image": "https://[PUT YOUR WEB ADDRESS HERE]/images/lush_logo.jpg",
+    "url": "https://bshrahmd.github.io/lushnlove/",
+    "image": "https://bshrahmd.github.io/lushnlove/images/lush_logo.jpg",
     "telephone": "+94 76 454 6167",
     "email": "lushnevol2024@gmail.com",
     "address": {
@@ -488,10 +488,11 @@
 
     /* ---- RESPONSIVE ---- */
     @media(max-width: 900px) {
-      .hero-grid { grid-template-columns: 1fr; }
-      .hero-imgs { grid-template-columns: 1fr 1fr; }
-      .hero-img-card.tall img { height: 200px; }
-      .hero-img-card.tall { grid-row: auto; }
+      .hero { padding: 48px 0 60px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-imgs { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0; }
+      .hero-img-card.tall { grid-row: auto; grid-column: 1 / -1; border-radius: 28px 18px 18px 18px; }
+      .hero-img-card.tall img { height: 230px; }
       nav { display: none; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
       .feat-grid { grid-template-columns: 1fr; }
@@ -499,9 +500,46 @@
       .pay-grid { grid-template-columns: 1fr; }
     }
     @media(max-width: 600px) {
-      .hero-title { font-size: 32px; }
+      .container { padding: 0 14px; }
+      .ann-bar { font-size: 11px; padding: 6px 0; }
+      .ann-inner { justify-content: center; text-align: center; gap: 4px; }
+      .ann-bar span { margin-right: 8px; display: inline-block; }
+      .ann-bar span:nth-child(2) { display: none; }
+      .nav-wrap { height: 62px; }
+      .logo-area img { height: 46px !important; }
+      .hero { padding: 30px 0 42px; }
+      .hero-title { font-size: 31px; line-height: 1.18; }
+      .hero-sub { font-size: 14px; margin-bottom: 22px; }
+      .hero-btns .btn { flex: 1 1 auto; padding: 11px 16px; font-size: 12px; }
+      .hero-highlights { gap: 14px; margin-top: 22px; padding-top: 16px; }
+      .hero-img-card img { height: 155px; }
+      .hero-img-card.tall img { height: 205px; }
+      .hero-card-caption { left: 8px; right: 8px; bottom: 8px; padding: 6px 9px; flex-direction: column; align-items: flex-start; gap: 2px; }
+      .hero-card-caption span { font-size: 10.5px; }
+      .hero-card-caption small { font-size: 9px; }
+      .cat-strip { padding: 20px 0; }
+      .cat-strip-title { font-size: 10.5px; line-height: 1.6; }
+      .cat-strip-link { display: inline-flex; margin: 4px 6px 0; }
+      .cat-pills { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding: 2px 4px 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .cat-pills::-webkit-scrollbar { display: none; }
+      .cat-pill { flex-shrink: 0; padding: 8px 14px; font-size: 11.5px; }
+      .prods-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .prod-img-wrap { height: 165px; }
+      .prod-body { padding: 12px; }
+      .prod-title { font-size: 13.5px; }
+      .prod-desc { font-size: 11px; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .prod-footer { flex-wrap: wrap; gap: 6px; padding-top: 8px; }
+      .prod-price { font-size: 14px; }
+      .prod-footer .btn-sm { width: 100%; justify-content: center; padding: 7px 10px; }
+      .shop-tour-sec, .feat-sec, .products-sec { padding: 44px 0; }
+      .sec-hdr h2 { font-size: 27px; }
+      .modal-overlay { padding: 10px; }
+      .modal-box { padding: 20px 16px; border-radius: 14px; max-height: 94vh; }
+      .modal-box h3 { font-size: 21px; margin: 6px 0 14px; }
       .cart-drawer { width: 100%; right: -100%; }
-      footer { padding-bottom: 76px; }
+      .foot-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
+      .foot-grid > div:first-child { grid-column: 1 / -1; }
+      footer { padding: 40px 0 76px; }
     }
 
     /* ===== ANIMATIONS & WIND PHYSICS ===== */
@@ -1768,11 +1806,12 @@
   <!-- Mobile quick links (main nav is hidden on small screens) -->
   <div class="mobile-quick">
     <a href="#home">Home</a>
+    <a href="#products">Shop All</a>
     <a href="#categories">Categories</a>
     <a href="#brands">Brands A–Z</a>
-    <a href="#products">Shop All</a>
     <a href="#gifts">Gifts</a>
-    <a href="#visit">Visit Us</a>
+    <a href="#visit">📍 Visit Us</a>
+    <a href="#contact">Contact</a>
   </div>
 </header>
 
@@ -3457,6 +3496,53 @@
 
 </div><!-- /storeView -->
 
+<!-- ═══════════════ ADMIN PANEL VIEW (HIDDEN FROM PUBLIC, OPENED VIA #admin) ═══════════════ -->
+<div id="adminView" class="container admin-view">
+  <div class="admin-topbar">
+    <div>
+      <span class="badge badge-green">Admin Portal</span>
+      <h2>LUSH Cosmetics &amp; Jewelleries — Store Manager</h2>
+    </div>
+    <button class="btn btn-outline" onclick="exitAdmin()"><i class="fa fa-store"></i> Back to Store</button>
+  </div>
+
+  <div class="admin-panel">
+    <div class="admin-tabs">
+      <button class="a-tab active" onclick="switchTab('welcome',this)"><i class="fa fa-images"></i> Welcome Photos</button>
+      <button class="a-tab" onclick="switchTab('inventory',this)"><i class="fa fa-boxes-stacked"></i> Inventory (<span id="prodCountMetric">72</span>)</button>
+    </div>
+
+    <!-- Welcome Photos Tab -->
+    <div id="tab-welcome" class="a-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <div>
+          <h4 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px">Welcome Screen Showcase Photos</h4>
+          <p style="font-size:12px;color:var(--text-muted)">Upload new photos from your computer/phone, enter an image URL, or toggle the Caption Title and Caption Badge on the 3 Welcome screen showcase cards.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="resetWelcomePhotos()"><i class="fa fa-rotate-left"></i> Reset Defaults</button>
+          <button type="button" class="btn btn-pink btn-sm" onclick="saveWelcomePhotos()"><i class="fa fa-floppy-disk"></i> Save Welcome Photos</button>
+        </div>
+      </div>
+      <div id="welcomePhotosAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;"></div>
+    </div>
+
+    <!-- Inventory Tab -->
+    <div id="tab-inventory" class="a-body" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <h4 style="font-family:var(--font-h);color:var(--accent-gold)">Inventory Manager</h4>
+        <button class="btn btn-gold btn-sm" onclick="addProductPrompt()"><i class="fa fa-plus"></i> Add Product</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-tbl">
+          <thead><tr><th>Photo</th><th>Product Name</th><th>Category</th><th>Price (LKR)</th><th>Stock</th><th>Actions</th></tr></thead>
+          <tbody id="invTable"><!-- JS --></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════ FOOTER ═══════════════ -->
 <footer id="contact">
   <div class="container">
@@ -3509,8 +3595,8 @@
         </ul>
       </div>
     </div>
-    <div class="foot-copy">
-      &copy; 2026 <strong>LUSH Cosmetics & Jewelleries</strong> | Sri Lanka's Premier Beauty & Gift Destination. All Rights Reserved.
+    <div class="foot-copy" id="secretAdminTrigger" title="LUSH Cosmetics &amp; Jewelleries">
+      &copy; 2026 <strong>LUSH Cosmetics &amp; Jewelleries</strong> | Sri Lanka's Premier Beauty &amp; Gift Destination. All Rights Reserved.
     </div>
   </div>
 </footer>
@@ -3587,6 +3673,84 @@
     </form>
   </div>
 </div>
+
+<!-- ═══════════════ ADMIN LOGIN MODAL (NO PRE-FILLED VALUES) ═══════════════ -->
+<div class="modal-overlay" id="adminLoginModal">
+  <div class="modal-box admin-login-box">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeAdminLogin()"><i class="fa fa-xmark"></i></button>
+    <i class="fa fa-shield-halved" style="font-size:38px;color:var(--accent-gold);display:block;margin-bottom:12px"></i>
+    <span class="badge badge-green">Admin Secure Portal</span>
+    <h3 style="font-family:var(--font-h);color:var(--accent-gold);margin:10px 0 6px">Admin Login</h3>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px">LUSH Cosmetics &amp; Jewelleries — Store Manager</p>
+    <form onsubmit="adminLogin(event)" autocomplete="off">
+      <div class="field" style="margin-bottom:12px;text-align:left"><label for="aEmail">Admin Email</label><input type="email" id="aEmail" placeholder="Enter admin email" required></div>
+      <div class="field" style="margin-bottom:14px;text-align:left"><label for="aPass">Password</label><input type="password" id="aPass" placeholder="Enter password" required></div>
+      <p id="adminLoginErr" style="display:none;color:#DC2626;font-size:12px;font-weight:600;margin-bottom:12px">Incorrect email or password.</p>
+      <button type="submit" class="btn btn-gold" style="width:100%"><i class="fa fa-lock-open"></i> Access Dashboard</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMIN ADD / EDIT PRODUCT MODAL ═══════════════ -->
+<div class="modal-overlay" id="adminProductModal">
+  <div class="modal-box" style="max-width:540px">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeProductModal()"><i class="fa fa-xmark"></i></button>
+    <span class="badge badge-green">Inventory Manager</span>
+    <h3 id="prodModalTitle" style="margin:8px 0 16px">Upload New Product</h3>
+    <form id="adminProductForm" onsubmit="saveProductModal(event)">
+      <input type="hidden" id="editProdId" value="">
+      <div class="field" style="margin-bottom:12px">
+        <label for="pTitleInput">Product Name *</label>
+        <input type="text" id="pTitleInput" required placeholder="e.g. Ceylon Lotus Glow Cream">
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="pCatInput">Category *</label>
+          <select id="pCatInput" required>
+            <option value="cosmetics">Cosmetics &amp; Skincare</option>
+            <option value="perfume">Perfumes &amp; Sprays</option>
+            <option value="jewelry">Gold-Plated Jewellery</option>
+            <option value="gifts">Teddy Bears &amp; Gifts</option>
+            <option value="valentine">Valentine's &amp; Lovers</option>
+            <option value="birthday">Birthday Party</option>
+            <option value="chocolate">Chocolates</option>
+            <option value="makeup">Makeup Tools</option>
+            <option value="accessories">Hair &amp; Accessories</option>
+            <option value="wallet">Wallets &amp; Bags</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pPriceInput">Price in LKR (Rs.) *</label>
+          <input type="number" id="pPriceInput" required min="1" placeholder="e.g. 2500">
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="pBrandInput">Brand (optional — auto-detected from product name if empty)</label>
+        <input type="text" id="pBrandInput" list="brandList" placeholder="e.g. Garnier">
+        <datalist id="brandList"></datalist>
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="pFileInput">Upload Product Photo (from computer/phone)</label>
+        <input type="file" id="pFileInput" accept="image/*" onchange="previewUploadedImage(this)" style="padding:7px">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="pImgInput">Or Image Path / URL</label>
+        <input type="text" id="pImgInput" placeholder="./images/ceylon_botanical_elixir.jpg" oninput="updatePreviewFromUrl(this.value)">
+      </div>
+      <div id="pImgPreviewWrap" style="display:none;margin-bottom:12px;text-align:center;background:#F4FAF6;padding:10px;border-radius:8px;border:1px solid var(--border)">
+        <img id="pImgPreview" src="./images/ceylon_botanical_elixir.jpg" alt="Uploaded product preview" style="max-height:130px;margin:0 auto;border-radius:6px;object-fit:contain">
+      </div>
+      <div class="field" style="margin-bottom:16px">
+        <label for="pDescInput">Product Description *</label>
+        <textarea id="pDescInput" rows="3" required placeholder="Describe the product features &amp; benefits..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-pink" style="width:100%;padding:12px">
+        <i class="fa fa-cloud-arrow-up"></i> Save &amp; Publish to Customer View
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
 // EDIT YOUR SHOP CONTACT DETAILS HERE — changes update the whole site
@@ -3595,7 +3759,7 @@ const SHOP_SETTINGS = {
   phoneDisplay:    "076 45 46 167",    // how the number is shown on the page
   email:           "lushnevol2024@gmail.com",
   address:         "35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka",
-  facebookUrl:     "https://www.facebook.com/Lush Cosmetics & Jewelries",
+  facebookUrl:     "https://www.facebook.com/LushCosmeticsJewelries",
   tiktokUrl:       "https://www.tiktok.com/@lush_lovi",
   whatsappMessage: "Hi LUSH! I'd like to know more about your products."
 };
@@ -3777,7 +3941,15 @@ document.addEventListener('DOMContentLoaded', () => {
   applyShopSettings();
   updateLiveStoreHoursBadge();
   setInterval(updateLiveStoreHoursBadge, 60000);
+  loadWelcomePhotos();
+  applyWelcomePhotos();
+  renderWelcomeAdminCards();
+  loadProductsFromBackend();
   renderProducts('all');
+  renderInvTable();
+  const metricEl = document.getElementById('prodCountMetric');
+  if (metricEl) metricEl.textContent = products.length;
+  initSecretAdminTriggers();
 });
 
 function fmt(lkr) {
@@ -4042,6 +4214,558 @@ function placeOrder(e) {
   cart = [];
   updateCartCount();
   closeCheckout();
+}
+
+// ── SECRET ADMIN PORTAL (OPTION A: #admin URL, Ctrl+Shift+A, OR 3-TAP FOOTER COPYRIGHT) ──
+const STORAGE_KEY = 'lush_ceylon_products_v2';
+const WELCOME_PHOTOS_KEY = 'lush_ceylon_welcome_photos_v1';
+const DEFAULT_WELCOME_PHOTOS = [
+  {
+    slotLabel: 'Photo 1 — Tall Left Card',
+    img: './images/ceylon_glow_serum.jpg',
+    title: '🌿 Lotus & Sandalwood Glow',
+    sub: 'Pure Botanical',
+    showTitle: true,
+    showSub: true
+  },
+  {
+    slotLabel: 'Photo 2 — Top Right Card',
+    img: './images/ceylon_emerald_earrings.jpg',
+    title: '💎 Ceylon Emerald & Gold',
+    sub: '18K Plated',
+    showTitle: true,
+    showSub: true
+  },
+  {
+    slotLabel: 'Photo 3 — Bottom Right Card',
+    img: './images/ceylon_botanical_elixir.jpg',
+    title: '✨ Radiance Botanical Elixir',
+    sub: 'Signature',
+    showTitle: true,
+    showSub: true
+  }
+];
+let welcomePhotos = DEFAULT_WELCOME_PHOTOS.map(item => ({ ...item }));
+let isAdminAuthenticated = false;
+
+function initSecretAdminTriggers() {
+  // 1) Keyboard shortcut: Ctrl + Shift + A
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      openAdminLogin();
+    }
+  });
+
+  // 2) Mobile & Desktop secret tap: 3 quick taps on the footer copyright text
+  const copyEl = document.getElementById('secretAdminTrigger');
+  if (copyEl) {
+    let tapCount = 0;
+    let tapTimer = null;
+    copyEl.addEventListener('click', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      if (tapCount >= 3) {
+        tapCount = 0;
+        openAdminLogin();
+      } else {
+        tapTimer = setTimeout(() => { tapCount = 0; }, 900);
+      }
+    });
+  }
+
+  // 3) Check if page opened directly with #admin in the URL
+  if (location.hash.replace(/^#\/?/, '').toLowerCase() === 'admin') {
+    openAdminLogin();
+  }
+}
+
+function openAdminLogin() {
+  if (isAdminAuthenticated) {
+    showAdminDashboard();
+    return;
+  }
+  const errEl = document.getElementById('adminLoginErr');
+  if (errEl) errEl.style.display = 'none';
+  const emailIn = document.getElementById('aEmail');
+  const passIn = document.getElementById('aPass');
+  if (emailIn) emailIn.value = '';
+  if (passIn) passIn.value = '';
+  const modal = document.getElementById('adminLoginModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    setTimeout(() => { if (emailIn) emailIn.focus(); }, 60);
+  }
+}
+
+function closeAdminLogin() {
+  const modal = document.getElementById('adminLoginModal');
+  if (modal) modal.style.display = 'none';
+  if (location.hash.replace(/^#\/?/, '').toLowerCase() === 'admin' && !isAdminAuthenticated) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
+const ADMIN_EMAIL_HASH = 'f4e86a4d2bcfd1201057597307c0ec360cff19b367b66393477128fc6aea0a24';
+const ADMIN_PASSWORD_HASH = '37996c9c614b99fc7fbc5a720970ec74127c5bc0ce65d3ec62b2fc377755589c';
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function adminLogin(e) {
+  e.preventDefault();
+  const emailVal = (document.getElementById('aEmail')?.value || '').trim().toLowerCase();
+  const passVal = (document.getElementById('aPass')?.value || '').trim();
+
+  const [emailHash, passHash] = await Promise.all([
+    sha256(emailVal),
+    sha256(passVal)
+  ]);
+
+  if (emailHash === ADMIN_EMAIL_HASH && passHash === ADMIN_PASSWORD_HASH) {
+    isAdminAuthenticated = true;
+    closeAdminLogin();
+    showAdminDashboard();
+  } else {
+    const errEl = document.getElementById('adminLoginErr');
+    if (errEl) errEl.style.display = 'block';
+  }
+}
+
+function showAdminDashboard() {
+  const storeV = document.getElementById('storeView');
+  const adminV = document.getElementById('adminView');
+  if (storeV) storeV.style.display = 'none';
+  if (adminV) adminV.style.display = 'block';
+  renderWelcomeAdminCards();
+  renderInvTable();
+  window.scrollTo(0, 0);
+}
+
+function exitAdmin() {
+  const storeV = document.getElementById('storeView');
+  const adminV = document.getElementById('adminView');
+  if (adminV) adminV.style.display = 'none';
+  if (storeV) storeV.style.display = 'block';
+  if (location.hash.replace(/^#\/?/, '').toLowerCase() === 'admin') {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
+function switchTab(name, el) {
+  document.querySelectorAll('.a-tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ['welcome', 'inventory'].forEach(t => {
+    const tabEl = document.getElementById('tab-' + t);
+    if (tabEl) tabEl.style.display = t === name ? 'block' : 'none';
+  });
+  if (name === 'welcome') renderWelcomeAdminCards();
+  if (name === 'inventory') renderInvTable();
+}
+
+function loadWelcomePhotos() {
+  try {
+    const saved = localStorage.getItem(WELCOME_PHOTOS_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length === 3) {
+        welcomePhotos = DEFAULT_WELCOME_PHOTOS.map((def, i) => ({
+          slotLabel: def.slotLabel,
+          img: (parsed[i] && parsed[i].img) || def.img,
+          title: parsed[i] && typeof parsed[i].title === 'string' ? parsed[i].title : def.title,
+          sub: parsed[i] && typeof parsed[i].sub === 'string' ? parsed[i].sub : def.sub,
+          showTitle: parsed[i] && typeof parsed[i].showTitle === 'boolean' ? parsed[i].showTitle : true,
+          showSub: parsed[i] && typeof parsed[i].showSub === 'boolean' ? parsed[i].showSub : true
+        }));
+      }
+    }
+  } catch (err) {
+    console.warn('Welcome photos load error:', err);
+  }
+}
+
+function applyWelcomePhotos() {
+  welcomePhotos.forEach((item, i) => {
+    const imgEl = document.getElementById('heroImg' + i);
+    const titleEl = document.getElementById('heroCapTitle' + i);
+    const subEl = document.getElementById('heroCapSub' + i);
+    const capWrap = titleEl ? titleEl.closest('.hero-card-caption') : null;
+    if (imgEl && item.img) {
+      imgEl.src = item.img;
+      imgEl.alt = item.title || 'LUSH Cosmetics & Jewelleries showcase';
+    }
+    const visTitle = item.showTitle !== false && Boolean(item.title && item.title.trim());
+    const visSub = item.showSub !== false && Boolean(item.sub && item.sub.trim());
+    if (titleEl) {
+      titleEl.textContent = item.title || '';
+      titleEl.style.display = visTitle ? '' : 'none';
+    }
+    if (subEl) {
+      subEl.textContent = item.sub || '';
+      subEl.style.display = visSub ? '' : 'none';
+    }
+    if (capWrap) {
+      capWrap.style.display = (visTitle || visSub) ? '' : 'none';
+    }
+  });
+}
+
+function renderWelcomeAdminCards() {
+  const wrap = document.getElementById('welcomePhotosAdminGrid');
+  if (!wrap) return;
+  wrap.innerHTML = welcomePhotos.map((item, idx) => {
+    const urlValue = (item.img && !item.img.startsWith('data:')) ? item.img : '';
+    const showT = item.showTitle !== false;
+    const showS = item.showSub !== false;
+    return `
+      <div style="background:var(--bg-dark);padding:18px;border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h5 style="font-family:var(--font-h);color:#145A38;font-size:16px;margin:0">${item.slotLabel}</h5>
+          <span class="badge badge-gold">Slot #${idx + 1}</span>
+        </div>
+        <div style="position:relative;border-radius:10px;overflow:hidden;border:2px solid #fff;box-shadow:0 6px 18px rgba(20,60,40,0.1);aspect-ratio:4/3;background:#E2F2E8;">
+          <img id="welcomeAdminPrev${idx}" src="${item.img}" alt="${escHtml(item.slotLabel)}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
+        </div>
+        <div class="field">
+          <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px">Upload Photo (Computer / Phone)</label>
+          <input type="file" accept="image/*" onchange="handleWelcomeFileUpload(${idx}, this)" style="width:100%;padding:7px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:12px;">
+        </div>
+        <div class="field">
+          <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px">Or Image Path / URL</label>
+          <input type="text" id="welcomeUrlIn${idx}" value="${urlValue}" placeholder="./images/ceylon_glow_serum.jpg" oninput="handleWelcomeUrlChange(${idx}, this.value)" style="width:100%;padding:8px 10px;background:#fff;border:1px solid var(--border);color:var(--text-main);border-radius:6px;font-size:12px;">
+        </div>
+        <div class="field">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <label for="welcomeTitleIn${idx}" style="font-size:11px;font-weight:700;color:var(--text-muted);margin:0">Caption Title</label>
+            <label style="font-size:11px;font-weight:600;color:#145A38;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+              <input type="checkbox" id="welcomeShowTitle${idx}" ${showT ? 'checked' : ''} onchange="toggleWelcomeCaptionOpt(${idx})" style="accent-color:#1E7E4E;cursor:pointer;">
+              Show Title
+            </label>
+          </div>
+          <input type="text" id="welcomeTitleIn${idx}" value="${item.title.replace(/"/g, '&quot;')}" oninput="welcomePhotos[${idx}].title = this.value" ${showT ? '' : 'disabled'} style="width:100%;padding:8px 10px;background:${showT ? '#fff' : '#EDF4F0'};opacity:${showT ? '1' : '0.6'};border:1px solid var(--border);color:var(--text-main);border-radius:6px;font-size:13px;">
+        </div>
+        <div class="field">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <label for="welcomeSubIn${idx}" style="font-size:11px;font-weight:700;color:var(--text-muted);margin:0">Caption Badge</label>
+            <label style="font-size:11px;font-weight:600;color:#145A38;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+              <input type="checkbox" id="welcomeShowSub${idx}" ${showS ? 'checked' : ''} onchange="toggleWelcomeCaptionOpt(${idx})" style="accent-color:#1E7E4E;cursor:pointer;">
+              Show Badge
+            </label>
+          </div>
+          <input type="text" id="welcomeSubIn${idx}" value="${item.sub.replace(/"/g, '&quot;')}" oninput="welcomePhotos[${idx}].sub = this.value" ${showS ? '' : 'disabled'} style="width:100%;padding:8px 10px;background:${showS ? '#fff' : '#EDF4F0'};opacity:${showS ? '1' : '0.6'};border:1px solid var(--border);color:var(--text-main);border-radius:6px;font-size:12px;">
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleWelcomeCaptionOpt(idx) {
+  const showT = document.getElementById('welcomeShowTitle' + idx);
+  const showS = document.getElementById('welcomeShowSub' + idx);
+  const tIn = document.getElementById('welcomeTitleIn' + idx);
+  const sIn = document.getElementById('welcomeSubIn' + idx);
+  if (showT) {
+    welcomePhotos[idx].showTitle = showT.checked;
+    if (tIn) {
+      tIn.disabled = !showT.checked;
+      tIn.style.background = showT.checked ? '#fff' : '#EDF4F0';
+      tIn.style.opacity = showT.checked ? '1' : '0.6';
+    }
+  }
+  if (showS) {
+    welcomePhotos[idx].showSub = showS.checked;
+    if (sIn) {
+      sIn.disabled = !showS.checked;
+      sIn.style.background = showS.checked ? '#fff' : '#EDF4F0';
+      sIn.style.opacity = showS.checked ? '1' : '0.6';
+    }
+  }
+}
+
+function handleWelcomeFileUpload(idx, input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      const maxDim = 800;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+        else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = c.toDataURL('image/jpeg', 0.84);
+      welcomePhotos[idx].img = dataUrl;
+      const prev = document.getElementById('welcomeAdminPrev' + idx);
+      if (prev) prev.src = dataUrl;
+      const urlIn = document.getElementById('welcomeUrlIn' + idx);
+      if (urlIn) urlIn.value = '';
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleWelcomeUrlChange(idx, val) {
+  const trimmed = (val || '').trim();
+  if (!trimmed) return;
+  welcomePhotos[idx].img = trimmed;
+  const prev = document.getElementById('welcomeAdminPrev' + idx);
+  if (prev) prev.src = trimmed;
+}
+
+function saveWelcomePhotos() {
+  welcomePhotos.forEach((item, idx) => {
+    const tIn = document.getElementById('welcomeTitleIn' + idx);
+    const sIn = document.getElementById('welcomeSubIn' + idx);
+    const uIn = document.getElementById('welcomeUrlIn' + idx);
+    const showT = document.getElementById('welcomeShowTitle' + idx);
+    const showS = document.getElementById('welcomeShowSub' + idx);
+    if (tIn) item.title = tIn.value.trim();
+    if (sIn) item.sub = sIn.value.trim();
+    if (showT) item.showTitle = showT.checked;
+    if (showS) item.showSub = showS.checked;
+    if (uIn && uIn.value.trim()) item.img = uIn.value.trim();
+  });
+  try {
+    localStorage.setItem(WELCOME_PHOTOS_KEY, JSON.stringify(welcomePhotos));
+  } catch (err) {
+    console.warn('Welcome photos save error:', err);
+  }
+  applyWelcomePhotos();
+  alert('✅ Welcome screen photos updated!');
+}
+
+function resetWelcomePhotos() {
+  if (!confirm('Reset the 3 Welcome screen photos back to the original defaults?')) return;
+  localStorage.removeItem(WELCOME_PHOTOS_KEY);
+  welcomePhotos = DEFAULT_WELCOME_PHOTOS.map(item => ({ ...item }));
+  applyWelcomePhotos();
+  renderWelcomeAdminCards();
+}
+
+function loadProductsFromBackend() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const savedIds = new Set(parsed.map(p => p.id));
+        const missingDefaults = products.filter(d => !savedIds.has(d.id) && !localStorage.getItem('lush_deleted_' + d.id));
+        products = [...parsed, ...missingDefaults];
+        syncProdsGridWithProducts();
+      }
+    }
+  } catch (err) {
+    console.warn('Storage load error:', err);
+  }
+}
+
+function saveProductsToBackend() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+  } catch (err) {
+    console.warn('Storage save error:', err);
+  }
+}
+
+// Updates #prodsGrid DOM when products are added/edited/deleted via Admin
+function syncProdsGridWithProducts() {
+  const grid = document.getElementById('prodsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  products.forEach(p => {
+    const card = buildProductCard(p);
+    card.setAttribute('data-id', p.id);
+    card.setAttribute('data-cat', normalizeCategory(p.cat || p.category));
+    card.setAttribute('data-lkr', p.lkr || 1500);
+    grid.appendChild(card);
+  });
+  const emptyP = document.createElement('p');
+  emptyP.id = 'prodsEmptyMsg';
+  emptyP.style.cssText = 'display:none;color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px';
+  emptyP.textContent = 'No products found in this category.';
+  grid.appendChild(emptyP);
+  renderProducts(currentCat);
+}
+
+function renderInvTable() {
+  const catLabels = { cosmetics:'Cosmetics', perfume:'Perfume', jewelry:'Gold Jewellery', gifts:'Gifts', valentine:"Valentine's", birthday:'Birthday', chocolate:'Chocolates', makeup:'Makeup', accessories:'Accessories', wallet:'Wallets' };
+  const invEl = document.getElementById('invTable');
+  if (!invEl) return;
+  invEl.innerHTML = products.map(p => {
+    const normCat = normalizeCategory(p.cat || p.category);
+    const imgSrc = p.img || p.image || './images/ceylon_botanical_elixir.jpg';
+    const priceLkr = typeof p.lkr === 'number' ? p.lkr : parseInt(String(p.price || '0').replace(/[^0-9]/g, ''), 10) || 1500;
+    return `
+    <tr>
+      <td><img src="${imgSrc}" alt="${escHtml(p.alt || p.title)}" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';"></td>
+      <td><strong>${escHtml(p.title)}</strong><br><small style="color:var(--text-muted)"><i class="fa fa-tag"></i> ${escHtml(getBrand(p))}</small></td>
+      <td><span class="badge badge-gold">${catLabels[normCat]||normCat}</span></td>
+      <td>Rs. ${priceLkr.toLocaleString()}</td>
+      <td><span class="badge badge-green">In Stock</span></td>
+      <td>
+        <button onclick="editProdPrice(${p.id})" title="Edit Product" style="color:var(--accent-gold);background:none;border:none;cursor:pointer;margin-right:8px"><i class="fa fa-pen"></i></button>
+        <button onclick="deleteProd(${p.id})" title="Delete Product" style="color:#EF4444;background:none;border:none;cursor:pointer"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+let uploadedImageDataUrl = '';
+
+function previewUploadedImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      const maxDim = 650;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+        else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      uploadedImageDataUrl = c.toDataURL('image/jpeg', 0.82);
+      const prev = document.getElementById('pImgPreview');
+      const wrap = document.getElementById('pImgPreviewWrap');
+      if (prev && wrap) {
+        prev.src = uploadedImageDataUrl;
+        wrap.style.display = 'block';
+      }
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePreviewFromUrl(url) {
+  const prev = document.getElementById('pImgPreview');
+  const wrap = document.getElementById('pImgPreviewWrap');
+  if (url && url.trim()) {
+    prev.src = url.trim();
+    wrap.style.display = 'block';
+  } else if (!uploadedImageDataUrl) {
+    wrap.style.display = 'none';
+  }
+}
+
+function closeProductModal() {
+  document.getElementById('adminProductModal').style.display = 'none';
+}
+
+function addProductPrompt() {
+  uploadedImageDataUrl = '';
+  document.getElementById('prodModalTitle').textContent = 'Upload New Product';
+  document.getElementById('editProdId').value = '';
+  document.getElementById('pTitleInput').value = '';
+  document.getElementById('pCatInput').value = 'cosmetics';
+  document.getElementById('pPriceInput').value = '';
+  document.getElementById('pFileInput').value = '';
+  document.getElementById('pImgInput').value = '';
+  document.getElementById('pDescInput').value = '';
+  document.getElementById('pBrandInput').value = '';
+  document.getElementById('pBrandInput').placeholder = 'e.g. Garnier (leave empty to auto-detect)';
+  fillBrandDatalist();
+  document.getElementById('pImgPreviewWrap').style.display = 'none';
+  document.getElementById('adminProductModal').style.display = 'flex';
+}
+
+function editProdPrice(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  uploadedImageDataUrl = '';
+  document.getElementById('prodModalTitle').textContent = 'Edit Product';
+  document.getElementById('editProdId').value = p.id;
+  document.getElementById('pTitleInput').value = p.title || '';
+  document.getElementById('pCatInput').value = normalizeCategory(p.cat || p.category);
+  document.getElementById('pPriceInput').value = p.lkr || 1500;
+  document.getElementById('pFileInput').value = '';
+  const existingImg = p.img || p.image || '';
+  document.getElementById('pImgInput').value = existingImg.startsWith('data:') ? '' : existingImg;
+  document.getElementById('pDescInput').value = p.desc || p.description || '';
+  const brandIn = document.getElementById('pBrandInput');
+  brandIn.value = p.brand || '';
+  brandIn.placeholder = 'Auto-detected: ' + getBrand(p);
+  fillBrandDatalist();
+  const prev = document.getElementById('pImgPreview');
+  const wrap = document.getElementById('pImgPreviewWrap');
+  if (existingImg) {
+    prev.src = existingImg;
+    wrap.style.display = 'block';
+  } else {
+    wrap.style.display = 'none';
+  }
+  document.getElementById('adminProductModal').style.display = 'flex';
+}
+
+function saveProductModal(e) {
+  e.preventDefault();
+  const editId = document.getElementById('editProdId').value;
+  const title = document.getElementById('pTitleInput').value.trim();
+  const cat = normalizeCategory(document.getElementById('pCatInput').value);
+  const lkr = parseInt(document.getElementById('pPriceInput').value, 10) || 1500;
+  const urlInput = document.getElementById('pImgInput').value.trim();
+  const desc = document.getElementById('pDescInput').value.trim() || 'Available at Lush Ceylon.';
+  const brand = (document.getElementById('pBrandInput').value || '').trim();
+
+  if (editId) {
+    const p = products.find(x => String(x.id) === String(editId));
+    if (p) {
+      p.title = title;
+      p.alt = title;
+      p.cat = cat;
+      p.lkr = lkr;
+      p.desc = desc;
+      if (brand) p.brand = brand; else delete p.brand;
+      if (uploadedImageDataUrl) p.img = uploadedImageDataUrl;
+      else if (urlInput) p.img = urlInput;
+    }
+  } else {
+    const imgFinal = uploadedImageDataUrl || urlInput || './images/ceylon_botanical_elixir.jpg';
+    products.unshift({
+      id: Date.now(),
+      title: title,
+      alt: title,
+      cat: cat,
+      lkr: lkr,
+      img: imgFinal,
+      desc: desc,
+      ...(brand ? { brand } : {})
+    });
+  }
+
+  saveProductsToBackend();
+  syncProdsGridWithProducts();
+  renderInvTable();
+  const metricEl = document.getElementById('prodCountMetric');
+  if (metricEl) metricEl.textContent = products.length;
+  refreshCatalogViews();
+  closeProductModal();
+}
+
+function deleteProd(id) {
+  if (confirm('Delete this product?')) {
+    localStorage.setItem('lush_deleted_' + id, '1');
+    products = products.filter(p => p.id !== id);
+    saveProductsToBackend();
+    syncProdsGridWithProducts();
+    renderInvTable();
+    const metricEl = document.getElementById('prodCountMetric');
+    if (metricEl) metricEl.textContent = products.length;
+    refreshCatalogViews();
+  }
 }
 // ===== ANIMATIONS JS =====
 
@@ -4640,6 +5364,7 @@ function parseRoute() {
   let h = raw;
   try { h = decodeURIComponent(raw); } catch (e) {}
   const parts = h.split('/').filter(Boolean);
+  if (parts[0] === 'admin') return { page:'admin' };
   if (parts[0] === 'products' || parts[0] === 'collection' || parts[0] === 'shop') return { page:'products' };
   if (parts[0] === 'categories') return { page:'categories' };
   if (parts[0] === 'category' && parts[1]) return { page:'category', cat: parts[1], brand: parts[2] === 'brand' ? parts[3] : null };
@@ -4657,6 +5382,14 @@ function router(keepScroll) {
   const page = document.getElementById('catalogPage');
   const inner = document.getElementById('catalogInner');
   if (!home || !page || !inner) return;
+
+  if (r.page === 'admin') {
+    openAdminLogin();
+    return;
+  }
+
+  const adminV = document.getElementById('adminView');
+  if (!keep && adminV && adminV.style.display === 'block') exitAdmin();
 
   if (r.page === 'home') {
     page.classList.remove('active');
@@ -5013,9 +5746,10 @@ function launchConfetti() {
   function renderHudFrame() {
     hudRafId = null;
 
-    // Hide HUD when non-home catalog page is active
+    // Hide HUD when Admin panel or non-home catalog page is active
+    const adminView = document.getElementById('adminView');
     const homePage = document.getElementById('homePage');
-    if (homePage && homePage.style.display === 'none') {
+    if ((adminView && adminView.style.display === 'block') || (homePage && homePage.style.display === 'none')) {
       hud.classList.add('hud-hidden');
       return;
     }
