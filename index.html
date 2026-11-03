@@ -1593,6 +1593,66 @@
         display: none;
       }
     }
+    .acct-hdr-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 13px;
+      border-radius: 99px;
+      border: 1px solid rgba(20, 90, 56, 0.25);
+      background: #FFFFFF;
+      color: var(--accent-gold);
+      font-family: var(--font-b);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s;
+      white-space: nowrap;
+    }
+    .acct-hdr-btn:hover {
+      background: var(--bg-dark);
+      border-color: var(--accent-pink);
+      color: var(--accent-pink);
+    }
+    .acct-hdr-btn.logged-in {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: var(--accent-emerald);
+      color: var(--accent-gold-light);
+    }
+    .cust-auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: #F3FAF6;
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .cust-auth-tab {
+      flex: 1;
+      padding: 9px 12px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      font-family: var(--font-b);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cust-auth-tab.active {
+      background: var(--accent-pink);
+      color: #FFFFFF;
+      box-shadow: 0 3px 10px rgba(30, 126, 78, 0.22);
+    }
+    @media (max-width: 600px) {
+      .acct-hdr-btn span {
+        max-width: 78px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1758,8 +1818,8 @@
     </div>
     <div class="ann-right">
       <div class="ann-socials">
-        <a href="#" target="_blank" rel="noopener" aria-label="Facebook" data-shop="facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" target="_blank" rel="noopener" aria-label="TikTok" data-shop="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.facebook.com/LushCosmeticsJewelries" target="_blank" rel="noopener" aria-label="Facebook" data-shop="facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.tiktok.com/@lush.cosmetics.je" target="_blank" rel="noopener" aria-label="TikTok" data-shop="tiktok"><i class="fa-brands fa-tiktok"></i></a>
         <a href="#" target="_blank" rel="noopener" aria-label="WhatsApp" data-shop="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
       </div>
     </div>
@@ -1797,6 +1857,10 @@
           <option value="USD">USD ($)</option>
         </select>
       </div>
+      <button type="button" class="acct-hdr-btn" id="customerAcctBtn" onclick="openCustomerAccountModal()" title="Customer Account & Order History">
+        <i class="fa fa-user"></i>
+        <span id="customerAcctBtnLabel">Sign In</span>
+      </button>
       <div class="cart-icon-btn" onclick="toggleCart()">
         <i class="fa fa-bag-shopping"></i>
         <span class="cart-cnt" id="cartCnt">0</span>
@@ -1812,6 +1876,7 @@
     <a href="#gifts">Gifts</a>
     <a href="#visit">📍 Visit Us</a>
     <a href="#contact">Contact</a>
+    <a href="javascript:void(0)" onclick="openCustomerAccountModal()">👤 My Account</a>
   </div>
 </header>
 
@@ -3509,6 +3574,8 @@
   <div class="admin-panel">
     <div class="admin-tabs">
       <button class="a-tab active" onclick="switchTab('welcome',this)"><i class="fa fa-images"></i> Welcome Photos</button>
+      <button class="a-tab" onclick="switchTab('settings',this)"><i class="fa fa-share-nodes"></i> Store &amp; Social Settings</button>
+      <button class="a-tab" onclick="switchTab('customers',this)"><i class="fa fa-users"></i> Customers (<span id="custCountMetric">0</span>)</button>
       <button class="a-tab" onclick="switchTab('inventory',this)"><i class="fa fa-boxes-stacked"></i> Inventory (<span id="prodCountMetric">72</span>)</button>
     </div>
 
@@ -3525,6 +3592,100 @@
         </div>
       </div>
       <div id="welcomePhotosAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;"></div>
+    </div>
+
+    <!-- Store & Social Settings Tab -->
+    <div id="tab-settings" class="a-body" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <div>
+          <h4 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px">Store Contact &amp; Social Media Settings</h4>
+          <p style="font-size:12px;color:var(--text-muted)">Update your store address, phone numbers, email, Facebook URL, and TikTok URL. Saving immediately updates the customer view across the entire site.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="resetShopSettingsToDefault()"><i class="fa fa-rotate-left"></i> Reset Defaults</button>
+          <button type="button" class="btn btn-pink btn-sm" onclick="saveShopSettingsFromAdmin()"><i class="fa fa-floppy-disk"></i> Save &amp; Apply Settings</button>
+        </div>
+      </div>
+
+      <form onsubmit="event.preventDefault();saveShopSettingsFromAdmin();" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:18px;">
+          <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;"><i class="fa fa-location-dot" style="color:var(--accent-pink)"></i> Store Address &amp; Contact Details</h5>
+          <div class="field" style="margin-bottom:12px;">
+            <label for="admShopAddress">Store Physical Address</label>
+            <input type="text" id="admShopAddress" placeholder="35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label for="admShopPhoneDisplay">Phone Number (Customer Display Format)</label>
+            <input type="text" id="admShopPhoneDisplay" placeholder="076 45 46 167">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label for="admShopWhatsapp">WhatsApp Number (International format, no + or spaces)</label>
+            <input type="text" id="admShopWhatsapp" placeholder="94764546167">
+            <small style="font-size:11px;color:var(--text-muted);display:block;margin-top:4px;">Used for customer WhatsApp chat links and order checkout.</small>
+          </div>
+          <div class="field" style="margin-bottom:4px;">
+            <label for="admShopEmail">Store Email Address</label>
+            <input type="email" id="admShopEmail" placeholder="lushnevol2024@gmail.com">
+          </div>
+        </div>
+
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:18px;">
+          <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;"><i class="fa fa-share-nodes" style="color:var(--accent-pink)"></i> Social Media URLs &amp; Greeting</h5>
+          <div class="field" style="margin-bottom:12px;">
+            <label for="admShopFacebook"><i class="fa-brands fa-facebook" style="color:#1877F2"></i> Facebook Page URL</label>
+            <input type="url" id="admShopFacebook" placeholder="https://www.facebook.com/LushCosmeticsJewelries">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label for="admShopTiktok"><i class="fa-brands fa-tiktok"></i> TikTok Profile URL (or @username)</label>
+            <input type="text" id="admShopTiktok" placeholder="https://www.tiktok.com/@lush.cosmetics.je">
+            <small style="font-size:11px;color:var(--text-muted);display:block;margin-top:4px;">Enter full URL or username (e.g. <code>lush.cosmetics.je</code>).</small>
+          </div>
+          <div class="field" style="margin-bottom:14px;">
+            <label for="admShopWaMsg"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i> Default WhatsApp Inquiry Message</label>
+            <input type="text" id="admShopWaMsg" placeholder="Hi LUSH! I'd like to know more about your products.">
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%"><i class="fa fa-check-circle"></i> Update Customer View Now</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Customers Record Tab -->
+    <div id="tab-customers" class="a-body" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+        <div>
+          <h4 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px">Customer Directory &amp; Order Records</h4>
+          <p style="font-size:12px;color:var(--text-muted)">Tracks customers who register an account or place an order at checkout, including their contact details, delivery address, and purchase history.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="exportCustomersCsv()"><i class="fa fa-file-csv"></i> Export CSV</button>
+          <button type="button" class="btn btn-gold btn-sm" onclick="openAdminCustomerModal()"><i class="fa fa-user-plus"></i> Add Customer</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <div style="position:relative;flex:1;min-width:220px;">
+          <i class="fa fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px"></i>
+          <input type="text" id="custSearchInput" placeholder="Search customers by name, phone, email, or district..." oninput="renderAdminCustomersTable()" style="width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:8px;background:#F4FAF6;font-family:var(--font-b);font-size:13px;outline:none;">
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-tbl">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Phone / WhatsApp</th>
+              <th>Email</th>
+              <th>District &amp; Address</th>
+              <th>Account Status</th>
+              <th>Orders &amp; Spent</th>
+              <th>Last Activity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminCustomersTable"><!-- JS --></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Inventory Tab -->
@@ -3556,8 +3717,8 @@
         <div class="foot-follow">
           <span class="foot-follow-label">Follow Us</span>
           <div class="foot-social-btns">
-            <a href="#" target="_blank" rel="noopener" aria-label="Facebook" class="social-gold-btn" data-shop="facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#" target="_blank" rel="noopener" aria-label="TikTok" class="social-gold-btn" data-shop="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/LushCosmeticsJewelries" target="_blank" rel="noopener" aria-label="Facebook" class="social-gold-btn" data-shop="facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@lush.cosmetics.je" target="_blank" rel="noopener" aria-label="TikTok" class="social-gold-btn" data-shop="tiktok"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-gold-btn" data-shop="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
           </div>
         </div>
@@ -3630,6 +3791,10 @@
     <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeCheckout()"><i class="fa fa-xmark"></i></button>
     <span class="badge badge-pink">WhatsApp Order Checkout</span>
     <h3>Complete Your Order</h3>
+    <div id="coAccountBanner" style="margin:8px 0 14px;padding:10px 12px;border-radius:8px;background:#F3FAF6;border:1px solid var(--border);font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span id="coAccountBannerText"><i class="fa fa-user-circle" style="color:var(--accent-pink)"></i> Have an account for faster checkout?</span>
+      <button type="button" class="btn btn-outline btn-sm" id="coAccountBannerBtn" style="padding:5px 10px;font-size:11px" onclick="closeCheckout();openCustomerAccountModal('login')">Sign In / Register</button>
+    </div>
     <form id="checkoutForm" onsubmit="placeOrder(event)">
       <div class="form-row">
         <div class="field"><label for="coName">Full Name *</label><input type="text" id="coName" required placeholder="Kasun Perera"></div>
@@ -3648,8 +3813,19 @@
       </div>
       <div class="field" style="margin-bottom:14px"><label for="coAddress">Full Delivery Address *</label><input type="text" id="coAddress" required placeholder="No. 12, Main Street, Mahawewa"></div>
 
-      <div class="field" style="margin-bottom:6px"><label for="coNote">Special Gift Note (Optional — for gift wrap)</label>
+      <div class="field" style="margin-bottom:10px"><label for="coNote">Special Gift Note (Optional — for gift wrap)</label>
         <textarea id="coNote" rows="2" placeholder="e.g. Happy Birthday Nimal! 🎂" style="width:100%;padding:9px;background:#F4FAF6;border:1px solid var(--border);color:var(--text-main);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none;resize:vertical"></textarea>
+      </div>
+
+      <div id="coCreateAccountBox" style="background:#F3FAF6;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--accent-gold);cursor:pointer;">
+          <input type="checkbox" id="coCreateAcctChk" onchange="document.getElementById('coCreateAcctPassWrap').style.display=this.checked?'block':'none'">
+          <span>Save my details &amp; create an account for future purchases</span>
+        </label>
+        <div id="coCreateAcctPassWrap" style="display:none;margin-top:8px;">
+          <label for="coAcctPass" style="font-size:11.5px;color:var(--text-muted);display:block;margin-bottom:4px">Set a password for your account *</label>
+          <input type="password" id="coAcctPass" placeholder="Create a password (min 4 characters)" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:#FFFFFF;font-size:12.5px;">
+        </div>
       </div>
 
       <h5 style="margin-top:18px;color:var(--accent-gold)">Select Payment Method</h5>
@@ -3751,67 +3927,274 @@
   </div>
 </div>
 
+<!-- ═══════════════ CUSTOMER ACCOUNT MODAL (SIGN IN / REGISTER / PROFILE) ═══════════════ -->
+<div class="modal-overlay" id="customerAccountModal">
+  <div class="modal-box" style="max-width:520px">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeCustomerAccountModal()"><i class="fa fa-xmark"></i></button>
+    <span class="badge badge-green">LUSH Customer Club</span>
+    <h3 id="custModalHeading" style="margin:8px 0 6px;font-family:var(--font-h);color:var(--accent-gold)">My Account</h3>
+    <p id="custModalSub" style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Save your delivery details for one-click future purchases &amp; view your order history.</p>
+
+    <!-- Guest Sign In / Create Account View -->
+    <div id="custAuthGuestView">
+      <div class="cust-auth-tabs">
+        <button type="button" class="cust-auth-tab active" id="custTabBtnLogin" onclick="switchCustomerAuthTab('login')"><i class="fa fa-right-to-bracket"></i> Sign In</button>
+        <button type="button" class="cust-auth-tab" id="custTabBtnRegister" onclick="switchCustomerAuthTab('register')"><i class="fa fa-user-plus"></i> Create Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="custLoginForm" onsubmit="handleCustomerLogin(event)">
+        <div class="field" style="margin-bottom:12px">
+          <label for="custLoginId">Phone Number or Email *</label>
+          <input type="text" id="custLoginId" required placeholder="077 xxx xxxx or you@email.com">
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label for="custLoginPass">Password *</label>
+          <input type="password" id="custLoginPass" required placeholder="Enter your password">
+        </div>
+        <p id="custLoginErr" style="display:none;color:#DC2626;font-size:12px;font-weight:600;margin-bottom:10px"></p>
+        <button type="submit" class="btn btn-pink" style="width:100%;padding:12px"><i class="fa fa-unlock"></i> Sign In to My Account</button>
+      </form>
+
+      <!-- Create Account Form -->
+      <form id="custRegisterForm" onsubmit="handleCustomerRegister(event)" style="display:none">
+        <div class="form-row">
+          <div class="field"><label for="regName">Full Name *</label><input type="text" id="regName" required placeholder="Kasun Perera"></div>
+          <div class="field"><label for="regPhone">Phone Number (Sri Lanka) *</label><input type="tel" id="regPhone" required placeholder="077 xxx xxxx"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="regEmail">Email (Optional)</label><input type="email" id="regEmail" placeholder="you@email.com"></div>
+          <div class="field"><label for="regDistrict">City / District *</label>
+            <select id="regDistrict" required>
+              <option value="">Select District</option>
+              <option>Puttalam / Mahawewa</option><option>Colombo</option><option>Gampaha</option><option>Kalutara</option>
+              <option>Kurunegala</option><option>Kandy</option><option>Galle</option><option>Matara</option>
+              <option>Jaffna</option><option>Anuradhapura</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:12px"><label for="regAddress">Default Delivery Address *</label><input type="text" id="regAddress" required placeholder="No. 12, Main Street, Mahawewa"></div>
+        <div class="field" style="margin-bottom:12px"><label for="regPass">Create Password *</label><input type="password" id="regPass" required placeholder="Create a password (min 4 characters)"></div>
+        <p id="custRegErr" style="display:none;color:#DC2626;font-size:12px;font-weight:600;margin-bottom:10px"></p>
+        <button type="submit" class="btn btn-pink" style="width:100%;padding:12px"><i class="fa fa-user-check"></i> Create Account &amp; Save Details</button>
+      </form>
+    </div>
+
+    <!-- Logged-In Customer Profile & Order History View -->
+    <div id="custAuthProfileView" style="display:none">
+      <form onsubmit="handleCustomerProfileUpdate(event)" style="background:#F3FAF6;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:13px;color:var(--accent-gold)"><i class="fa fa-address-card"></i> Saved Delivery Profile</strong>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:11px;color:#DC2626;border-color:#FCA5A5" onclick="handleCustomerLogout()"><i class="fa fa-right-from-bracket"></i> Sign Out</button>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="profName">Full Name *</label><input type="text" id="profName" required></div>
+          <div class="field"><label for="profPhone">Phone *</label><input type="tel" id="profPhone" required></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="profEmail">Email</label><input type="email" id="profEmail"></div>
+          <div class="field"><label for="profDistrict">City / District *</label>
+            <select id="profDistrict" required>
+              <option value="">Select District</option>
+              <option>Puttalam / Mahawewa</option><option>Colombo</option><option>Gampaha</option><option>Kalutara</option>
+              <option>Kurunegala</option><option>Kandy</option><option>Galle</option><option>Matara</option>
+              <option>Jaffna</option><option>Anuradhapura</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:10px"><label for="profAddress">Delivery Address *</label><input type="text" id="profAddress" required></div>
+        <button type="submit" class="btn btn-gold btn-sm" style="width:100%"><i class="fa fa-floppy-disk"></i> Save Profile Changes</button>
+      </form>
+
+      <div>
+        <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:8px;font-size:15px"><i class="fa fa-clock-rotate-left"></i> My Past Orders (<span id="custOrderHistoryCount">0</span>)</h5>
+        <div id="custOrderHistoryList" style="max-height:210px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMIN ADD / EDIT CUSTOMER MODAL ═══════════════ -->
+<div class="modal-overlay" id="adminCustomerModal">
+  <div class="modal-box" style="max-width:520px">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeAdminCustomerModal()"><i class="fa fa-xmark"></i></button>
+    <span class="badge badge-green">Customer Records</span>
+    <h3 id="admCustModalTitle" style="margin:8px 0 14px;font-family:var(--font-h);color:var(--accent-gold)">Add / Edit Customer</h3>
+    <form onsubmit="saveAdminCustomerModal(event)">
+      <input type="hidden" id="admCustId" value="">
+      <div class="form-row">
+        <div class="field"><label for="admCustName">Full Name *</label><input type="text" id="admCustName" required placeholder="Customer Name"></div>
+        <div class="field"><label for="admCustPhone">Phone / WhatsApp *</label><input type="tel" id="admCustPhone" required placeholder="077 xxx xxxx"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="admCustEmail">Email</label><input type="email" id="admCustEmail" placeholder="customer@email.com"></div>
+        <div class="field"><label for="admCustDistrict">District</label>
+          <select id="admCustDistrict">
+            <option value="">Select District</option>
+            <option>Puttalam / Mahawewa</option><option>Colombo</option><option>Gampaha</option><option>Kalutara</option>
+            <option>Kurunegala</option><option>Kandy</option><option>Galle</option><option>Matara</option>
+            <option>Jaffna</option><option>Anuradhapura</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:12px"><label for="admCustAddress">Delivery Address</label><input type="text" id="admCustAddress" placeholder="Full delivery address"></div>
+      <div class="field" style="margin-bottom:14px"><label for="admCustPass">Set / Reset Account Password (Optional)</label><input type="text" id="admCustPass" placeholder="Leave blank to keep existing"></div>
+      <div id="admCustOrdersPreview" style="display:none;margin-bottom:14px;background:#F3FAF6;border:1px solid var(--border);border-radius:8px;padding:10px;max-height:160px;overflow-y:auto;font-size:12px;"></div>
+      <button type="submit" class="btn btn-pink" style="width:100%;padding:12px"><i class="fa fa-floppy-disk"></i> Save Customer Record</button>
+    </form>
+  </div>
+</div>
+
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
 // EDIT YOUR SHOP CONTACT DETAILS HERE — changes update the whole site
-const SHOP_SETTINGS = {
+const DEFAULT_SHOP_SETTINGS = {
   whatsappNumber:  "94764546167",      // international format, no + or spaces
   phoneDisplay:    "076 45 46 167",    // how the number is shown on the page
   email:           "lushnevol2024@gmail.com",
   address:         "35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka",
   facebookUrl:     "https://www.facebook.com/LushCosmeticsJewelries",
-  tiktokUrl:       "https://www.tiktok.com/@lush_lovi",
+  tiktokUrl:       "https://www.tiktok.com/@lush.cosmetics.je",
   whatsappMessage: "Hi LUSH! I'd like to know more about your products."
 };
+const SHOP_SETTINGS_KEY = 'lush_ceylon_shop_settings_v1';
+const SHOP_SETTINGS = { ...DEFAULT_SHOP_SETTINGS };
+
+function normalizeSocialUrl(val, platform) {
+  const v = String(val || '').trim();
+  if (!v) return '';
+  if (/^https?:\/\//i.test(v)) return v;
+  if (platform === 'tiktok') {
+    const clean = v.replace(/^@+/, '').replace(/^(www\.)?tiktok\.com\/@?/i, '');
+    return 'https://www.tiktok.com/@' + clean;
+  }
+  if (platform === 'facebook') {
+    const clean = v.replace(/^(www\.)?facebook\.com\//i, '');
+    return 'https://www.facebook.com/' + clean;
+  }
+  return 'https://' + v;
+}
+
+function loadShopSettings() {
+  try {
+    const raw = localStorage.getItem(SHOP_SETTINGS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        Object.keys(DEFAULT_SHOP_SETTINGS).forEach(k => {
+          if (typeof parsed[k] === 'string') SHOP_SETTINGS[k] = parsed[k];
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('Shop settings load error:', err);
+  }
+}
 
 function applyShopSettings() {
   const s = SHOP_SETTINGS || {};
-  const waNum = String(s.whatsappNumber || '').trim().replace(/^\+/, '');
+  const waNum = String(s.whatsappNumber || '').trim().replace(/[^0-9]/g, '');
   const phoneText = String(s.phoneDisplay || '').trim() || (waNum ? '+' + waNum : '');
   const email = String(s.email || '').trim();
   const address = String(s.address || '').trim();
-  const fbUrl = String(s.facebookUrl || '').trim();
-  const ttUrl = String(s.tiktokUrl || '').trim();
+  const fbUrl = normalizeSocialUrl(s.facebookUrl, 'facebook');
+  const ttUrl = normalizeSocialUrl(s.tiktokUrl, 'tiktok');
   const waMsg = String(s.whatsappMessage || '').trim();
   const waUrl = waNum
     ? 'https://wa.me/' + waNum + (waMsg ? '?text=' + encodeURIComponent(waMsg) : '')
     : '';
 
-  const hideShopEl = (el) => {
+  const setShopRowVisible = (el, visible) => {
     const row = el.closest('.location-item, li, [data-shop-row]');
-    if (row) row.style.display = 'none';
-    else el.style.display = 'none';
+    if (row) row.style.display = visible ? '' : 'none';
+    else el.style.display = visible ? '' : 'none';
   };
 
   document.querySelectorAll('[data-shop]').forEach(el => {
     const type = el.getAttribute('data-shop');
     if (type === 'phone') {
-      if (!waNum && !phoneText) { hideShopEl(el); return; }
+      if (!waNum && !phoneText) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       if (el.tagName === 'A' && waNum) el.href = 'tel:+' + waNum;
       if (phoneText) el.textContent = phoneText;
     } else if (type === 'whatsapp') {
-      if (!waUrl) { hideShopEl(el); return; }
+      if (!waUrl) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       if (el.tagName === 'A') el.href = waUrl;
     } else if (type === 'email') {
-      if (!email) { hideShopEl(el); return; }
+      if (!email) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       if (el.tagName === 'A') el.href = 'mailto:' + email;
       el.textContent = email;
     } else if (type === 'address') {
-      if (!address) { hideShopEl(el); return; }
+      if (!address) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       el.textContent = address;
     } else if (type === 'facebook') {
-      if (!fbUrl) { hideShopEl(el); return; }
+      if (!fbUrl) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       if (el.tagName === 'A') el.href = fbUrl;
     } else if (type === 'tiktok') {
-      if (!ttUrl) { hideShopEl(el); return; }
+      if (!ttUrl) { setShopRowVisible(el, false); return; }
+      setShopRowVisible(el, true);
       if (el.tagName === 'A') el.href = ttUrl;
     }
   });
 
-  // Hide the "Follow Us" row if all social links are empty
+  if (address) {
+    document.querySelectorAll('.map-btn').forEach(btn => {
+      btn.href = 'https://maps.google.com/?q=' + encodeURIComponent(address).replace(/%20/g, '+');
+    });
+  }
+
+  // Hide or show the "Follow Us" row based on social links
   document.querySelectorAll('.foot-follow').forEach(row => {
-    if (!waUrl && !fbUrl && !ttUrl) row.style.display = 'none';
+    row.style.display = (!waUrl && !fbUrl && !ttUrl) ? 'none' : '';
   });
+}
+
+function renderShopSettingsAdminForm() {
+  const setVal = (id, v) => {
+    const el = document.getElementById(id);
+    if (el) el.value = v || '';
+  };
+  setVal('admShopAddress', SHOP_SETTINGS.address);
+  setVal('admShopPhoneDisplay', SHOP_SETTINGS.phoneDisplay);
+  setVal('admShopWhatsapp', SHOP_SETTINGS.whatsappNumber);
+  setVal('admShopEmail', SHOP_SETTINGS.email);
+  setVal('admShopFacebook', SHOP_SETTINGS.facebookUrl);
+  setVal('admShopTiktok', SHOP_SETTINGS.tiktokUrl);
+  setVal('admShopWaMsg', SHOP_SETTINGS.whatsappMessage);
+}
+
+function saveShopSettingsFromAdmin() {
+  SHOP_SETTINGS.address = (document.getElementById('admShopAddress')?.value || '').trim();
+  SHOP_SETTINGS.phoneDisplay = (document.getElementById('admShopPhoneDisplay')?.value || '').trim();
+  SHOP_SETTINGS.whatsappNumber = (document.getElementById('admShopWhatsapp')?.value || '').trim().replace(/[^0-9]/g, '');
+  SHOP_SETTINGS.email = (document.getElementById('admShopEmail')?.value || '').trim();
+  SHOP_SETTINGS.facebookUrl = normalizeSocialUrl(document.getElementById('admShopFacebook')?.value || '', 'facebook');
+  SHOP_SETTINGS.tiktokUrl = normalizeSocialUrl(document.getElementById('admShopTiktok')?.value || '', 'tiktok');
+  SHOP_SETTINGS.whatsappMessage = (document.getElementById('admShopWaMsg')?.value || '').trim();
+
+  try {
+    localStorage.setItem(SHOP_SETTINGS_KEY, JSON.stringify(SHOP_SETTINGS));
+  } catch (err) {
+    console.warn('Could not save shop settings:', err);
+  }
+  renderShopSettingsAdminForm();
+  applyShopSettings();
+  alert('✅ Store contact details & social media URLs have been saved and updated on the customer view!');
+}
+
+function resetShopSettingsToDefault() {
+  if (!confirm('Reset store address, phone numbers, and social media URLs back to default settings?')) return;
+  Object.assign(SHOP_SETTINGS, DEFAULT_SHOP_SETTINGS);
+  try {
+    localStorage.removeItem(SHOP_SETTINGS_KEY);
+  } catch (err) {}
+  renderShopSettingsAdminForm();
+  applyShopSettings();
+  alert('✅ Store settings restored to defaults.');
 }
 
 const RATE = 305; // LKR per USD
@@ -3938,7 +4321,12 @@ function updateLiveStoreHoursBadge() {
 
 // ── INIT ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  loadShopSettings();
   applyShopSettings();
+  renderShopSettingsAdminForm();
+  loadCustomersFromStorage();
+  updateCustomerHeaderUI();
+  renderAdminCustomersTable();
   updateLiveStoreHoursBadge();
   setInterval(updateLiveStoreHoursBadge, 60000);
   loadWelcomePhotos();
@@ -4135,6 +4523,7 @@ function refreshTotals() {
 function openCheckout() {
   if (!cart.length) { alert('Please add items to your bag first.'); return; }
   toggleCart(false);
+  prefillCheckoutFromCustomer();
   document.getElementById('checkoutModal').style.display = 'flex';
   refreshTotals();
 }
@@ -4146,7 +4535,7 @@ function pickPay(el, gw) {
   el.classList.add('sel'); selPay = gw;
 }
 
-function placeOrder(e) {
+async function placeOrder(e) {
   e.preventDefault();
   if (!cart.length) {
     alert('Your shopping bag is empty.');
@@ -4159,6 +4548,13 @@ function placeOrder(e) {
   const district = (document.getElementById('coDistrict')?.value || '').trim();
   const address = (document.getElementById('coAddress')?.value || '').trim();
   const note = (document.getElementById('coNote')?.value || '').trim();
+  const wantAccount = Boolean(document.getElementById('coCreateAcctChk')?.checked);
+  const newAcctPass = (document.getElementById('coAcctPass')?.value || '').trim();
+
+  if (wantAccount && newAcctPass.length < 4) {
+    alert('Please enter a password of at least 4 characters to create your customer account, or uncheck the account box.');
+    return;
+  }
 
   const shipSelect = document.getElementById('shipSel');
   const shipFee = parseInt(shipSelect?.value || '0', 10);
@@ -4198,8 +4594,27 @@ function placeOrder(e) {
     `*Payment Method:* ${chosenPayment}`
   ];
 
+  // Record customer & order in Customer Directory (and create/sign-in account if requested)
+  await recordCustomerAndOrder({
+    name,
+    phone,
+    email,
+    district,
+    address,
+    createAccount: wantAccount,
+    rawPassword: wantAccount ? newAcctPass : '',
+    order: {
+      id: 'ORD-' + Date.now().toString().slice(-6),
+      date: new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' }),
+      items: cart.map(it => ({ title: it.title, qty: it.qty, lkr: it.lkr })),
+      totalLkr,
+      payment: chosenPayment
+    }
+  });
+
+  const waNum = String(SHOP_SETTINGS.whatsappNumber || '94764546167').trim().replace(/[^0-9]/g, '') || '94764546167';
   const waText = lines.join('\n');
-  const waUrl = 'https://wa.me/94764546167?text=' + encodeURIComponent(waText);
+  const waUrl = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent(waText);
 
   // Open WhatsApp first with the pre-filled order message
   window.open(waUrl, '_blank', 'noopener');
@@ -4207,13 +4622,541 @@ function placeOrder(e) {
   // Show confirmation only after WhatsApp opens (does not promise automatic SMS confirmation)
   alert(
     '✅ Your order has been prepared in WhatsApp!\n\n' +
-    'Please press "Send" in the WhatsApp chat with LUSH Cosmetics & Jewelleries (+94 76 454 6167) to submit your order. ' +
+    'Please press "Send" in the WhatsApp chat with LUSH Cosmetics & Jewelleries (' + (SHOP_SETTINGS.phoneDisplay || '+' + waNum) + ') to submit your order. ' +
     'Our team will reply to you directly on WhatsApp to confirm your delivery and payment details.'
   );
 
   cart = [];
   updateCartCount();
   closeCheckout();
+}
+
+// ── CUSTOMER ACCOUNTS & CUSTOMER RECORDS DIRECTORY ──────────────────────────
+const CUSTOMERS_STORAGE_KEY = 'lush_ceylon_customers_v1';
+const ACTIVE_CUSTOMER_KEY = 'lush_ceylon_active_customer_v1';
+let customerRecords = [];
+let activeCustomerId = null;
+
+function normalizePhoneKey(p) {
+  return String(p || '').replace(/[^0-9]/g, '').replace(/^94/, '0');
+}
+
+function loadCustomersFromStorage() {
+  try {
+    const raw = localStorage.getItem(CUSTOMERS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) customerRecords = parsed;
+    }
+    const actId = localStorage.getItem(ACTIVE_CUSTOMER_KEY);
+    if (actId && customerRecords.some(c => c.id === actId)) {
+      activeCustomerId = actId;
+    } else {
+      activeCustomerId = null;
+    }
+  } catch (err) {
+    console.warn('Customer storage load error:', err);
+  }
+}
+
+function saveCustomersToStorage() {
+  try {
+    localStorage.setItem(CUSTOMERS_STORAGE_KEY, JSON.stringify(customerRecords));
+    if (activeCustomerId) {
+      localStorage.setItem(ACTIVE_CUSTOMER_KEY, activeCustomerId);
+    } else {
+      localStorage.removeItem(ACTIVE_CUSTOMER_KEY);
+    }
+  } catch (err) {
+    console.warn('Customer storage save error:', err);
+  }
+  const metric = document.getElementById('custCountMetric');
+  if (metric) metric.textContent = customerRecords.length;
+}
+
+function getActiveCustomer() {
+  if (!activeCustomerId) return null;
+  return customerRecords.find(c => c.id === activeCustomerId) || null;
+}
+
+function updateCustomerHeaderUI() {
+  const btn = document.getElementById('customerAcctBtn');
+  const lbl = document.getElementById('customerAcctBtnLabel');
+  const cust = getActiveCustomer();
+  if (btn && lbl) {
+    if (cust) {
+      const firstName = (cust.name || 'Account').trim().split(/\s+/)[0];
+      lbl.textContent = 'Hi, ' + firstName;
+      btn.classList.add('logged-in');
+    } else {
+      lbl.textContent = 'Sign In';
+      btn.classList.remove('logged-in');
+    }
+  }
+  const metric = document.getElementById('custCountMetric');
+  if (metric) metric.textContent = customerRecords.length;
+}
+
+function prefillCheckoutFromCustomer() {
+  const cust = getActiveCustomer();
+  const bannerText = document.getElementById('coAccountBannerText');
+  const bannerBtn = document.getElementById('coAccountBannerBtn');
+  const createBox = document.getElementById('coCreateAccountBox');
+  const chk = document.getElementById('coCreateAcctChk');
+  const passWrap = document.getElementById('coCreateAcctPassWrap');
+
+  if (cust) {
+    const setIf = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val) el.value = val;
+    };
+    setIf('coName', cust.name);
+    setIf('coPhone', cust.phone);
+    setIf('coEmail', cust.email);
+    setIf('coDistrict', cust.district);
+    setIf('coAddress', cust.address);
+    if (bannerText) {
+      bannerText.innerHTML = `<i class="fa fa-circle-check" style="color:var(--accent-emerald)"></i> Signed in as <strong>${escHtml(cust.name)}</strong> — delivery details auto-filled!`;
+    }
+    if (bannerBtn) {
+      bannerBtn.textContent = 'My Account';
+      bannerBtn.onclick = () => { closeCheckout(); openCustomerAccountModal(); };
+    }
+    if (createBox) createBox.style.display = 'none';
+    if (chk) chk.checked = false;
+    if (passWrap) passWrap.style.display = 'none';
+  } else {
+    if (bannerText) {
+      bannerText.innerHTML = `<i class="fa fa-user-circle" style="color:var(--accent-pink)"></i> Have an account for faster checkout?`;
+    }
+    if (bannerBtn) {
+      bannerBtn.textContent = 'Sign In / Register';
+      bannerBtn.onclick = () => { closeCheckout(); openCustomerAccountModal('login'); };
+    }
+    if (createBox) createBox.style.display = 'block';
+  }
+}
+
+async function recordCustomerAndOrder({ name, phone, email, district, address, createAccount, rawPassword, order }) {
+  const phoneKey = normalizePhoneKey(phone);
+  const emailLower = (email || '').trim().toLowerCase();
+  let existing = customerRecords.find(c =>
+    (phoneKey && normalizePhoneKey(c.phone) === phoneKey) ||
+    (emailLower && (c.email || '').trim().toLowerCase() === emailLower)
+  );
+
+  let passwordHash = existing?.passwordHash || '';
+  if (createAccount && rawPassword) {
+    passwordHash = await sha256(rawPassword);
+  }
+
+  const nowStr = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+  if (existing) {
+    existing.name = name || existing.name;
+    existing.phone = phone || existing.phone;
+    existing.email = email || existing.email;
+    existing.district = district || existing.district;
+    existing.address = address || existing.address;
+    if (passwordHash) {
+      existing.passwordHash = passwordHash;
+      existing.isRegistered = true;
+    }
+    existing.updatedAt = nowStr;
+    if (order) {
+      existing.orders = Array.isArray(existing.orders) ? existing.orders : [];
+      existing.orders.unshift(order);
+      existing.totalSpentLkr = (existing.totalSpentLkr || 0) + (order.totalLkr || 0);
+    }
+    if (createAccount) activeCustomerId = existing.id;
+  } else {
+    const newCust = {
+      id: 'CUST-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      name,
+      phone,
+      email,
+      district,
+      address,
+      isRegistered: Boolean(createAccount && passwordHash),
+      passwordHash,
+      createdAt: nowStr,
+      updatedAt: nowStr,
+      totalSpentLkr: order ? (order.totalLkr || 0) : 0,
+      orders: order ? [order] : []
+    };
+    customerRecords.unshift(newCust);
+    if (createAccount) activeCustomerId = newCust.id;
+  }
+
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  renderAdminCustomersTable();
+}
+
+function openCustomerAccountModal(mode) {
+  const modal = document.getElementById('customerAccountModal');
+  if (!modal) return;
+  const cust = getActiveCustomer();
+  const guestView = document.getElementById('custAuthGuestView');
+  const profView = document.getElementById('custAuthProfileView');
+  const heading = document.getElementById('custModalHeading');
+
+  if (cust) {
+    if (guestView) guestView.style.display = 'none';
+    if (profView) profView.style.display = 'block';
+    if (heading) heading.textContent = 'Welcome, ' + cust.name;
+    document.getElementById('profName').value = cust.name || '';
+    document.getElementById('profPhone').value = cust.phone || '';
+    document.getElementById('profEmail').value = cust.email || '';
+    document.getElementById('profDistrict').value = cust.district || '';
+    document.getElementById('profAddress').value = cust.address || '';
+    renderCustomerOrderHistory(cust);
+  } else {
+    if (guestView) guestView.style.display = 'block';
+    if (profView) profView.style.display = 'none';
+    if (heading) heading.textContent = 'Customer Account';
+    switchCustomerAuthTab(mode === 'register' ? 'register' : 'login');
+  }
+  modal.style.display = 'flex';
+}
+
+function closeCustomerAccountModal() {
+  const modal = document.getElementById('customerAccountModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function switchCustomerAuthTab(tab) {
+  const loginBtn = document.getElementById('custTabBtnLogin');
+  const regBtn = document.getElementById('custTabBtnRegister');
+  const loginForm = document.getElementById('custLoginForm');
+  const regForm = document.getElementById('custRegisterForm');
+  const loginErr = document.getElementById('custLoginErr');
+  const regErr = document.getElementById('custRegErr');
+  if (loginErr) loginErr.style.display = 'none';
+  if (regErr) regErr.style.display = 'none';
+
+  if (tab === 'register') {
+    loginBtn?.classList.remove('active');
+    regBtn?.classList.add('active');
+    if (loginForm) loginForm.style.display = 'none';
+    if (regForm) regForm.style.display = 'block';
+  } else {
+    regBtn?.classList.remove('active');
+    loginBtn?.classList.add('active');
+    if (regForm) regForm.style.display = 'none';
+    if (loginForm) loginForm.style.display = 'block';
+  }
+}
+
+async function handleCustomerLogin(e) {
+  e.preventDefault();
+  const idVal = (document.getElementById('custLoginId')?.value || '').trim();
+  const passVal = (document.getElementById('custLoginPass')?.value || '').trim();
+  const errEl = document.getElementById('custLoginErr');
+  if (errEl) errEl.style.display = 'none';
+
+  const phoneKey = normalizePhoneKey(idVal);
+  const emailLower = idVal.toLowerCase();
+  const passHash = await sha256(passVal);
+
+  const match = customerRecords.find(c =>
+    (phoneKey && normalizePhoneKey(c.phone) === phoneKey) ||
+    (emailLower && (c.email || '').trim().toLowerCase() === emailLower)
+  );
+
+  if (!match || !match.passwordHash || match.passwordHash !== passHash) {
+    if (errEl) {
+      errEl.textContent = 'Incorrect phone/email or password. Need an account? Click "Create Account" above.';
+      errEl.style.display = 'block';
+    }
+    return;
+  }
+
+  activeCustomerId = match.id;
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  openCustomerAccountModal();
+}
+
+async function handleCustomerRegister(e) {
+  e.preventDefault();
+  const name = (document.getElementById('regName')?.value || '').trim();
+  const phone = (document.getElementById('regPhone')?.value || '').trim();
+  const email = (document.getElementById('regEmail')?.value || '').trim();
+  const district = (document.getElementById('regDistrict')?.value || '').trim();
+  const address = (document.getElementById('regAddress')?.value || '').trim();
+  const pass = (document.getElementById('regPass')?.value || '').trim();
+  const errEl = document.getElementById('custRegErr');
+  if (errEl) errEl.style.display = 'none';
+
+  if (pass.length < 4) {
+    if (errEl) {
+      errEl.textContent = 'Password must be at least 4 characters.';
+      errEl.style.display = 'block';
+    }
+    return;
+  }
+
+  await recordCustomerAndOrder({
+    name,
+    phone,
+    email,
+    district,
+    address,
+    createAccount: true,
+    rawPassword: pass,
+    order: null
+  });
+
+  alert('🎉 Account created! Your delivery details are now saved for future purchases.');
+  openCustomerAccountModal();
+}
+
+function handleCustomerProfileUpdate(e) {
+  e.preventDefault();
+  const cust = getActiveCustomer();
+  if (!cust) return;
+  cust.name = (document.getElementById('profName')?.value || '').trim();
+  cust.phone = (document.getElementById('profPhone')?.value || '').trim();
+  cust.email = (document.getElementById('profEmail')?.value || '').trim();
+  cust.district = (document.getElementById('profDistrict')?.value || '').trim();
+  cust.address = (document.getElementById('profAddress')?.value || '').trim();
+  cust.updatedAt = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  renderAdminCustomersTable();
+  alert('✅ Your delivery profile has been updated!');
+}
+
+function handleCustomerLogout() {
+  activeCustomerId = null;
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  closeCustomerAccountModal();
+}
+
+function renderCustomerOrderHistory(cust) {
+  const listEl = document.getElementById('custOrderHistoryList');
+  const cntEl = document.getElementById('custOrderHistoryCount');
+  const orders = Array.isArray(cust?.orders) ? cust.orders : [];
+  if (cntEl) cntEl.textContent = orders.length;
+  if (!listEl) return;
+
+  if (!orders.length) {
+    listEl.innerHTML = `<div style="padding:14px;text-align:center;color:var(--text-muted);font-size:12px;background:#F3FAF6;border-radius:8px;border:1px dashed var(--border)">No orders placed yet. Your future orders will appear here!</div>`;
+    return;
+  }
+
+  listEl.innerHTML = orders.map(o => {
+    const itemsText = (o.items || []).map(it => `${escHtml(it.title)} × ${it.qty}`).join(', ');
+    return `
+      <div style="padding:10px 12px;background:#F3FAF6;border:1px solid var(--border);border-radius:8px;font-size:12px;">
+        <div style="display:flex;justify-content:space-between;font-weight:600;color:var(--accent-gold);margin-bottom:4px;">
+          <span>${escHtml(o.id || 'Order')} — Rs. ${Number(o.totalLkr || 0).toLocaleString()}</span>
+          <span style="color:var(--text-muted);font-weight:400">${escHtml(o.date || '')}</span>
+        </div>
+        <div style="color:var(--text-main);margin-bottom:3px">${itemsText}</div>
+        <div style="color:var(--text-muted);font-size:11px">Payment: ${escHtml(o.payment || '')}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAdminCustomersTable() {
+  const tbody = document.getElementById('adminCustomersTable');
+  const metric = document.getElementById('custCountMetric');
+  if (metric) metric.textContent = customerRecords.length;
+  if (!tbody) return;
+
+  const q = (document.getElementById('custSearchInput')?.value || '').trim().toLowerCase();
+  const filtered = customerRecords.filter(c => {
+    if (!q) return true;
+    return [c.name, c.phone, c.email, c.district, c.address].some(val =>
+      String(val || '').toLowerCase().includes(q)
+    );
+  });
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted)">No customer records found yet. When customers register an account or place an order, their details will appear here automatically.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(c => {
+    const ordCount = Array.isArray(c.orders) ? c.orders.length : 0;
+    const totalSpent = Number(c.totalSpentLkr || 0);
+    const waClean = String(c.phone || '').replace(/[^0-9]/g, '').replace(/^0/, '94');
+    const waLink = waClean ? `https://wa.me/${waClean}` : '#';
+    const lastOrd = ordCount > 0 ? c.orders[0] : null;
+    const lastSummary = lastOrd
+      ? `${escHtml(lastOrd.date || '')}<br><small style="color:var(--text-muted)">${(lastOrd.items || []).map(i => escHtml(i.title) + ' ×' + i.qty).join(', ')}</small>`
+      : `<span style="color:var(--text-muted);font-size:11px">${escHtml(c.updatedAt || c.createdAt || '—')}</span>`;
+
+    return `
+      <tr>
+        <td><strong>${escHtml(c.name || '—')}</strong></td>
+        <td>
+          <div>${escHtml(c.phone || '—')}</div>
+          ${waClean ? `<a href="${waLink}" target="_blank" rel="noopener" style="font-size:11px;color:#16A34A;font-weight:600"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>` : ''}
+        </td>
+        <td>${escHtml(c.email || '—')}</td>
+        <td>
+          <strong>${escHtml(c.district || '')}</strong>
+          <div style="font-size:11.5px;color:var(--text-muted);max-width:220px">${escHtml(c.address || '—')}</div>
+        </td>
+        <td>
+          ${c.isRegistered
+            ? '<span class="badge badge-green" style="font-size:10px;padding:3px 8px">Registered Account</span>'
+            : '<span class="badge badge-pink" style="font-size:10px;padding:3px 8px">Checkout Customer</span>'}
+        </td>
+        <td>
+          <strong>${ordCount} order${ordCount === 1 ? '' : 's'}</strong>
+          <div style="font-size:11.5px;color:var(--accent-gold)">Rs. ${totalSpent.toLocaleString()}</div>
+        </td>
+        <td style="font-size:11.5px;max-width:220px">${lastSummary}</td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" class="btn btn-outline btn-sm" style="padding:5px 9px;font-size:11px" onclick="openAdminCustomerModal('${c.id}')"><i class="fa fa-pen"></i> Edit / View</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:5px 9px;font-size:11px;color:#DC2626;border-color:#FCA5A5" onclick="deleteAdminCustomer('${c.id}')"><i class="fa fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openAdminCustomerModal(custId) {
+  const modal = document.getElementById('adminCustomerModal');
+  if (!modal) return;
+  const titleEl = document.getElementById('admCustModalTitle');
+  const previewEl = document.getElementById('admCustOrdersPreview');
+  document.getElementById('admCustPass').value = '';
+
+  if (custId) {
+    const c = customerRecords.find(x => x.id === custId);
+    if (!c) return;
+    if (titleEl) titleEl.textContent = 'Edit Customer — ' + (c.name || '');
+    document.getElementById('admCustId').value = c.id;
+    document.getElementById('admCustName').value = c.name || '';
+    document.getElementById('admCustPhone').value = c.phone || '';
+    document.getElementById('admCustEmail').value = c.email || '';
+    document.getElementById('admCustDistrict').value = c.district || '';
+    document.getElementById('admCustAddress').value = c.address || '';
+    const orders = Array.isArray(c.orders) ? c.orders : [];
+    if (previewEl && orders.length) {
+      previewEl.style.display = 'block';
+      previewEl.innerHTML = `<strong style="display:block;margin-bottom:6px;color:var(--accent-gold)">Order History (${orders.length}):</strong>` +
+        orders.map(o => `<div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong>${escHtml(o.id || '')}</strong> (${escHtml(o.date || '')}) — <strong>Rs. ${Number(o.totalLkr || 0).toLocaleString()}</strong><br>${(o.items || []).map(i => escHtml(i.title) + ' ×' + i.qty).join(', ')}</div>`).join('');
+    } else if (previewEl) {
+      previewEl.style.display = 'none';
+    }
+  } else {
+    if (titleEl) titleEl.textContent = 'Add New Customer Record';
+    document.getElementById('admCustId').value = '';
+    document.getElementById('admCustName').value = '';
+    document.getElementById('admCustPhone').value = '';
+    document.getElementById('admCustEmail').value = '';
+    document.getElementById('admCustDistrict').value = '';
+    document.getElementById('admCustAddress').value = '';
+    if (previewEl) previewEl.style.display = 'none';
+  }
+  modal.style.display = 'flex';
+}
+
+function closeAdminCustomerModal() {
+  const modal = document.getElementById('adminCustomerModal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function saveAdminCustomerModal(e) {
+  e.preventDefault();
+  const id = (document.getElementById('admCustId')?.value || '').trim();
+  const name = (document.getElementById('admCustName')?.value || '').trim();
+  const phone = (document.getElementById('admCustPhone')?.value || '').trim();
+  const email = (document.getElementById('admCustEmail')?.value || '').trim();
+  const district = (document.getElementById('admCustDistrict')?.value || '').trim();
+  const address = (document.getElementById('admCustAddress')?.value || '').trim();
+  const newPass = (document.getElementById('admCustPass')?.value || '').trim();
+  const nowStr = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+
+  if (id) {
+    const c = customerRecords.find(x => x.id === id);
+    if (c) {
+      c.name = name;
+      c.phone = phone;
+      c.email = email;
+      c.district = district;
+      c.address = address;
+      c.updatedAt = nowStr;
+      if (newPass) {
+        c.passwordHash = await sha256(newPass);
+        c.isRegistered = true;
+      }
+    }
+  } else {
+    const passHash = newPass ? await sha256(newPass) : '';
+    customerRecords.unshift({
+      id: 'CUST-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      name,
+      phone,
+      email,
+      district,
+      address,
+      isRegistered: Boolean(passHash),
+      passwordHash: passHash,
+      createdAt: nowStr,
+      updatedAt: nowStr,
+      totalSpentLkr: 0,
+      orders: []
+    });
+  }
+
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  renderAdminCustomersTable();
+  closeAdminCustomerModal();
+}
+
+function deleteAdminCustomer(custId) {
+  const c = customerRecords.find(x => x.id === custId);
+  if (!c) return;
+  if (!confirm(`Delete customer record for "${c.name}"?`)) return;
+  customerRecords = customerRecords.filter(x => x.id !== custId);
+  if (activeCustomerId === custId) activeCustomerId = null;
+  saveCustomersToStorage();
+  updateCustomerHeaderUI();
+  renderAdminCustomersTable();
+}
+
+function exportCustomersCsv() {
+  if (!customerRecords.length) {
+    alert('No customer records to export yet.');
+    return;
+  }
+  const escCsv = (val) => '"' + String(val ?? '').replace(/"/g, '""') + '"';
+  const rows = [
+    ['Customer Name', 'Phone', 'Email', 'District', 'Address', 'Account Type', 'Total Orders', 'Total Spent (LKR)', 'Last Updated'].map(escCsv).join(',')
+  ];
+  customerRecords.forEach(c => {
+    rows.push([
+      c.name || '',
+      c.phone || '',
+      c.email || '',
+      c.district || '',
+      c.address || '',
+      c.isRegistered ? 'Registered Account' : 'Checkout Customer',
+      Array.isArray(c.orders) ? c.orders.length : 0,
+      c.totalSpentLkr || 0,
+      c.updatedAt || c.createdAt || ''
+    ].map(escCsv).join(','));
+  });
+  const blob = new Blob([rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'lush_customers_' + new Date().toISOString().slice(0, 10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // ── SECRET ADMIN PORTAL (OPTION A: #admin URL, Ctrl+Shift+A, OR 3-TAP FOOTER COPYRIGHT) ──
@@ -4388,6 +5331,8 @@ function showAdminDashboard() {
   if (storeV) storeV.style.display = 'none';
   if (adminV) adminV.style.display = 'block';
   renderWelcomeAdminCards();
+  renderShopSettingsAdminForm();
+  renderAdminCustomersTable();
   renderInvTable();
   window.scrollTo(0, 0);
 }
@@ -4405,11 +5350,13 @@ function exitAdmin() {
 function switchTab(name, el) {
   document.querySelectorAll('.a-tab').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
-  ['welcome', 'inventory'].forEach(t => {
+  ['welcome', 'settings', 'customers', 'inventory'].forEach(t => {
     const tabEl = document.getElementById('tab-' + t);
     if (tabEl) tabEl.style.display = t === name ? 'block' : 'none';
   });
   if (name === 'welcome') renderWelcomeAdminCards();
+  if (name === 'settings') renderShopSettingsAdminForm();
+  if (name === 'customers') renderAdminCustomersTable();
   if (name === 'inventory') renderInvTable();
 }
 
