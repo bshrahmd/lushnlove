@@ -3684,7 +3684,7 @@
     <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px">LUSH Cosmetics &amp; Jewelleries — Store Manager</p>
     <form onsubmit="adminLogin(event)" autocomplete="off">
       <div class="field" style="margin-bottom:12px;text-align:left"><label for="aEmail">Admin Email</label><input type="email" id="aEmail" placeholder="Enter admin email" required></div>
-      <div class="field" style="margin-bottom:14px;text-align:left"><label for="aPass">Password</label><input type="password" id="aPass" placeholder="Enter password" required></div>
+      <div class="field" style="margin-bottom:14px;text-align:left"><label for="aPass">Password</label><div style="position:relative"><input type="password" id="aPass" placeholder="Enter password" style="padding-right:40px" required><button type="button" onclick="const p=document.getElementById('aPass');const i=this.querySelector('i');if(p.type==='password'){p.type='text';i.className='fa fa-eye-slash';}else{p.type='password';i.className='fa fa-eye';}" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px" aria-label="Toggle password visibility"><i class="fa fa-eye"></i></button></div></div>
       <p id="adminLoginErr" style="display:none;color:#DC2626;font-size:12px;font-weight:600;margin-bottom:12px">Incorrect email or password.</p>
       <button type="submit" class="btn btn-gold" style="width:100%"><i class="fa fa-lock-open"></i> Access Dashboard</button>
     </form>
@@ -4308,6 +4308,7 @@ function closeAdminLogin() {
 
 const ADMIN_EMAIL_HASH = 'f4e86a4d2bcfd1201057597307c0ec360cff19b367b66393477128fc6aea0a24';
 const ADMIN_PASSWORD_HASH = 'f83be135c4c2ddcd0ed24747285a36ef3584694c7c596773e428f7480df37b9c';
+const ADMIN_PASSWORD_LOWER_HASH = 'e7fdaede3a4b8059779f20c317eb93cc9a199a40890d72c8a657f02831a4a2c6';
 
 async function sha256(message) {
   const msgBuffer = new TextEncoder().encode(message);
@@ -4365,12 +4366,13 @@ async function adminLogin(e) {
   const emailVal = (document.getElementById('aEmail')?.value || '').trim().toLowerCase();
   const passVal = (document.getElementById('aPass')?.value || '').trim();
 
-  const [emailHash, passHash] = await Promise.all([
+  const [emailHash, passHash, passLowerHash] = await Promise.all([
     sha256(emailVal),
-    sha256(passVal)
+    sha256(passVal),
+    sha256(passVal.toLowerCase())
   ]);
 
-  if (emailHash === ADMIN_EMAIL_HASH && passHash === ADMIN_PASSWORD_HASH) {
+  if (emailHash === ADMIN_EMAIL_HASH && (passHash === ADMIN_PASSWORD_HASH || passLowerHash === ADMIN_PASSWORD_LOWER_HASH)) {
     isAdminAuthenticated = true;
     closeAdminLogin();
     showAdminDashboard();
