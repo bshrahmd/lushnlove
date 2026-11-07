@@ -5363,7 +5363,7 @@ async function recordCustomerAndOrder({ name, phone, email, district, address, c
   if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
 
   if (targetCust) {
-    pushToGoogleSheet({
+    await pushToGoogleSheet({
       action: 'upsert_customer',
       customer: targetCust,
       newOrder: order || null
@@ -5772,6 +5772,9 @@ async function pushToGoogleSheet(payload) {
   try {
     await fetch(url, {
       method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      redirect: 'follow',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
@@ -5793,7 +5796,7 @@ async function syncWithGoogleSheet(silent = true) {
 
   updateGoogleSheetStatusBadge('🔄 Syncing with Google Sheets...', true);
   try {
-    if (customerRecords.length > 0 && !silent) {
+    if (customerRecords.length > 0) {
       await pushToGoogleSheet({ action: 'sync_all_customers', customers: customerRecords });
     }
     const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
