@@ -3708,6 +3708,7 @@
   <div class="admin-panel">
     <div class="admin-tabs">
       <button class="a-tab active" onclick="switchTab('welcome',this)"><i class="fa fa-images"></i> Welcome Photos</button>
+      <button class="a-tab" onclick="switchTab('analytics',this)"><i class="fa fa-chart-line"></i> Analytics &amp; Sales</button>
       <button class="a-tab" onclick="switchTab('settings',this)"><i class="fa fa-share-nodes"></i> Store &amp; Social Settings</button>
       <button class="a-tab" onclick="switchTab('customers',this)"><i class="fa fa-users"></i> Customers (<span id="custCountMetric">0</span>)</button>
       <button class="a-tab" onclick="switchTab('inventory',this)"><i class="fa fa-boxes-stacked"></i> Inventory (<span id="prodCountMetric">72</span>)</button>
@@ -3726,6 +3727,98 @@
         </div>
       </div>
       <div id="welcomePhotosAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;"></div>
+    </div>
+
+    <!-- Analytics & Sales Intelligence Tab -->
+    <div id="tab-analytics" class="a-body" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <div>
+          <h4 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px">Customer Interest, Geographical Sales &amp; Product Movement</h4>
+          <p style="font-size:12px;color:var(--text-muted)">Live analytics calculated from real customer visits, category/product browsing, cart additions, and orders synced with your Google Sheet.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="resetBrowsingAnalytics()"><i class="fa fa-broom"></i> Reset Browsing Counters</button>
+          <button type="button" class="btn btn-gold btn-sm" onclick="syncWithGoogleSheet(false)"><i class="fa fa-rotate"></i> Sync &amp; Refresh Analytics</button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards (Real Tracked Metrics) -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px;">
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px"><i class="fa fa-eye" style="color:var(--accent-pink)"></i> Store Visits &amp; Sessions</div>
+          <div id="anKpiVisits" style="font-family:var(--font-h);font-size:26px;font-weight:700;color:var(--accent-gold)">0</div>
+          <div id="anKpiVisitsSub" style="font-size:11.5px;color:var(--text-muted);margin-top:4px">Mobile: 0 &bull; Desktop: 0</div>
+        </div>
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px"><i class="fa fa-bag-shopping" style="color:#D81B60"></i> Product Interest (Bag Adds)</div>
+          <div id="anKpiCartAdds" style="font-family:var(--font-h);font-size:26px;font-weight:700;color:var(--accent-gold)">0</div>
+          <div id="anKpiTopCat" style="font-size:11.5px;color:var(--text-muted);margin-top:4px">Top Category: —</div>
+        </div>
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px"><i class="fa fa-coins" style="color:#B8860B"></i> Recorded Sales &amp; Orders</div>
+          <div id="anKpiRevenue" style="font-family:var(--font-h);font-size:26px;font-weight:700;color:var(--accent-gold)">Rs. 0</div>
+          <div id="anKpiOrdersCount" style="font-size:11.5px;color:var(--text-muted);margin-top:4px">0 orders &bull; 0 units sold</div>
+        </div>
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px"><i class="fa fa-map-location-dot" style="color:#10B981"></i> Top Geographical Area</div>
+          <div id="anKpiTopDistrict" style="font-family:var(--font-h);font-size:22px;font-weight:700;color:var(--accent-gold)">—</div>
+          <div id="anKpiTopDistrictSub" style="font-size:11.5px;color:var(--text-muted);margin-top:4px">Based on customer orders &amp; profiles</div>
+        </div>
+      </div>
+
+      <!-- Two-Column Insights: Customer Interest + Geographical Sales -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:22px;">
+        <!-- Customer Interest by Category & Brand -->
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:18px;">
+          <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px;font-size:16px"><i class="fa fa-heart" style="color:#D81B60"></i> Customer Interest by Category &amp; Brand</h5>
+          <p style="font-size:11.5px;color:var(--text-muted);margin-bottom:14px">Tracks which categories and brands visitors browse, click, and add to their shopping bag.</p>
+          <div id="anCategoryInterestList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <!-- Geographical Sales by Sri Lanka District -->
+        <div style="background:#F3FAF6;border:1px solid var(--border);border-radius:12px;padding:18px;">
+          <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px;font-size:16px"><i class="fa fa-earth-asia" style="color:var(--accent-emerald)"></i> Geographical Sales &amp; Customers by District</h5>
+          <p style="font-size:11.5px;color:var(--text-muted);margin-bottom:14px">Breakdown of customer orders, registered accounts, and revenue across Sri Lanka districts.</p>
+          <div id="anGeoDistrictList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+      </div>
+
+      <!-- Product-Wise Sales & Product Movement Table -->
+      <div style="background:#FFFFFF;border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+          <div>
+            <h5 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:3px;font-size:16px"><i class="fa fa-arrow-trend-up" style="color:var(--accent-pink)"></i> Product-Wise Sales &amp; Product Movement</h5>
+            <p style="font-size:11.5px;color:var(--text-muted)">Compare customer interest (bag adds) vs. actual units sold and revenue to spot fast-moving and slow-moving products.</p>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;" id="anMovementFilterBtns">
+            <button type="button" class="btn btn-gold btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="setProductMovementFilter('all', this)">All Products</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="setProductMovementFilter('fast', this)">🔥 Fast Moving / Sold</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="setProductMovementFilter('interest', this)">👀 High Interest (In Cart, 0 Sold)</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="setProductMovementFilter('slow', this)">📦 Slow / Zero Movement</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <input type="text" id="anProdSearchInput" placeholder="Filter product movement by product name or category..." oninput="renderAnalyticsDashboard()" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:#F4FAF6;font-family:var(--font-b);font-size:12.5px;outline:none;">
+        </div>
+
+        <div style="overflow-x:auto;max-height:480px;overflow-y:auto;">
+          <table class="data-tbl">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Customer Interest (Bag Adds)</th>
+                <th>Units Sold</th>
+                <th>Revenue (LKR)</th>
+                <th>Movement Status</th>
+              </tr>
+            </thead>
+            <tbody id="anProductMovementBody"><!-- JS --></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <!-- Store & Social Settings Tab -->
@@ -4291,7 +4384,7 @@ const DEFAULT_SHOP_SETTINGS = {
   facebookUrl:          "https://www.facebook.com/LushCosmeticsJewelries",
   tiktokUrl:            "https://www.tiktok.com/@lush.cosmetics.je",
   whatsappMessage:      "Hi LUSH! I'd like to know more about your products.",
-  googleSheetWebAppUrl: ""                  // Optional: paste your Google Apps Script /exec URL here
+  googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbwd2l4CjA_zTPcD8XXNu1EpRMPg8f8FzqpOIyNr4lsy9GkVK_6je_mK5IiIleca9ytj/exec"
 };
 const SHOP_SETTINGS_KEY = 'lush_ceylon_shop_settings_v1';
 const SHOP_SETTINGS = { ...DEFAULT_SHOP_SETTINGS };
@@ -4318,7 +4411,13 @@ function loadShopSettings() {
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === 'object') {
         Object.keys(DEFAULT_SHOP_SETTINGS).forEach(k => {
-          if (typeof parsed[k] === 'string') SHOP_SETTINGS[k] = parsed[k];
+          if (k === 'googleSheetWebAppUrl') {
+            if (typeof parsed[k] === 'string' && parsed[k].trim()) {
+              SHOP_SETTINGS[k] = parsed[k].trim();
+            }
+          } else if (typeof parsed[k] === 'string') {
+            SHOP_SETTINGS[k] = parsed[k];
+          }
         });
       }
     }
@@ -4774,9 +4873,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadShopSettings();
   applyShopSettings();
   renderShopSettingsAdminForm();
+  loadStoreAnalytics();
+  recordStoreVisit();
   loadCustomersFromStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  renderAnalyticsDashboard();
   syncWithGoogleSheet(true);
   updateLiveStoreHoursBadge();
   setInterval(updateLiveStoreHoursBadge, 60000);
@@ -4884,6 +4986,7 @@ function filterCat(cat, el) {
   document.querySelectorAll('.cat-pill').forEach(p => {
     p.classList.toggle('active', p.dataset.cat ? p.dataset.cat === cat : p === el);
   });
+  if (cat && cat !== 'all') trackCategoryInterest(cat);
   renderProducts(cat);
   if (typeof parseRoute === 'function' && parseRoute().page !== 'products') {
     location.hash = '#products';
@@ -4900,6 +5003,7 @@ function addToCart(id) {
   if (!p) return;
   const ex = cart.find(x => x.id === id);
   if (ex) ex.qty++; else cart.push({ ...p, qty: 1 });
+  trackProductCartAdd(p);
   updateCartCount();
   const cartBtn = document.querySelector('.cart-icon-btn');
   const cartBadge = document.getElementById('cartCnt');
@@ -5256,6 +5360,7 @@ async function recordCustomerAndOrder({ name, phone, email, district, address, c
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
 
   if (targetCust) {
     pushToGoogleSheet({
@@ -5599,6 +5704,7 @@ async function saveAdminCustomerModal(e) {
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
   if (savedCust) {
     pushToGoogleSheet({ action: 'upsert_customer', customer: savedCust, newOrder: null });
   }
@@ -5614,6 +5720,7 @@ function deleteAdminCustomer(custId) {
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  if (typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
   pushToGoogleSheet({ action: 'delete_customer', customerId: custId });
 }
 
@@ -5693,13 +5800,21 @@ async function syncWithGoogleSheet(silent = true) {
     const data = await res.json();
     if (data && data.ok) {
       if (Array.isArray(data.customers)) {
+        // Extract cloud analytics metadata row if present, and filter it out from visible customers
+        const analyticsRow = data.customers.find(rc => rc && rc.id === '__LUSH_ANALYTICS__');
+        if (analyticsRow) {
+          mergeCloudAnalytics(analyticsRow);
+        }
+        const realRemoteCustomers = data.customers.filter(rc => rc && rc.id !== '__LUSH_ANALYTICS__');
+
         // Merge remote customers with any local unsynced records
         const remoteMap = new Map();
-        data.customers.forEach(rc => {
+        realRemoteCustomers.forEach(rc => {
           const key = normalizePhoneKey(rc.phone) || (rc.email || '').toLowerCase() || rc.id;
           if (key) remoteMap.set(key, rc);
         });
         customerRecords.forEach(lc => {
+          if (lc.id === '__LUSH_ANALYTICS__') return;
           const key = normalizePhoneKey(lc.phone) || (lc.email || '').toLowerCase() || lc.id;
           if (key && !remoteMap.has(key)) {
             remoteMap.set(key, lc);
@@ -5710,6 +5825,7 @@ async function syncWithGoogleSheet(silent = true) {
         saveCustomersToStorage();
         updateCustomerHeaderUI();
         renderAdminCustomersTable();
+        renderAnalyticsDashboard();
       }
       if (data.settings && typeof data.settings === 'object') {
         Object.keys(DEFAULT_SHOP_SETTINGS).forEach(k => {
@@ -6073,6 +6189,7 @@ function showAdminDashboard() {
   if (storeV) storeV.style.display = 'none';
   if (adminV) adminV.style.display = 'block';
   renderWelcomeAdminCards();
+  renderAnalyticsDashboard();
   renderShopSettingsAdminForm();
   renderAdminCustomersTable();
   renderInvTable();
@@ -6092,14 +6209,370 @@ function exitAdmin() {
 function switchTab(name, el) {
   document.querySelectorAll('.a-tab').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
-  ['welcome', 'settings', 'customers', 'inventory'].forEach(t => {
+  ['welcome', 'analytics', 'settings', 'customers', 'inventory'].forEach(t => {
     const tabEl = document.getElementById('tab-' + t);
     if (tabEl) tabEl.style.display = t === name ? 'block' : 'none';
   });
   if (name === 'welcome') renderWelcomeAdminCards();
+  if (name === 'analytics') renderAnalyticsDashboard();
   if (name === 'settings') renderShopSettingsAdminForm();
   if (name === 'customers') renderAdminCustomersTable();
   if (name === 'inventory') renderInvTable();
+}
+
+// ── CUSTOMER VISIT, INTEREST, GEOGRAPHICAL SALES & PRODUCT MOVEMENT ANALYTICS ──
+const ANALYTICS_STORAGE_KEY = 'lush_ceylon_store_analytics_v1';
+let productMovementFilter = 'all';
+let storeAnalytics = {
+  totalVisits: 0,
+  mobileVisits: 0,
+  desktopVisits: 0,
+  categoryViews: {},
+  brandViews: {},
+  productCartAdds: {},
+  updatedAt: ''
+};
+
+function loadStoreAnalytics() {
+  try {
+    const raw = localStorage.getItem(ANALYTICS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        storeAnalytics.totalVisits = Number(parsed.totalVisits || 0);
+        storeAnalytics.mobileVisits = Number(parsed.mobileVisits || 0);
+        storeAnalytics.desktopVisits = Number(parsed.desktopVisits || 0);
+        storeAnalytics.categoryViews = parsed.categoryViews && typeof parsed.categoryViews === 'object' ? parsed.categoryViews : {};
+        storeAnalytics.brandViews = parsed.brandViews && typeof parsed.brandViews === 'object' ? parsed.brandViews : {};
+        storeAnalytics.productCartAdds = parsed.productCartAdds && typeof parsed.productCartAdds === 'object' ? parsed.productCartAdds : {};
+        storeAnalytics.updatedAt = parsed.updatedAt || '';
+      }
+    }
+  } catch (err) {
+    console.warn('Analytics load error:', err);
+  }
+}
+
+let analyticsPushTimer = null;
+function saveStoreAnalytics(syncCloud = true) {
+  storeAnalytics.updatedAt = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+  try {
+    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(storeAnalytics));
+  } catch (err) {}
+  if (syncCloud) {
+    clearTimeout(analyticsPushTimer);
+    analyticsPushTimer = setTimeout(() => {
+      pushAnalyticsToCloud();
+    }, 1800);
+  }
+}
+
+function pushAnalyticsToCloud() {
+  if (!getGoogleSheetUrl()) return;
+  pushToGoogleSheet({
+    action: 'upsert_customer',
+    customer: {
+      id: '__LUSH_ANALYTICS__',
+      name: '[SYSTEM] Store Browsing Analytics',
+      phone: '0000000000',
+      email: 'analytics@lush.internal',
+      district: 'System',
+      address: JSON.stringify(storeAnalytics),
+      isRegistered: false,
+      totalSpentLkr: storeAnalytics.totalVisits || 0,
+      updatedAt: storeAnalytics.updatedAt,
+      orders: []
+    },
+    newOrder: null
+  });
+}
+
+function mergeCloudAnalytics(row) {
+  if (!row || !row.address) return;
+  try {
+    const remote = JSON.parse(row.address);
+    if (!remote || typeof remote !== 'object') return;
+    storeAnalytics.totalVisits = Math.max(storeAnalytics.totalVisits || 0, Number(remote.totalVisits || 0));
+    storeAnalytics.mobileVisits = Math.max(storeAnalytics.mobileVisits || 0, Number(remote.mobileVisits || 0));
+    storeAnalytics.desktopVisits = Math.max(storeAnalytics.desktopVisits || 0, Number(remote.desktopVisits || 0));
+    if (remote.categoryViews && typeof remote.categoryViews === 'object') {
+      Object.keys(remote.categoryViews).forEach(k => {
+        storeAnalytics.categoryViews[k] = Math.max(storeAnalytics.categoryViews[k] || 0, Number(remote.categoryViews[k] || 0));
+      });
+    }
+    if (remote.brandViews && typeof remote.brandViews === 'object') {
+      Object.keys(remote.brandViews).forEach(k => {
+        storeAnalytics.brandViews[k] = Math.max(storeAnalytics.brandViews[k] || 0, Number(remote.brandViews[k] || 0));
+      });
+    }
+    if (remote.productCartAdds && typeof remote.productCartAdds === 'object') {
+      Object.keys(remote.productCartAdds).forEach(k => {
+        storeAnalytics.productCartAdds[k] = Math.max(storeAnalytics.productCartAdds[k] || 0, Number(remote.productCartAdds[k] || 0));
+      });
+    }
+    saveStoreAnalytics(false);
+  } catch (err) {}
+}
+
+function recordStoreVisit() {
+  try {
+    if (sessionStorage.getItem('lush_visit_counted_v1')) return;
+    sessionStorage.setItem('lush_visit_counted_v1', '1');
+  } catch (err) {}
+  const isMob = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent || '');
+  storeAnalytics.totalVisits = (storeAnalytics.totalVisits || 0) + 1;
+  if (isMob) storeAnalytics.mobileVisits = (storeAnalytics.mobileVisits || 0) + 1;
+  else storeAnalytics.desktopVisits = (storeAnalytics.desktopVisits || 0) + 1;
+  saveStoreAnalytics(true);
+}
+
+function trackCategoryInterest(catKey) {
+  const norm = normalizeCategory(catKey);
+  if (!norm || norm === 'all') return;
+  storeAnalytics.categoryViews[norm] = (storeAnalytics.categoryViews[norm] || 0) + 1;
+  saveStoreAnalytics(true);
+}
+
+function trackBrandInterest(brandName) {
+  const b = String(brandName || '').trim();
+  if (!b) return;
+  storeAnalytics.brandViews[b] = (storeAnalytics.brandViews[b] || 0) + 1;
+  saveStoreAnalytics(true);
+}
+
+function trackProductCartAdd(prod) {
+  if (!prod || !prod.id) return;
+  const pid = String(prod.id);
+  storeAnalytics.productCartAdds[pid] = (storeAnalytics.productCartAdds[pid] || 0) + 1;
+  const cat = normalizeCategory(prod.cat || prod.category);
+  if (cat) storeAnalytics.categoryViews[cat] = (storeAnalytics.categoryViews[cat] || 0) + 1;
+  saveStoreAnalytics(true);
+  renderAnalyticsDashboard();
+}
+
+function setProductMovementFilter(mode, btnEl) {
+  productMovementFilter = mode || 'all';
+  document.querySelectorAll('#anMovementFilterBtns button').forEach(b => {
+    b.className = 'btn btn-outline btn-sm';
+  });
+  if (btnEl) btnEl.className = 'btn btn-gold btn-sm';
+  renderAnalyticsDashboard();
+}
+
+function resetBrowsingAnalytics() {
+  if (!confirm('Reset browsing visit & cart-interest counters to 0? (Your customer records and orders will NOT be deleted.)')) return;
+  storeAnalytics = {
+    totalVisits: 0,
+    mobileVisits: 0,
+    desktopVisits: 0,
+    categoryViews: {},
+    brandViews: {},
+    productCartAdds: {},
+    updatedAt: new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' })
+  };
+  saveStoreAnalytics(true);
+  renderAnalyticsDashboard();
+}
+
+function renderAnalyticsDashboard() {
+  const catLabels = {
+    cosmetics: 'Cosmetics & Skincare',
+    perfume: 'Perfumes & Fragrances',
+    jewelry: '18K Gold-Plated Jewellery',
+    gifts: 'Teddy Bears & Gifts',
+    valentine: "Valentine's & Lovers' Gifts",
+    birthday: 'Birthday Party & Hampers',
+    chocolate: 'Imported Chocolates',
+    makeup: 'Makeup & Brushes',
+    accessories: 'Hair & Accessories',
+    wallet: 'Wallets & Bags'
+  };
+
+  // 1) Aggregate Orders, Product Sales & Geographical Districts from customerRecords
+  let totalOrders = 0;
+  let totalUnitsSold = 0;
+  let totalRevenueLkr = 0;
+  const prodSoldUnits = {};
+  const prodSoldRev = {};
+  const districtStats = {};
+
+  customerRecords.forEach(c => {
+    if (!c || c.id === '__LUSH_ANALYTICS__') return;
+    const dist = (c.district || '').trim() || 'Unspecified';
+    if (!districtStats[dist]) {
+      districtStats[dist] = { customers: 0, orders: 0, revenue: 0 };
+    }
+    districtStats[dist].customers += 1;
+
+    const orders = Array.isArray(c.orders) ? c.orders : [];
+    orders.forEach(o => {
+      totalOrders += 1;
+      const ordRev = Number(o.totalLkr || 0);
+      totalRevenueLkr += ordRev;
+      districtStats[dist].orders += 1;
+      districtStats[dist].revenue += ordRev;
+
+      (o.items || []).forEach(it => {
+        const qty = Number(it.qty || 1);
+        const unitPrice = Number(it.lkr || 0);
+        totalUnitsSold += qty;
+        // Match product by title or ID
+        const matchedProd = products.find(p =>
+          (it.id && p.id === it.id) ||
+          String(p.title || '').toLowerCase() === String(it.title || '').toLowerCase()
+        );
+        const key = matchedProd ? String(matchedProd.id) : ('title:' + String(it.title || ''));
+        prodSoldUnits[key] = (prodSoldUnits[key] || 0) + qty;
+        prodSoldRev[key] = (prodSoldRev[key] || 0) + (qty * unitPrice);
+      });
+    });
+  });
+
+  // 2) Calculate Total Cart Additions & Top Category
+  const totalCartAdds = Object.values(storeAnalytics.productCartAdds || {}).reduce((s, v) => s + Number(v || 0), 0);
+  const catEntries = Object.entries(storeAnalytics.categoryViews || {}).sort((a, b) => b[1] - a[1]);
+  const topCatText = catEntries.length > 0 ? (catLabels[catEntries[0][0]] || catEntries[0][0]) + ' (' + catEntries[0][1] + ' views/adds)' : 'No category clicks yet';
+
+  // 3) Top District
+  const distEntries = Object.entries(districtStats).sort((a, b) => (b[1].revenue - a[1].revenue) || (b[1].orders - a[1].orders) || (b[1].customers - a[1].customers));
+  const topDist = distEntries.length > 0 ? distEntries[0] : null;
+
+  // Update KPI Cards
+  const setTxt = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  setTxt('anKpiVisits', Number(storeAnalytics.totalVisits || 0).toLocaleString());
+  setTxt('anKpiVisitsSub', `Mobile: ${storeAnalytics.mobileVisits || 0} • Desktop: ${storeAnalytics.desktopVisits || 0}`);
+  setTxt('anKpiCartAdds', totalCartAdds.toLocaleString());
+  setTxt('anKpiTopCat', 'Top Interest: ' + topCatText);
+  setTxt('anKpiRevenue', 'Rs. ' + totalRevenueLkr.toLocaleString());
+  setTxt('anKpiOrdersCount', `${totalOrders} order${totalOrders === 1 ? '' : 's'} • ${totalUnitsSold} unit${totalUnitsSold === 1 ? '' : 's'} sold`);
+  setTxt('anKpiTopDistrict', topDist ? topDist[0] : 'No district data yet');
+  setTxt('anKpiTopDistrictSub', topDist ? `${topDist[1].orders} order(s) • Rs. ${topDist[1].revenue.toLocaleString()} (${topDist[1].customers} customer${topDist[1].customers === 1 ? '' : 's'})` : 'Updates as customers register or order');
+
+  // 4) Render Customer Interest by Category & Brand
+  const catListEl = document.getElementById('anCategoryInterestList');
+  if (catListEl) {
+    // Combine category views + cart adds per category
+    const combinedCatScore = {};
+    Object.keys(catLabels).forEach(k => {
+      combinedCatScore[k] = Number(storeAnalytics.categoryViews[k] || 0);
+    });
+    const maxCatScore = Math.max(1, ...Object.values(combinedCatScore));
+    const sortedCats = Object.entries(combinedCatScore).sort((a, b) => b[1] - a[1]);
+
+    const brandEntries = Object.entries(storeAnalytics.brandViews || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const brandHtml = brandEntries.length
+      ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:12px;">
+           <strong style="color:var(--accent-gold);display:block;margin-bottom:6px">Top Viewed Brands:</strong>
+           <div style="display:flex;gap:6px;flex-wrap:wrap">
+             ${brandEntries.map(([bName, cnt]) => `<span class="badge badge-green" style="font-size:10.5px;padding:3px 9px">${escHtml(bName)}: ${cnt}</span>`).join('')}
+           </div>
+         </div>`
+      : '';
+
+    catListEl.innerHTML = sortedCats.map(([k, score]) => {
+      const pct = Math.round((score / maxCatScore) * 100);
+      return `
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+            <span style="font-weight:600;color:var(--text-main)">${escHtml(catLabels[k] || k)}</span>
+            <span style="color:var(--accent-gold);font-weight:700">${score} interaction${score === 1 ? '' : 's'}</span>
+          </div>
+          <div style="height:7px;background:#E2F1E8;border-radius:99px;overflow:hidden;">
+            <div style="width:${score > 0 ? Math.max(6, pct) : 0}%;height:100%;background:linear-gradient(90deg,var(--accent-pink),var(--accent-emerald));border-radius:99px;"></div>
+          </div>
+        </div>
+      `;
+    }).join('') + brandHtml;
+  }
+
+  // 5) Render Geographical Sales by District
+  const geoListEl = document.getElementById('anGeoDistrictList');
+  if (geoListEl) {
+    if (!distEntries.length) {
+      geoListEl.innerHTML = `<div style="padding:18px;text-align:center;color:var(--text-muted);font-size:12px;background:#FFFFFF;border-radius:8px;border:1px dashed var(--border)">No geographical customer or order records yet. As customers sign up or place orders by district (Mahawewa/Puttalam, Colombo, Gampaha, Kandy, etc.), their regional sales breakdown will appear here.</div>`;
+    } else {
+      const maxDistRev = Math.max(1, ...distEntries.map(d => d[1].revenue || d[1].customers * 1000));
+      geoListEl.innerHTML = distEntries.map(([distName, st]) => {
+        const pct = st.revenue > 0
+          ? Math.round((st.revenue / Math.max(1, totalRevenueLkr)) * 100)
+          : Math.round((st.customers / Math.max(1, customerRecords.length)) * 100);
+        const barW = Math.round(((st.revenue || st.customers * 1000) / maxDistRev) * 100);
+        return `
+          <div style="background:#FFFFFF;padding:10px 12px;border-radius:8px;border:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-bottom:4px;">
+              <strong><i class="fa fa-location-dot" style="color:var(--accent-pink)"></i> ${escHtml(distName)}</strong>
+              <span style="font-weight:700;color:var(--accent-gold)">Rs. ${st.revenue.toLocaleString()} (${pct}%)</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">
+              ${st.orders} order${st.orders === 1 ? '' : 's'} &bull; ${st.customers} customer${st.customers === 1 ? '' : 's'}
+            </div>
+            <div style="height:6px;background:#E2F1E8;border-radius:99px;overflow:hidden;">
+              <div style="width:${Math.max(8, barW)}%;height:100%;background:linear-gradient(90deg,#1E7E4E,#B8860B);border-radius:99px;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // 6) Render Product-Wise Sales & Product Movement Table
+  const prodBody = document.getElementById('anProductMovementBody');
+  if (prodBody) {
+    const q = (document.getElementById('anProdSearchInput')?.value || '').trim().toLowerCase();
+    const rowsData = products.map(p => {
+      const pid = String(p.id);
+      const bagAdds = Number(storeAnalytics.productCartAdds[pid] || 0);
+      const soldQty = Number(prodSoldUnits[pid] || 0);
+      const soldRev = Number(prodSoldRev[pid] || 0);
+      const normCat = normalizeCategory(p.cat || p.category);
+      const catName = catLabels[normCat] || normCat;
+      let statusKey = 'slow';
+      let statusBadge = '<span class="badge" style="background:#F3F4F6;color:#6B7280;font-size:10px;padding:3px 8px">📦 Slow / No Activity Yet</span>';
+      if (soldQty >= 2) {
+        statusKey = 'fast';
+        statusBadge = '<span class="badge badge-green" style="font-size:10px;padding:3px 8px">🔥 Fast Moving</span>';
+      } else if (soldQty === 1) {
+        statusKey = 'fast';
+        statusBadge = '<span class="badge badge-green" style="font-size:10px;padding:3px 8px">✨ Steady Seller</span>';
+      } else if (bagAdds > 0 && soldQty === 0) {
+        statusKey = 'interest';
+        statusBadge = '<span class="badge badge-pink" style="font-size:10px;padding:3px 8px">👀 High Interest (In Cart, 0 Sold)</span>';
+      }
+      return { p, pid, bagAdds, soldQty, soldRev, catName, statusKey, statusBadge };
+    });
+
+    // Sort by units sold DESC, then bagAdds DESC, then id ASC
+    rowsData.sort((a, b) => (b.soldQty - a.soldQty) || (b.bagAdds - a.bagAdds) || (a.p.id - b.p.id));
+
+    const filteredRows = rowsData.filter(r => {
+      if (productMovementFilter === 'fast' && r.soldQty <= 0) return false;
+      if (productMovementFilter === 'interest' && !(r.bagAdds > 0 && r.soldQty === 0)) return false;
+      if (productMovementFilter === 'slow' && (r.soldQty > 0 || r.bagAdds > 0)) return false;
+      if (q) {
+        return String(r.p.title || '').toLowerCase().includes(q) || String(r.catName || '').toLowerCase().includes(q);
+      }
+      return true;
+    });
+
+    if (!filteredRows.length) {
+      prodBody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:22px;color:var(--text-muted)">No products match this movement filter yet.</td></tr>`;
+    } else {
+      prodBody.innerHTML = filteredRows.map(r => `
+        <tr>
+          <td style="display:flex;align-items:center;gap:10px;min-width:210px;">
+            <img src="${r.p.img}" alt="${escHtml(r.p.title)}" style="width:38px;height:38px;border-radius:6px;object-fit:cover;border:1px solid var(--border)" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg'">
+            <strong>${escHtml(r.p.title)}</strong>
+          </td>
+          <td>${escHtml(r.catName)}</td>
+          <td>Rs. ${Number(r.p.lkr || 0).toLocaleString()}</td>
+          <td><strong>${r.bagAdds}</strong> bag add${r.bagAdds === 1 ? '' : 's'}</td>
+          <td><strong style="color:${r.soldQty > 0 ? 'var(--accent-pink)' : 'var(--text-muted)'}">${r.soldQty}</strong> unit${r.soldQty === 1 ? '' : 's'}</td>
+          <td><strong style="color:var(--accent-gold)">Rs. ${r.soldRev.toLocaleString()}</strong></td>
+          <td>${r.statusBadge}</td>
+        </tr>
+      `).join('');
+    }
+  }
 }
 
 function loadWelcomePhotos() {
@@ -6963,9 +7436,11 @@ function renderCategoriesPage(inner) {
 function renderCategoryPage(inner, key, brandSlug) {
   const meta = catMeta(key);
   if (!meta) { inner.innerHTML = notFoundHTML('Category not found', '#categories', 'See all categories'); return; }
+  if (typeof trackCategoryInterest === 'function') trackCategoryInterest(key);
   const inCat = products.filter(p => prodCat(p) === key);
   const brands = brandIndex(inCat);
   const activeBrand = brandSlug ? brands.find(b => b.slug === brandSlug) : null;
+  if (activeBrand && typeof trackBrandInterest === 'function') trackBrandInterest(activeBrand.name);
   const list = sortList(activeBrand ? inCat.filter(p => slugify(getBrand(p)) === activeBrand.slug) : inCat);
 
   inner.innerHTML = crumbsHTML([
@@ -7057,6 +7532,8 @@ function renderBrandPage(inner, slug, catKey) {
   const idx = all.findIndex(b => b.slug === slug);
   if (idx < 0) { inner.innerHTML = notFoundHTML('Brand not found', '#brands', 'See all brands'); return; }
   const brand = all[idx];
+  if (typeof trackBrandInterest === 'function') trackBrandInterest(brand.name);
+  if (catKey && typeof trackCategoryInterest === 'function') trackCategoryInterest(catKey);
   const prev = all[idx - 1], next = all[idx + 1];
   const ofBrand = products.filter(p => slugify(getBrand(p)) === slug);
   const cats = CATEGORY_META.map(c => ({ ...c, count: ofBrand.filter(p => prodCat(p) === c.key).length })).filter(c => c.count);
