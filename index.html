@@ -1653,6 +1653,121 @@
         text-overflow: ellipsis;
       }
     }
+    .qr-visit-card {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #EAF7F0 100%);
+      border: 1.5px solid rgba(184, 134, 11, 0.35);
+      box-shadow: 0 8px 24px rgba(20, 90, 56, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .qr-visit-thumb {
+      width: 96px;
+      height: 96px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      padding: 6px;
+      border: 1.5px solid rgba(184, 134, 11, 0.45);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .qr-visit-thumb:hover {
+      transform: scale(1.04);
+    }
+    .qr-visit-body {
+      flex: 1;
+      min-width: 190px;
+    }
+    .qr-visit-body h4 {
+      font-family: var(--font-h);
+      font-size: 16px;
+      color: var(--accent-gold-light);
+      margin: 0 0 4px;
+    }
+    .qr-visit-body p {
+      font-size: 12px !important;
+      color: var(--text-muted) !important;
+      margin: 0 0 10px !important;
+      line-height: 1.45 !important;
+    }
+    .qr-visit-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .qr-invite-preview-card {
+      background: linear-gradient(160deg, #0F3D26 0%, #1B5E3C 52%, #113823 100%);
+      color: #FFFFFF;
+      border-radius: 18px;
+      padding: 24px 20px;
+      border: 2px solid #D4AF37;
+      box-shadow: 0 16px 38px rgba(15, 61, 38, 0.32), inset 0 0 0 1px rgba(255, 243, 196, 0.22);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .qr-invite-preview-card .qr-inv-kicker {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #F9E076;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(249, 224, 118, 0.45);
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+    .qr-invite-preview-card h4 {
+      font-family: var(--font-h);
+      font-size: 22px;
+      color: #FFFFFF;
+      margin: 0 0 4px;
+    }
+    .qr-invite-preview-card .qr-inv-tag {
+      font-size: 12px;
+      color: #D9F2E4;
+      margin-bottom: 14px;
+    }
+    .qr-invite-box {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 12px;
+      border-radius: 14px;
+      border: 3px solid #D4AF37;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+      margin-bottom: 10px;
+    }
+    .qr-invite-box img {
+      width: 190px;
+      height: 190px;
+      display: block;
+      margin: 0 auto;
+    }
+    .qr-invite-url {
+      font-size: 11.5px;
+      color: #F9E076;
+      font-weight: 600;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+    .qr-invite-meta {
+      font-size: 11.5px;
+      color: #E8F8EF;
+      line-height: 1.55;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
   </style>
 </head>
 <body>
@@ -2036,6 +2151,26 @@
           <a href="https://maps.google.com/?q=35+Colombo+Puttalam+Main+Road,+Mahawewa,+Sri+Lanka" target="_blank" rel="noopener" class="map-btn">
             <i class="fa fa-map"></i> Open in Google Maps
           </a>
+
+          <!-- SHAREABLE QR INVITATION CARD -->
+          <div class="qr-visit-card">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&color=145A38&bgcolor=FFFFFF&data=https%3A%2F%2Fbshrahmd.github.io%2Flushnlove%2F%23visit" alt="QR code to visit LUSH Cosmetics & Jewelleries in Mahawewa" class="qr-visit-thumb" onclick="openQrInviteModal()" title="Click to enlarge or download invitation card">
+            <div class="qr-visit-body">
+              <h4><i class="fa fa-qrcode" style="color:var(--accent-gold-warm)"></i> Invite Friends — Scan or Share QR</h4>
+              <p>Share our store location &amp; online catalogue with friends on WhatsApp, or download the luxury QR invitation card.</p>
+              <div class="qr-visit-actions">
+                <button type="button" class="btn btn-gold btn-sm" style="padding:7px 12px;font-size:11.5px" onclick="openQrInviteModal()">
+                  <i class="fa fa-expand"></i> View / Download Invite Card
+                </button>
+                <button type="button" class="btn btn-pink btn-sm" style="padding:7px 12px;font-size:11.5px;background:#25D366;border-color:#25D366" onclick="shareQrInviteWhatsApp()">
+                  <i class="fa-brands fa-whatsapp"></i> Share Invite
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="padding:7px 12px;font-size:11.5px" onclick="copyQrInviteLink()">
+                  <i class="fa fa-link"></i> Copy Link
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3601,6 +3736,7 @@
           <p style="font-size:12px;color:var(--text-muted)">Update your store address, phone numbers, email, Facebook URL, and TikTok URL. Saving immediately updates the customer view across the entire site.</p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-gold btn-sm" onclick="openQrInviteModal()"><i class="fa fa-qrcode"></i> Store QR Invitation Card</button>
           <button type="button" class="btn btn-outline btn-sm" onclick="resetShopSettingsToDefault()"><i class="fa fa-rotate-left"></i> Reset Defaults</button>
           <button type="button" class="btn btn-pink btn-sm" onclick="saveShopSettingsFromAdmin()"><i class="fa fa-floppy-disk"></i> Save &amp; Apply Settings</button>
         </div>
@@ -3650,6 +3786,33 @@
 
     <!-- Customers Record Tab -->
     <div id="tab-customers" class="a-body" style="display:none">
+      <!-- Google Sheets Cloud Database Connection Bar -->
+      <div style="background:linear-gradient(135deg,#F0FDF4 0%,#ECFDF5 100%);border:1.5px solid rgba(16,185,129,0.35);border-radius:12px;padding:16px;margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong style="font-size:14px;color:var(--accent-gold)"><i class="fa-solid fa-table" style="color:#16A34A"></i> Google Sheets Cloud Database</strong>
+            <span id="gsheetStatusBadge" class="badge badge-pink" style="font-size:10px;padding:3px 9px">Not Connected — Saving Locally</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-outline btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="openGoogleSheetSetupModal()">
+              <i class="fa fa-code"></i> 1-Min Setup Guide &amp; Copy Script
+            </button>
+            <button type="button" class="btn btn-gold btn-sm" style="padding:6px 11px;font-size:11.5px" onclick="syncWithGoogleSheet(false)">
+              <i class="fa fa-rotate"></i> Sync Now
+            </button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input type="url" id="admGoogleSheetUrl" placeholder="Paste your Google Apps Script Web App URL (https://script.google.com/macros/s/.../exec)" style="flex:1;min-width:240px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:#FFFFFF;font-family:var(--font-b);font-size:12.5px;outline:none;">
+          <button type="button" class="btn btn-pink btn-sm" style="padding:9px 14px" onclick="saveGoogleSheetUrlFromAdmin()">
+            <i class="fa fa-plug"></i> Connect Google Sheet
+          </button>
+        </div>
+        <small style="font-size:11px;color:var(--text-muted);display:block;margin-top:6px;">
+          Once connected, every customer registration and WhatsApp checkout order from any device automatically saves to your Google Sheet (<strong>Customers</strong> &amp; <strong>Orders</strong> tabs).
+        </small>
+      </div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
         <div>
           <h4 style="font-family:var(--font-h);color:var(--accent-gold);margin-bottom:4px">Customer Directory &amp; Order Records</h4>
@@ -4044,17 +4207,91 @@
   </div>
 </div>
 
+<!-- ═══════════════ SHAREABLE STORE QR INVITATION MODAL ═══════════════ -->
+<div class="modal-overlay" id="qrInviteModal">
+  <div class="modal-box" style="max-width:480px">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeQrInviteModal()"><i class="fa fa-xmark"></i></button>
+    <span class="badge badge-green">Digital Store Invitation</span>
+    <h3 style="margin:8px 0 4px;font-family:var(--font-h);color:var(--accent-gold)">Share &amp; Invite to LUSH</h3>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Scan this QR code or share the invitation card with customers on WhatsApp, social media, or print it for your store counter.</p>
+
+    <div class="cust-auth-tabs" style="margin-bottom:14px">
+      <button type="button" class="cust-auth-tab active" id="qrTabVisitBtn" onclick="setQrInviteTarget('https://bshrahmd.github.io/lushnlove/#visit', this)"><i class="fa fa-location-dot"></i> Visit Store (#visit)</button>
+      <button type="button" class="cust-auth-tab" id="qrTabHomeBtn" onclick="setQrInviteTarget('https://bshrahmd.github.io/lushnlove/', this)"><i class="fa fa-bag-shopping"></i> Shop Online</button>
+    </div>
+
+    <div class="qr-invite-preview-card" id="qrInviteCardPrintArea">
+      <span class="qr-inv-kicker">✦ You're Invited to Visit ✦</span>
+      <h4>LUSH Cosmetics &amp; Jewelleries</h4>
+      <div class="qr-inv-tag">Cosmetics &bull; Perfumes &bull; 18K Gold-Plated Jewellery &bull; Gifts</div>
+      <div class="qr-invite-box">
+        <img id="qrInviteModalImg" crossorigin="anonymous" src="https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=10&color=145A38&bgcolor=FFFFFF&data=https%3A%2F%2Fbshrahmd.github.io%2Flushnlove%2F%23visit" alt="QR Code to visit LUSH Cosmetics & Jewelleries">
+      </div>
+      <div class="qr-invite-url" id="qrInviteUrlDisplay">https://bshrahmd.github.io/lushnlove/#visit</div>
+      <div class="qr-invite-meta">
+        <div><i class="fa fa-location-dot" style="color:#F9E076"></i> <span data-shop="address">35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka</span></div>
+        <div style="margin-top:3px"><i class="fa fa-phone" style="color:#F9E076"></i> WhatsApp / Call: <span data-shop="phone">076 45 46 167</span></div>
+        <div style="margin-top:3px"><i class="fa fa-clock" style="color:#F9E076"></i> Mon–Fri 8:30 AM–8:00 PM &bull; Sat–Sun 9:00 AM–9:00 PM</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button type="button" class="btn btn-pink" style="background:#25D366;border-color:#25D366;justify-content:center" onclick="shareQrInviteWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> Share on WhatsApp
+      </button>
+      <button type="button" class="btn btn-gold" style="justify-content:center" onclick="downloadQrInvitePoster()">
+        <i class="fa fa-download"></i> Download Invite PNG
+      </button>
+      <button type="button" class="btn btn-outline" style="justify-content:center" onclick="copyQrInviteLink()">
+        <i class="fa fa-copy"></i> Copy Invite Link
+      </button>
+      <button type="button" class="btn btn-outline" style="justify-content:center" onclick="printQrInviteCard()">
+        <i class="fa fa-print"></i> Print Counter QR
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ GOOGLE SHEETS SETUP & SCRIPT COPY MODAL ═══════════════ -->
+<div class="modal-overlay" id="googleSheetSetupModal">
+  <div class="modal-box" style="max-width:600px;text-align:left">
+    <button class="close-x" style="position:absolute;top:18px;right:18px" onclick="closeGoogleSheetSetupModal()"><i class="fa fa-xmark"></i></button>
+    <span class="badge badge-green">Google Sheets Cloud Database</span>
+    <h3 style="margin:8px 0 6px;font-family:var(--font-h);color:var(--accent-gold)">Connect Your Google Sheet in 4 Steps</h3>
+    <ol style="font-size:12.5px;color:var(--text-main);line-height:1.65;padding-left:18px;margin-bottom:14px;">
+      <li>Open <a href="https://sheets.new" target="_blank" rel="noopener" style="color:var(--accent-pink);font-weight:600">sheets.new</a> to create a new Google Sheet (name it <strong>LUSH Store Database</strong>).</li>
+      <li>In the top menu of your Google Sheet, click <strong>Extensions &rarr; Apps Script</strong>.</li>
+      <li>Delete any existing code in <code>Code.gs</code>, click the button below to copy the LUSH Database Script, and paste it in:</li>
+    </ol>
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <strong style="font-size:12px;color:var(--accent-gold)">Google Apps Script (also saved in <code>google-sheets-script.gs</code>)</strong>
+        <button type="button" class="btn btn-gold btn-sm" style="padding:5px 12px;font-size:11.5px" onclick="copyGoogleAppsScriptCode()">
+          <i class="fa fa-copy"></i> Copy Apps Script Code
+        </button>
+      </div>
+      <textarea id="gsheetAppsScriptTextarea" readonly rows="7" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:#F3FAF6;font-family:monospace;font-size:11px;color:var(--text-main);outline:none;resize:vertical;"></textarea>
+    </div>
+    <ol start="4" style="font-size:12.5px;color:var(--text-main);line-height:1.65;padding-left:18px;margin-bottom:14px;">
+      <li>In Apps Script, click <strong>Deploy &rarr; New deployment</strong> &rarr; select type <strong>Web app</strong> &rarr; set <em>Execute as:</em> <strong>Me</strong> and <em>Who has access:</em> <strong>Anyone</strong> &rarr; click <strong>Deploy</strong>.</li>
+      <li>Copy the <strong>Web app URL</strong> (ends with <code>/exec</code>) and paste it into the <strong>Connect Google Sheet</strong> box in the Customers tab!</li>
+    </ol>
+    <button type="button" class="btn btn-pink" style="width:100%;justify-content:center" onclick="closeGoogleSheetSetupModal()">Got It — Ready to Connect</button>
+  </div>
+</div>
+
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
 // EDIT YOUR SHOP CONTACT DETAILS HERE — changes update the whole site
 const DEFAULT_SHOP_SETTINGS = {
-  whatsappNumber:  "94764546167",      // international format, no + or spaces
-  phoneDisplay:    "076 45 46 167",    // how the number is shown on the page
-  email:           "lushnevol2024@gmail.com",
-  address:         "35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka",
-  facebookUrl:     "https://www.facebook.com/LushCosmeticsJewelries",
-  tiktokUrl:       "https://www.tiktok.com/@lush.cosmetics.je",
-  whatsappMessage: "Hi LUSH! I'd like to know more about your products."
+  whatsappNumber:       "94764546167",      // international format, no + or spaces
+  phoneDisplay:         "076 45 46 167",    // how the number is shown on the page
+  email:                "lushnevol2024@gmail.com",
+  address:              "35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka",
+  facebookUrl:          "https://www.facebook.com/LushCosmeticsJewelries",
+  tiktokUrl:            "https://www.tiktok.com/@lush.cosmetics.je",
+  whatsappMessage:      "Hi LUSH! I'd like to know more about your products.",
+  googleSheetWebAppUrl: ""                  // Optional: paste your Google Apps Script /exec URL here
 };
 const SHOP_SETTINGS_KEY = 'lush_ceylon_shop_settings_v1';
 const SHOP_SETTINGS = { ...DEFAULT_SHOP_SETTINGS };
@@ -4164,6 +4401,8 @@ function renderShopSettingsAdminForm() {
   setVal('admShopFacebook', SHOP_SETTINGS.facebookUrl);
   setVal('admShopTiktok', SHOP_SETTINGS.tiktokUrl);
   setVal('admShopWaMsg', SHOP_SETTINGS.whatsappMessage);
+  setVal('admGoogleSheetUrl', SHOP_SETTINGS.googleSheetWebAppUrl);
+  updateGoogleSheetStatusBadge();
 }
 
 function saveShopSettingsFromAdmin() {
@@ -4182,6 +4421,7 @@ function saveShopSettingsFromAdmin() {
   }
   renderShopSettingsAdminForm();
   applyShopSettings();
+  pushToGoogleSheet({ action: 'save_settings', settings: SHOP_SETTINGS });
   alert('✅ Store contact details & social media URLs have been saved and updated on the customer view!');
 }
 
@@ -4194,6 +4434,217 @@ function resetShopSettingsToDefault() {
   renderShopSettingsAdminForm();
   applyShopSettings();
   alert('✅ Store settings restored to defaults.');
+}
+
+// ── SHAREABLE STORE QR INVITATION GENERATOR ─────────────────────────────────
+let currentQrInviteUrl = 'https://bshrahmd.github.io/lushnlove/#visit';
+
+function getQrApiUrl(targetUrl, size = 420) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=10&color=145A38&bgcolor=FFFFFF&data=${encodeURIComponent(targetUrl)}`;
+}
+
+function openQrInviteModal(customUrl) {
+  if (customUrl) {
+    currentQrInviteUrl = customUrl;
+  }
+  const modal = document.getElementById('qrInviteModal');
+  const img = document.getElementById('qrInviteModalImg');
+  const urlEl = document.getElementById('qrInviteUrlDisplay');
+  if (img) img.src = getQrApiUrl(currentQrInviteUrl, 420);
+  if (urlEl) urlEl.textContent = currentQrInviteUrl;
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeQrInviteModal() {
+  const modal = document.getElementById('qrInviteModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function setQrInviteTarget(url, btnEl) {
+  currentQrInviteUrl = url;
+  document.querySelectorAll('#qrInviteModal .cust-auth-tab').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  const img = document.getElementById('qrInviteModalImg');
+  const urlEl = document.getElementById('qrInviteUrlDisplay');
+  if (img) img.src = getQrApiUrl(url, 420);
+  if (urlEl) urlEl.textContent = url;
+}
+
+function getInviteShareText() {
+  const addr = SHOP_SETTINGS.address || '35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka';
+  const phone = SHOP_SETTINGS.phoneDisplay || '076 45 46 167';
+  return (
+    '✨ *You\'re Invited to LUSH Cosmetics & Jewelleries!* ✨\n\n' +
+    'Explore our collection of cosmetics, luxury perfumes, 18K gold-plated jewellery & curated gifts — with island-wide delivery across Sri Lanka 🇱🇰\n\n' +
+    '📍 *Visit Our Store:* ' + addr + '\n' +
+    '📞 *Call / WhatsApp:* ' + phone + '\n' +
+    '🕐 *Hours:* Mon–Fri 8:30 AM–8:00 PM | Sat–Sun 9:00 AM–9:00 PM\n\n' +
+    '👉 *Tap here to visit & shop:* ' + currentQrInviteUrl
+  );
+}
+
+function shareQrInviteWhatsApp() {
+  const text = getInviteShareText();
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+}
+
+function copyQrInviteLink() {
+  const url = currentQrInviteUrl || 'https://bshrahmd.github.io/lushnlove/#visit';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      alert('🔗 Invitation link copied to clipboard!\n\n' + url);
+    }).catch(() => {
+      prompt('Copy this store invitation link:', url);
+    });
+  } else {
+    prompt('Copy this store invitation link:', url);
+  }
+}
+
+async function downloadQrInvitePoster() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1350;
+  const ctx = canvas.getContext('2d');
+
+  // Deep emerald luxury background gradient
+  const grad = ctx.createLinearGradient(0, 0, 1080, 1350);
+  grad.addColorStop(0, '#0D3520');
+  grad.addColorStop(0.5, '#195838');
+  grad.addColorStop(1, '#0E331F');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  // Outer & inner 18K gold borders
+  ctx.strokeStyle = '#D4AF37';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(42, 42, 996, 1266);
+  ctx.strokeStyle = 'rgba(249, 224, 118, 0.45)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(58, 58, 964, 1234);
+
+  // Header invitation pill
+  ctx.fillStyle = 'rgba(212, 175, 55, 0.2)';
+  ctx.beginPath();
+  ctx.roundRect(310, 110, 460, 52, 26);
+  ctx.fill();
+  ctx.strokeStyle = '#F9E076';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#F9E076';
+  ctx.font = 'bold 22px Outfit, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('✦ YOU ARE INVITED TO VISIT ✦', 540, 144);
+
+  // Store Name & Subtitle
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 54px Georgia, serif';
+  ctx.fillText('LUSH Cosmetics & Jewelleries', 540, 235);
+
+  ctx.fillStyle = '#D9F2E4';
+  ctx.font = '26px Outfit, sans-serif';
+  ctx.fillText('Cosmetics • Perfumes • 18K Gold-Plated Jewellery • Gifts', 540, 288);
+
+  // White & Gold QR frame
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath();
+  ctx.roundRect(270, 340, 540, 540, 32);
+  ctx.fill();
+  ctx.strokeStyle = '#D4AF37';
+  ctx.lineWidth = 8;
+  ctx.stroke();
+
+  // Load and draw QR image
+  const qrImg = new Image();
+  qrImg.crossOrigin = 'anonymous';
+  const qrLoaded = await new Promise((resolve) => {
+    qrImg.onload = () => resolve(true);
+    qrImg.onerror = () => resolve(false);
+    qrImg.src = getQrApiUrl(currentQrInviteUrl, 500);
+  });
+
+  if (qrLoaded) {
+    ctx.drawImage(qrImg, 300, 370, 480, 480);
+  }
+
+  // Scan CTA & URL
+  ctx.fillStyle = '#F9E076';
+  ctx.font = 'bold 28px Outfit, sans-serif';
+  ctx.fillText('SCAN QR CODE TO VISIT & SHOP ONLINE', 540, 945);
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '24px monospace';
+  ctx.fillText(currentQrInviteUrl, 540, 990);
+
+  // Store info footer box
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+  ctx.beginPath();
+  ctx.roundRect(100, 1035, 880, 215, 22);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const addr = SHOP_SETTINGS.address || '35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka';
+  const phone = SHOP_SETTINGS.phoneDisplay || '076 45 46 167';
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 26px Outfit, sans-serif';
+  ctx.fillText('📍 ' + addr, 540, 1092);
+
+  ctx.fillStyle = '#F9E076';
+  ctx.font = 'bold 28px Outfit, sans-serif';
+  ctx.fillText('📞 WhatsApp / Call: ' + phone, 540, 1148);
+
+  ctx.fillStyle = '#D9F2E4';
+  ctx.font = '23px Outfit, sans-serif';
+  ctx.fillText('🕐 Mon–Fri: 8:30 AM – 8:00 PM  |  Sat–Sun: 9:00 AM – 9:00 PM', 540, 1205);
+
+  try {
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'LUSH-Store-QR-Invitation.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (err) {
+    window.open(getQrApiUrl(currentQrInviteUrl, 600), '_blank', 'noopener');
+  }
+}
+
+function printQrInviteCard() {
+  const addr = escHtml(SHOP_SETTINGS.address || '35, Colombo Puttalam Main Road, Mahawewa, Sri Lanka');
+  const phone = escHtml(SHOP_SETTINGS.phoneDisplay || '076 45 46 167');
+  const qrSrc = getQrApiUrl(currentQrInviteUrl, 450);
+  const w = window.open('', '_blank', 'width=620,height=780');
+  if (!w) return;
+  w.document.write(`<!DOCTYPE html><html><head><title>LUSH Store QR Invitation</title>
+    <style>
+      body{font-family:'Segoe UI',sans-serif;display:flex;justify-content:center;align-items:center;min-height:95vh;margin:0;background:#F3FAF6;}
+      .card{width:460px;background:#0F3D26;color:#fff;border:4px solid #D4AF37;border-radius:20px;padding:32px 26px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.2);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .kicker{color:#F9E076;font-size:12px;letter-spacing:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;}
+      h1{font-family:Georgia,serif;font-size:28px;margin:0 0 6px;}
+      .sub{color:#D9F2E4;font-size:13px;margin-bottom:18px;}
+      .qr{background:#fff;padding:14px;border-radius:16px;border:3px solid #D4AF37;display:inline-block;margin-bottom:12px;}
+      .qr img{width:240px;height:240px;display:block;}
+      .url{color:#F9E076;font-size:13px;font-weight:700;margin-bottom:14px;word-break:break-all;}
+      .meta{background:rgba(0,0,0,0.25);padding:12px;border-radius:10px;font-size:13px;line-height:1.6;}
+    </style></head><body>
+    <div class="card">
+      <div class="kicker">✦ You're Invited to Visit ✦</div>
+      <h1>LUSH Cosmetics &amp; Jewelleries</h1>
+      <div class="sub">Cosmetics &bull; Perfumes &bull; 18K Gold-Plated Jewellery &bull; Gifts</div>
+      <div class="qr"><img src="${qrSrc}" onload="setTimeout(()=>window.print(),300)"></div>
+      <div class="url">${escHtml(currentQrInviteUrl)}</div>
+      <div class="meta">
+        <div>📍 ${addr}</div>
+        <div>📞 WhatsApp / Call: ${phone}</div>
+        <div>🕐 Mon–Fri 8:30 AM–8:00 PM &bull; Sat–Sun 9:00 AM–9:00 PM</div>
+      </div>
+    </div></body></html>`);
+  w.document.close();
 }
 
 const RATE = 305; // LKR per USD
@@ -4326,6 +4777,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCustomersFromStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  syncWithGoogleSheet(true);
   updateLiveStoreHoursBadge();
   setInterval(updateLiveStoreHoursBadge, 60000);
   loadWelcomePhotos();
@@ -4763,6 +5215,7 @@ async function recordCustomerAndOrder({ name, phone, email, district, address, c
   }
 
   const nowStr = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+  let targetCust = existing;
   if (existing) {
     existing.name = name || existing.name;
     existing.phone = phone || existing.phone;
@@ -4796,12 +5249,21 @@ async function recordCustomerAndOrder({ name, phone, email, district, address, c
       orders: order ? [order] : []
     };
     customerRecords.unshift(newCust);
+    targetCust = newCust;
     if (createAccount) activeCustomerId = newCust.id;
   }
 
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+
+  if (targetCust) {
+    pushToGoogleSheet({
+      action: 'upsert_customer',
+      customer: targetCust,
+      newOrder: order || null
+    });
+  }
 }
 
 function openCustomerAccountModal(mode) {
@@ -4870,10 +5332,19 @@ async function handleCustomerLogin(e) {
   const emailLower = idVal.toLowerCase();
   const passHash = await sha256(passVal);
 
-  const match = customerRecords.find(c =>
+  let match = customerRecords.find(c =>
     (phoneKey && normalizePhoneKey(c.phone) === phoneKey) ||
     (emailLower && (c.email || '').trim().toLowerCase() === emailLower)
   );
+
+  // If signing in on a new device and Google Sheets is connected, pull latest records first
+  if ((!match || !match.passwordHash) && getGoogleSheetUrl()) {
+    await syncWithGoogleSheet(true);
+    match = customerRecords.find(c =>
+      (phoneKey && normalizePhoneKey(c.phone) === phoneKey) ||
+      (emailLower && (c.email || '').trim().toLowerCase() === emailLower)
+    );
+  }
 
   if (!match || !match.passwordHash || match.passwordHash !== passHash) {
     if (errEl) {
@@ -4936,6 +5407,7 @@ function handleCustomerProfileUpdate(e) {
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  pushToGoogleSheet({ action: 'upsert_customer', customer: cust, newOrder: null });
   alert('✅ Your delivery profile has been updated!');
 }
 
@@ -5089,6 +5561,7 @@ async function saveAdminCustomerModal(e) {
   const newPass = (document.getElementById('admCustPass')?.value || '').trim();
   const nowStr = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
 
+  let savedCust = null;
   if (id) {
     const c = customerRecords.find(x => x.id === id);
     if (c) {
@@ -5102,10 +5575,11 @@ async function saveAdminCustomerModal(e) {
         c.passwordHash = await sha256(newPass);
         c.isRegistered = true;
       }
+      savedCust = c;
     }
   } else {
     const passHash = newPass ? await sha256(newPass) : '';
-    customerRecords.unshift({
+    savedCust = {
       id: 'CUST-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       name,
       phone,
@@ -5118,12 +5592,16 @@ async function saveAdminCustomerModal(e) {
       updatedAt: nowStr,
       totalSpentLkr: 0,
       orders: []
-    });
+    };
+    customerRecords.unshift(savedCust);
   }
 
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  if (savedCust) {
+    pushToGoogleSheet({ action: 'upsert_customer', customer: savedCust, newOrder: null });
+  }
   closeAdminCustomerModal();
 }
 
@@ -5136,6 +5614,258 @@ function deleteAdminCustomer(custId) {
   saveCustomersToStorage();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
+  pushToGoogleSheet({ action: 'delete_customer', customerId: custId });
+}
+
+// ── GOOGLE SHEETS CLOUD DATABASE INTEGRATION ────────────────────────────────
+function getGoogleSheetUrl() {
+  return String(SHOP_SETTINGS.googleSheetWebAppUrl || '').trim();
+}
+
+function updateGoogleSheetStatusBadge(customText, isConnected) {
+  const badge = document.getElementById('gsheetStatusBadge');
+  if (!badge) return;
+  const url = getGoogleSheetUrl();
+  if (customText) {
+    badge.textContent = customText;
+    badge.className = 'badge ' + (isConnected ? 'badge-green' : 'badge-pink');
+    return;
+  }
+  if (url && /^https:\/\/script\.google\.com\/macros\/s\//i.test(url)) {
+    badge.textContent = '🟢 Connected to Google Sheets';
+    badge.className = 'badge badge-green';
+  } else {
+    badge.textContent = 'Not Connected — Saving Locally';
+    badge.className = 'badge badge-pink';
+  }
+}
+
+async function saveGoogleSheetUrlFromAdmin() {
+  const input = document.getElementById('admGoogleSheetUrl');
+  const val = (input?.value || '').trim();
+  if (val && !/^https:\/\/script\.google\.com\/macros\/s\//i.test(val)) {
+    alert('Please paste a valid Google Apps Script Web App URL (starting with https://script.google.com/macros/s/... and ending with /exec).');
+    return;
+  }
+  SHOP_SETTINGS.googleSheetWebAppUrl = val;
+  try {
+    localStorage.setItem(SHOP_SETTINGS_KEY, JSON.stringify(SHOP_SETTINGS));
+  } catch (err) {}
+  updateGoogleSheetStatusBadge();
+  if (val) {
+    await syncWithGoogleSheet(false);
+  } else {
+    alert('Google Sheet disconnected. Customer records will be saved locally.');
+  }
+}
+
+async function pushToGoogleSheet(payload) {
+  const url = getGoogleSheetUrl();
+  if (!url) return false;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    return true;
+  } catch (err) {
+    console.warn('Google Sheet push warning:', err);
+    return false;
+  }
+}
+
+async function syncWithGoogleSheet(silent = true) {
+  const url = getGoogleSheetUrl();
+  if (!url) {
+    if (!silent) {
+      alert('Please paste your Google Apps Script Web App URL first (click "1-Min Setup Guide & Copy Script" if you need the script).');
+    }
+    return;
+  }
+
+  updateGoogleSheetStatusBadge('🔄 Syncing with Google Sheets...', true);
+  try {
+    if (customerRecords.length > 0 && !silent) {
+      await pushToGoogleSheet({ action: 'sync_all_customers', customers: customerRecords });
+    }
+    const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+    const data = await res.json();
+    if (data && data.ok) {
+      if (Array.isArray(data.customers)) {
+        // Merge remote customers with any local unsynced records
+        const remoteMap = new Map();
+        data.customers.forEach(rc => {
+          const key = normalizePhoneKey(rc.phone) || (rc.email || '').toLowerCase() || rc.id;
+          if (key) remoteMap.set(key, rc);
+        });
+        customerRecords.forEach(lc => {
+          const key = normalizePhoneKey(lc.phone) || (lc.email || '').toLowerCase() || lc.id;
+          if (key && !remoteMap.has(key)) {
+            remoteMap.set(key, lc);
+            pushToGoogleSheet({ action: 'upsert_customer', customer: lc, newOrder: null });
+          }
+        });
+        customerRecords = Array.from(remoteMap.values());
+        saveCustomersToStorage();
+        updateCustomerHeaderUI();
+        renderAdminCustomersTable();
+      }
+      if (data.settings && typeof data.settings === 'object') {
+        Object.keys(DEFAULT_SHOP_SETTINGS).forEach(k => {
+          if (k !== 'googleSheetWebAppUrl' && data.settings[k]) {
+            SHOP_SETTINGS[k] = data.settings[k];
+          }
+        });
+        localStorage.setItem(SHOP_SETTINGS_KEY, JSON.stringify(SHOP_SETTINGS));
+        applyShopSettings();
+        renderShopSettingsAdminForm();
+      }
+      updateGoogleSheetStatusBadge('🟢 Synced with Google Sheets', true);
+      if (!silent) {
+        alert('✅ Successfully synced ' + customerRecords.length + ' customer record(s) with your Google Sheet!');
+      }
+    } else {
+      updateGoogleSheetStatusBadge('⚠️ Sheet Sync Error', false);
+      if (!silent) alert('Could not read from Google Sheet. Please check that your Web App deployment has "Who has access: Anyone".');
+    }
+  } catch (err) {
+    console.warn('Google Sheet sync error:', err);
+    updateGoogleSheetStatusBadge('🟢 Connected to Google Sheets', true);
+    if (!silent) {
+      alert('Could not reach Google Sheet. Please verify the Web App URL ends with /exec and is deployed with access set to "Anyone".');
+    }
+  }
+}
+
+const GOOGLE_APPS_SCRIPT_TEMPLATE = `function ensureSheets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var custSheet = ss.getSheetByName('Customers');
+  if (!custSheet) {
+    custSheet = ss.insertSheet('Customers');
+    custSheet.appendRow(['Customer ID','Full Name','Phone / WhatsApp','Email','District','Delivery Address','Account Status','Total Orders','Total Spent (LKR)','Last Updated','Orders JSON','Password Hash']);
+    custSheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#D8F3DC');
+  }
+  var ordSheet = ss.getSheetByName('Orders');
+  if (!ordSheet) {
+    ordSheet = ss.insertSheet('Orders');
+    ordSheet.appendRow(['Order ID','Date (SLST)','Customer Name','Phone / WhatsApp','Email','District','Delivery Address','Ordered Items','Order Total (LKR)','Payment Method']);
+    ordSheet.getRange(1, 1, 1, 10).setFontWeight('bold').setBackground('#D8F3DC');
+  }
+  var setSheet = ss.getSheetByName('StoreSettings');
+  if (!setSheet) {
+    setSheet = ss.insertSheet('StoreSettings');
+    setSheet.appendRow(['Key','Value']);
+    setSheet.getRange(1, 1, 1, 2).setFontWeight('bold').setBackground('#D8F3DC');
+  }
+  return { ss: ss, custSheet: custSheet, ordSheet: ordSheet, setSheet: setSheet };
+}
+
+function doGet(e) {
+  var sheets = ensureSheets();
+  var custData = sheets.custSheet.getDataRange().getValues();
+  var customers = [];
+  for (var i = 1; i < custData.length; i++) {
+    var r = custData[i];
+    if (!r[0] && !r[1] && !r[2]) continue;
+    var ordersArr = [];
+    try { ordersArr = r[10] ? JSON.parse(r[10]) : []; } catch (err) { ordersArr = []; }
+    customers.push({
+      id: String(r[0] || ''), name: String(r[1] || ''), phone: String(r[2] || ''),
+      email: String(r[3] || ''), district: String(r[4] || ''), address: String(r[5] || ''),
+      isRegistered: String(r[6] || '') === 'Registered Account',
+      totalSpentLkr: Number(r[8] || 0), updatedAt: String(r[9] || ''),
+      orders: Array.isArray(ordersArr) ? ordersArr : [], passwordHash: String(r[11] || '')
+    });
+  }
+  var setData = sheets.setSheet.getDataRange().getValues();
+  var settings = {};
+  for (var j = 1; j < setData.length; j++) {
+    var k = String(setData[j][0] || '').trim();
+    if (k) settings[k] = String(setData[j][1] || '');
+  }
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, customers: customers, settings: settings })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function upsertCustomerRow(custSheet, c) {
+  var data = custSheet.getDataRange().getValues();
+  var phoneClean = String(c.phone || '').replace(/[^0-9]/g, '').replace(/^94/, '0');
+  var emailLower = String(c.email || '').trim().toLowerCase();
+  var orders = Array.isArray(c.orders) ? c.orders : [];
+  var rowValues = [
+    c.id || ('CUST-' + new Date().getTime()), c.name || '', c.phone || '', c.email || '',
+    c.district || '', c.address || '', c.isRegistered ? 'Registered Account' : 'Checkout Customer',
+    orders.length, Number(c.totalSpentLkr || 0), c.updatedAt || c.createdAt || new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' }),
+    JSON.stringify(orders), c.passwordHash || ''
+  ];
+  var foundRow = -1;
+  for (var i = 1; i < data.length; i++) {
+    var rowId = String(data[i][0] || '');
+    var rowPhone = String(data[i][2] || '').replace(/[^0-9]/g, '').replace(/^94/, '0');
+    var rowEmail = String(data[i][3] || '').trim().toLowerCase();
+    if ((c.id && rowId === c.id) || (phoneClean && rowPhone === phoneClean) || (emailLower && rowEmail === emailLower)) {
+      foundRow = i + 1; break;
+    }
+  }
+  if (foundRow > 0) custSheet.getRange(foundRow, 1, 1, 12).setValues([rowValues]);
+  else custSheet.appendRow(rowValues);
+}
+
+function doPost(e) {
+  try {
+    var sheets = ensureSheets();
+    var body = JSON.parse(e.postData.contents || '{}');
+    var action = body.action || '';
+    if (action === 'upsert_customer' && body.customer) {
+      upsertCustomerRow(sheets.custSheet, body.customer);
+      if (body.newOrder) {
+        var o = body.newOrder; var c = body.customer;
+        var itemsSummary = (o.items || []).map(function(it) { return it.title + ' x' + it.qty + ' (Rs. ' + (it.lkr * it.qty) + ')'; }).join(', ');
+        sheets.ordSheet.appendRow([o.id || '', o.date || '', c.name || '', c.phone || '', c.email || '', c.district || '', c.address || '', itemsSummary, Number(o.totalLkr || 0), o.payment || '']);
+      }
+    } else if (action === 'sync_all_customers' && Array.isArray(body.customers)) {
+      for (var i = 0; i < body.customers.length; i++) upsertCustomerRow(sheets.custSheet, body.customers[i]);
+    } else if (action === 'delete_customer' && body.customerId) {
+      var data = sheets.custSheet.getDataRange().getValues();
+      for (var d = data.length - 1; d >= 1; d--) {
+        if (String(data[d][0] || '') === String(body.customerId)) { sheets.custSheet.deleteRow(d + 1); break; }
+      }
+    } else if (action === 'save_settings' && body.settings) {
+      sheets.setSheet.clearContents();
+      sheets.setSheet.appendRow(['Key', 'Value']);
+      var keys = Object.keys(body.settings);
+      for (var k = 0; k < keys.length; k++) sheets.setSheet.appendRow([keys[k], String(body.settings[keys[k]] || '')]);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: String(err) })).setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+
+function openGoogleSheetSetupModal() {
+  const modal = document.getElementById('googleSheetSetupModal');
+  const ta = document.getElementById('gsheetAppsScriptTextarea');
+  if (ta) ta.value = GOOGLE_APPS_SCRIPT_TEMPLATE;
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeGoogleSheetSetupModal() {
+  const modal = document.getElementById('googleSheetSetupModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function copyGoogleAppsScriptCode() {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(GOOGLE_APPS_SCRIPT_TEMPLATE).then(() => {
+      alert('✅ Google Apps Script copied to clipboard! Paste it into Extensions -> Apps Script in your Google Sheet.');
+    }).catch(() => {
+      const ta = document.getElementById('gsheetAppsScriptTextarea');
+      if (ta) { ta.select(); document.execCommand('copy'); }
+    });
+  } else {
+    const ta = document.getElementById('gsheetAppsScriptTextarea');
+    if (ta) { ta.select(); document.execCommand('copy'); }
+  }
 }
 
 function exportCustomersCsv() {
