@@ -1876,7 +1876,6 @@
     <a href="#gifts">Gifts</a>
     <a href="#visit">📍 Visit Us</a>
     <a href="#contact">Contact</a>
-    <a href="javascript:void(0)" onclick="openCustomerAccountModal()">👤 My Account</a>
   </div>
 </header>
 
@@ -4534,6 +4533,19 @@ function pickPay(el, gw) {
   document.querySelectorAll('.pay-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel'); selPay = gw;
 }
+
+document.getElementById('coDistrict')?.addEventListener('change', function() {
+  const shipSelect = document.getElementById('shipSel');
+  if (!shipSelect) return;
+  if (this.value === 'Colombo') {
+    shipSelect.value = '350';
+  } else if (this.value === 'Puttalam / Mahawewa') {
+    shipSelect.value = '0';
+  } else if (this.value) {
+    shipSelect.value = '500';
+  }
+  refreshTotals();
+});
 
 async function placeOrder(e) {
   e.preventDefault();
