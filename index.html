@@ -976,6 +976,489 @@
     .empty-page { text-align: center; padding: 70px 20px; }
     .empty-page i { font-size: 46px; color: var(--accent-leaf); margin-bottom: 14px; }
     .empty-page h3 { font-family: var(--font-h); font-size: 26px; margin-bottom: 18px; }
+
+    /* ===== INTERACTIVE WHEEL & TOUCH-SWIPE CATEGORY PRODUCT SHOWCASE ===== */
+    .cat-showcase-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(290px, 440px) 1fr 56px;
+      align-items: center;
+      gap: 34px;
+      min-height: 520px;
+      padding: 32px 28px 32px 34px;
+      margin: 14px 0 28px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 26% 50%, rgba(82, 183, 136, 0.24) 0%, rgba(212, 175, 55, 0.10) 38%, transparent 70%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(235, 248, 240, 0.94) 55%, rgba(224, 244, 233, 0.96) 100%);
+      border: 1.5px solid rgba(30, 126, 78, 0.22);
+      box-shadow:
+        0 24px 56px rgba(15, 55, 34, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+    .cat-showcase-stage::before {
+      content: '';
+      position: absolute;
+      width: 390px;
+      height: 390px;
+      left: 65px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(30, 126, 78, 0.10) 52%, transparent 72%);
+      border: 1px dashed rgba(20, 90, 56, 0.18);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Left/Center Visual Product Stage */
+    .cat-sc-visual {
+      position: relative;
+      height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      z-index: 2;
+    }
+    .cat-sc-card {
+      position: absolute;
+      width: min(100%, 360px);
+      height: 390px;
+      border-radius: 22px;
+      background: #FFFFFF;
+      border: 2px solid rgba(212, 175, 55, 0.42);
+      box-shadow: 0 22px 48px rgba(15, 46, 30, 0.18);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform-origin: center center;
+      will-change: transform, opacity;
+      transition:
+        transform 0.52s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 0.42s ease;
+    }
+    .cat-sc-card.no-trans {
+      transition: none !important;
+    }
+    .cat-sc-card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #F8FCF9 0%, #EBF7F0 100%);
+      overflow: hidden;
+    }
+    .cat-sc-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .cat-sc-card.is-active:hover .cat-sc-card-img-wrap img {
+      transform: scale(1.04);
+    }
+    .cat-sc-card-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 3;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: rgba(15, 46, 30, 0.82);
+      color: #F9E076;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(249, 224, 118, 0.4);
+    }
+    .cat-sc-card-price-pill {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      z-index: 3;
+      padding: 7px 14px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #145A38;
+      font-family: var(--font-h);
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(20, 90, 56, 0.2);
+    }
+    /* Active center card: scaled 1.0, 0deg rotation */
+    .cat-sc-card.is-active {
+      transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+      opacity: 1;
+      z-index: 5;
+    }
+    /* Previous peek card above */
+    .cat-sc-card.is-prev {
+      transform: translate3d(-16px, -54%, -90px) scale(0.78) rotate(-5deg);
+      opacity: 0.24;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .cat-sc-card.is-prev:hover {
+      opacity: 0.42;
+    }
+    /* Next peek card below */
+    .cat-sc-card.is-next {
+      transform: translate3d(16px, 54%, -90px) scale(0.78) rotate(5deg);
+      opacity: 0.24;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .cat-sc-card.is-next:hover {
+      opacity: 0.42;
+    }
+    /* Hidden cards further in stack */
+    .cat-sc-card.is-far-above {
+      transform: translate3d(-28px, -100%, -180px) scale(0.62) rotate(-9deg);
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .cat-sc-card.is-far-below {
+      transform: translate3d(28px, 100%, -180px) scale(0.62) rotate(9deg);
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Synchronized Details Panel */
+    .cat-sc-details {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px 6px;
+    }
+    .cat-sc-details-inner {
+      transition: transform 0.36s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
+    }
+    .cat-sc-details-inner.anim-from-bottom {
+      animation: catDetailFromBottom 0.38s cubic-bezier(0.25, 1, 0.5, 1) both;
+    }
+    .cat-sc-details-inner.anim-from-top {
+      animation: catDetailFromTop 0.38s cubic-bezier(0.25, 1, 0.5, 1) both;
+    }
+    @keyframes catDetailFromBottom {
+      0% { opacity: 0.25; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes catDetailFromTop {
+      0% { opacity: 0.25; transform: translateY(-12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .cat-sc-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .cat-sc-num-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      padding: 5px 13px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, #145A38, #1E7E4E);
+      color: #FFFFFF;
+      font-family: var(--font-b);
+      font-variant-numeric: tabular-nums;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 12px rgba(20, 90, 56, 0.25);
+    }
+    .cat-sc-num-pill small {
+      font-size: 11px;
+      opacity: 0.78;
+      font-weight: 600;
+    }
+    .cat-sc-cat-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 99px;
+      background: rgba(30, 126, 78, 0.10);
+      border: 1px solid rgba(30, 126, 78, 0.24);
+      color: #145A38;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .cat-sc-brand-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 99px;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid rgba(184, 134, 11, 0.32);
+      color: #8A6108;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-decoration: none;
+      transition: background 0.25s ease;
+    }
+    .cat-sc-brand-tag:hover {
+      background: rgba(212, 175, 55, 0.25);
+    }
+    .cat-sc-title {
+      font-family: var(--font-h);
+      font-size: clamp(23px, 2.7vw, 34px);
+      color: #0F2E1E;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      min-height: 2.4em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cat-sc-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin: 0 0 18px;
+      max-width: 540px;
+      min-height: 3.3em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cat-sc-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding: 13px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+    .cat-sc-price-main {
+      font-family: var(--font-h);
+      font-size: 29px;
+      font-weight: 700;
+      color: #145A38;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .cat-sc-price-alt {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .cat-sc-stock-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #145A38;
+      background: #E6F6EC;
+      padding: 4px 10px;
+      border-radius: 99px;
+      border: 1px solid rgba(30, 126, 78, 0.22);
+    }
+    .cat-sc-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .cat-sc-add-btn {
+      padding: 13px 26px !important;
+      font-size: 14px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 10px 24px rgba(30, 126, 78, 0.26);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease !important;
+    }
+    .cat-sc-nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: #FFFFFF;
+      color: #145A38;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      box-shadow: 0 4px 12px rgba(20, 60, 40, 0.07);
+    }
+    .cat-sc-nav-btn:hover {
+      background: #1E7E4E;
+      color: #FFFFFF;
+      border-color: #1E7E4E;
+      transform: translateY(-2px);
+    }
+    .cat-sc-progress-bar-wrap {
+      max-width: 440px;
+      margin-bottom: 6px;
+    }
+    .cat-sc-progress-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 99px;
+      background: rgba(20, 90, 56, 0.12);
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .cat-sc-progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #1E7E4E, #D4AF37);
+      transition: width 0.42s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .cat-sc-gesture-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .cat-sc-gesture-hint i {
+      color: var(--accent-pink);
+    }
+
+    /* Right Progress Indicator Rail (Rolling Number 01 / 25 + Smooth Morphing Dots) */
+    .cat-sc-rail {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 8px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(20, 60, 40, 0.08);
+    }
+    .cat-sc-rail-num {
+      font-family: var(--font-b);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      font-weight: 800;
+      color: #145A38;
+      letter-spacing: 0.8px;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+    }
+    .cat-sc-rail-num.total {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .cat-sc-dots-viewport {
+      height: 224px;
+      width: 20px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    .cat-sc-dots {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      will-change: transform;
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cat-sc-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: rgba(20, 90, 56, 0.24);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition:
+        height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.35s ease,
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s ease;
+      flex-shrink: 0;
+    }
+    .cat-sc-dot:hover {
+      background: rgba(20, 90, 56, 0.55);
+      transform: scale(1.2);
+    }
+    .cat-sc-dot.active {
+      height: 24px;
+      background: linear-gradient(180deg, #1E7E4E, #D4AF37);
+      box-shadow: 0 2px 8px rgba(30, 126, 78, 0.4);
+    }
+
+    @media (max-width: 900px) {
+      .cat-showcase-stage {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 22px 18px;
+        min-height: auto;
+      }
+      .cat-showcase-stage::before {
+        width: 280px;
+        height: 280px;
+        left: 50%;
+        top: 170px;
+        transform: translate(-50%, -50%);
+      }
+      .cat-sc-visual {
+        height: 310px;
+      }
+      .cat-sc-card {
+        width: min(100%, 285px);
+        height: 285px;
+      }
+      .cat-sc-details-stage {
+        min-height: 230px;
+      }
+      .cat-sc-rail {
+        flex-direction: row;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 8px 16px;
+      }
+      .cat-sc-dots-viewport {
+        height: 20px;
+        width: 196px;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .cat-sc-dots {
+        flex-direction: row;
+        padding: 0 4px;
+      }
+      .cat-sc-dot.active {
+        height: 8px;
+        width: 24px;
+        background: linear-gradient(90deg, #1E7E4E, #D4AF37);
+      }
+    }
     /* Brand directory */
     .brand-search { max-width: 420px; margin: 0 auto 18px; position: relative; }
     .brand-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
@@ -1768,6 +2251,221 @@
       padding: 10px 12px;
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
+
+    /* ═══════════════ CUSTOMER FAVOURITES & AI RECOMMENDATION ENGINE ═══════════════ */
+    .fav-hdr-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(225, 29, 72, 0.25);
+      color: #E11D48;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.08);
+    }
+    .fav-hdr-btn:hover {
+      background: #FFF1F2;
+      border-color: #E11D48;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(225, 29, 72, 0.18);
+    }
+    .fav-cnt {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 19px;
+      height: 19px;
+      padding: 0 5px;
+      border-radius: 99px;
+      background: #E11D48;
+      color: #FFFFFF;
+      font-size: 10.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(225, 29, 72, 0.35);
+    }
+    /* Floating Heart Button on Product Cards */
+    .prod-img-wrap {
+      position: relative;
+    }
+    .fav-card-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 6;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #9CA3AF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(15, 46, 30, 0.12);
+      transition: transform 0.25s ease, color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+    .fav-card-btn:hover {
+      transform: scale(1.08);
+      color: #E11D48;
+      background: #FFFFFF;
+    }
+    .fav-card-btn.is-fav {
+      color: #E11D48;
+      background: #FFF1F2;
+      border-color: rgba(225, 29, 72, 0.35);
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.24);
+    }
+    /* Category Showcase Favourite Button */
+    .cat-sc-fav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(225, 29, 72, 0.28);
+      background: #FFFFFF;
+      color: #9CA3AF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      cursor: pointer;
+      transition: transform 0.25s ease, color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      flex-shrink: 0;
+    }
+    .cat-sc-fav-btn:hover {
+      color: #E11D48;
+      border-color: #E11D48;
+      background: #FFF1F2;
+    }
+    .cat-sc-fav-btn.is-fav {
+      color: #E11D48;
+      background: #FFF1F2;
+      border-color: #E11D48;
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.22);
+    }
+    /* AI Picked For You Section */
+    .ai-recs-sec {
+      margin: 36px auto;
+      padding: 26px 24px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #FFFFFF 0%, #F2FBF6 55%, #FDF8EE 100%);
+      border: 1.5px solid rgba(20, 90, 56, 0.16);
+      box-shadow: 0 12px 34px rgba(20, 90, 56, 0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-recs-hdr {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .ai-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, rgba(20, 90, 56, 0.12), rgba(184, 134, 11, 0.16));
+      border: 1px solid rgba(184, 134, 11, 0.35);
+      color: var(--accent-gold-light);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ai-recs-hdr h3 {
+      font-family: var(--font-h);
+      font-size: 24px;
+      color: var(--text-main);
+      margin: 0;
+    }
+    .ai-signals-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .ai-signal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      color: var(--accent-gold);
+      font-weight: 600;
+      font-size: 11px;
+    }
+    .ai-recs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 16px;
+    }
+    .ai-reason-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #EAF7F0, #FEF7E6);
+      border: 1px solid rgba(184, 134, 11, 0.3);
+      color: #145A38;
+      font-size: 10.5px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      line-height: 1.3;
+    }
+    .ai-match-score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 5;
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: rgba(20, 90, 56, 0.88);
+      color: #FFF7D1;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      backdrop-filter: blur(4px);
+    }
+    /* Favourites Drawer Item & AI Mini List */
+    .fav-drawer-sec-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: var(--accent-gold);
+      margin: 4px 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .fav-ai-box {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1.5px dashed var(--border);
+    }
   </style>
 </head>
 <body>
@@ -1976,6 +2674,10 @@
         <i class="fa fa-user"></i>
         <span id="customerAcctBtnLabel">Sign In</span>
       </button>
+      <button type="button" class="fav-hdr-btn" id="favHdrBtn" onclick="toggleFavDrawer()" title="My Favourites & AI Suggestions" aria-label="Open Favourites & AI Suggestions">
+        <i class="fa fa-heart"></i>
+        <span class="fav-cnt" id="favCnt">0</span>
+      </button>
       <div class="cart-icon-btn" onclick="toggleCart()">
         <i class="fa fa-bag-shopping"></i>
         <span class="cart-cnt" id="cartCnt">0</span>
@@ -2173,6 +2875,21 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- AI PERSONALIZED SUGGESTIONS SECTION (HOME) -->
+  <section class="container" id="homeAiRecsWrap">
+    <div class="ai-recs-sec">
+      <div class="ai-recs-hdr">
+        <div>
+          <span class="ai-kicker"><i class="fa fa-wand-magic-sparkles"></i> LUSH AI Beauty &amp; Gift Concierge</span>
+          <h3>✨ Suggested Just For You</h3>
+          <p id="homeAiSubtitle" style="font-size:12.5px;color:var(--text-muted);margin:4px 0 0">Personalized picks curated from your Favourites list, browsing interest &amp; bag.</p>
+        </div>
+        <div class="ai-signals-bar" id="homeAiSignalsBar"></div>
+      </div>
+      <div class="ai-recs-grid" id="homeAiRecsGrid"></div>
     </div>
   </section>
 
@@ -3685,6 +4402,18 @@
         </div>
         <p id="prodsEmptyMsg" style="display:none;color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px">No products found in this category.</p>
       </div>
+
+      <!-- AI PERSONALIZED SUGGESTIONS SECTION (SHOP ALL) -->
+      <div class="ai-recs-sec" style="margin-top:34px">
+        <div class="ai-recs-hdr">
+          <div>
+            <span class="ai-kicker"><i class="fa fa-wand-magic-sparkles"></i> AI Interest Match</span>
+            <h3>✨ Recommended Based on Your Browsing &amp; Favourites</h3>
+          </div>
+          <div class="ai-signals-bar" id="shopAiSignalsBar"></div>
+        </div>
+        <div class="ai-recs-grid" id="shopAiRecsGrid"></div>
+      </div>
     </section>
   </div>
 
@@ -4037,6 +4766,26 @@
     <button class="btn btn-pink" style="width:100%;margin-top:10px" onclick="openCheckout()">
       Proceed to Checkout <i class="fa fa-arrow-right"></i>
     </button>
+  </div>
+</div>
+
+<!-- ═══════════════ FAVOURITES & AI SUGGESTIONS DRAWER ═══════════════ -->
+<div class="overlay" id="favOverlay" onclick="toggleFavDrawer(false)"></div>
+<div class="cart-drawer" id="favDrawer">
+  <div class="cd-hdr" style="background:linear-gradient(135deg,#FFF1F2 0%,#F2FBF6 100%)">
+    <h4 style="color:#be123c"><i class="fa fa-heart" style="color:#E11D48"></i> My Favourites &amp; AI Picks</h4>
+    <button class="close-x" onclick="toggleFavDrawer(false)"><i class="fa fa-xmark"></i></button>
+  </div>
+  <div class="cd-body" id="favDrawerBody"><!-- JS --></div>
+  <div class="cd-foot" id="favDrawerFoot">
+    <div style="display:flex;gap:8px;">
+      <button type="button" class="btn btn-pink" style="flex:1" onclick="addAllFavsToCart()">
+        <i class="fa fa-bag-shopping"></i> Add All Favourites to Bag
+      </button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="clearAllFavourites()" title="Clear Favourites">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -4876,6 +5625,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStoreAnalytics();
   recordStoreVisit();
   loadCustomersFromStorage();
+  loadFavourites();
   updateCustomerHeaderUI();
   renderAdminCustomersTable();
   renderAnalyticsDashboard();
@@ -4886,7 +5636,10 @@ document.addEventListener('DOMContentLoaded', () => {
   applyWelcomePhotos();
   renderWelcomeAdminCards();
   loadProductsFromBackend();
+  initStaticProductCardFavButtons();
   renderProducts('all');
+  updateFavouriteButtonsUI();
+  renderAiRecommendations();
   renderInvTable();
   const metricEl = document.getElementById('prodCountMetric');
   if (metricEl) metricEl.textContent = products.length;
@@ -4958,10 +5711,15 @@ function buildProductCard(p) {
   const priceLkr = typeof p.lkr === 'number' ? p.lkr : parseInt(String(p.price || '0').replace(/[^0-9]/g, ''), 10) || 1500;
   const descText = p.desc || p.description || '';
   const brand = getBrand(p);
+  const favActive = typeof isFavourite === 'function' && isFavourite(p.id);
   const el = document.createElement('div');
   el.className = 'prod-card';
+  el.setAttribute('data-id', p.id);
   el.innerHTML = `
     <div class="prod-img-wrap">
+      <button type="button" class="fav-card-btn${favActive ? ' is-fav' : ''}" data-fav-id="${p.id}" onclick="toggleFavourite(${p.id}, event)" title="${favActive ? 'Remove from Favourites' : 'Save to Favourites'}" aria-label="Toggle Favourite">
+        <i class="fa${favActive ? '-solid' : '-regular'} fa-heart"></i>
+      </button>
       <img src="${imgSrc}" alt="${escHtml(imgAlt)}" loading="lazy" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
     </div>
     <div class="prod-body">
@@ -6334,6 +7092,7 @@ function trackCategoryInterest(catKey) {
   if (!norm || norm === 'all') return;
   storeAnalytics.categoryViews[norm] = (storeAnalytics.categoryViews[norm] || 0) + 1;
   saveStoreAnalytics(true);
+  if (typeof renderAiRecommendations === 'function') renderAiRecommendations();
 }
 
 function trackBrandInterest(brandName) {
@@ -6341,6 +7100,7 @@ function trackBrandInterest(brandName) {
   if (!b) return;
   storeAnalytics.brandViews[b] = (storeAnalytics.brandViews[b] || 0) + 1;
   saveStoreAnalytics(true);
+  if (typeof renderAiRecommendations === 'function') renderAiRecommendations();
 }
 
 function trackProductCartAdd(prod) {
@@ -6351,6 +7111,7 @@ function trackProductCartAdd(prod) {
   if (cat) storeAnalytics.categoryViews[cat] = (storeAnalytics.categoryViews[cat] || 0) + 1;
   saveStoreAnalytics(true);
   renderAnalyticsDashboard();
+  if (typeof renderAiRecommendations === 'function') renderAiRecommendations();
 }
 
 function setProductMovementFilter(mode, btnEl) {
@@ -7407,15 +8168,385 @@ function notFoundHTML(msg, href, label) {
     <a class="btn btn-pink" href="${href}">${escHtml(label)}</a></div>`;
 }
 
-// ── Page: all categories ──
+// ── Interactive Wheel & Touch-Swipe Category Showcase State ──
+let catShowcaseList = [];
+let catShowcaseIdx = 0;
+let catShowcaseBusy = false;
+let catWheelAccum = 0;
+let catWheelResetTimer = null;
+let catActiveKey = 'cosmetics';
+let lastShowcaseRouteKey = '';
+
+function pad2(n) {
+  return String(Math.max(0, Number(n) || 0)).padStart(2, '0');
+}
+
+function buildCategoryShowcaseHTML(list, activeKey, activeBrand, brands, inCatCount) {
+  const meta = catMeta(activeKey) || CATEGORY_META[0];
+  const initialIdx = list.length ? ((catShowcaseIdx % list.length) + list.length) % list.length : 0;
+  return `
+    <div class="chip-row scroll" aria-label="Switch category" style="margin-bottom:10px">
+      <span class="filter-lbl"><i class="fa fa-th-large"></i> Category:</span>
+      ${CATEGORY_META.map(c => `<a class="chip${c.key === activeKey ? ' active' : ''}" href="#category/${c.key}"><i class="fa ${c.icon}"></i> ${escHtml(c.label)}</a>`).join('')}
+    </div>
+    ${brands && brands.length > 1 ? `
+    <div class="chip-row scroll" aria-label="Filter by brand" style="margin-bottom:10px">
+      <span class="filter-lbl"><i class="fa fa-tags"></i> Brand:</span>
+      <a class="chip${!activeBrand ? ' active' : ''}" href="#category/${activeKey}">All Brands <em>${inCatCount}</em></a>
+      ${brands.map(b => `<a class="chip${activeBrand && activeBrand.slug === b.slug ? ' active' : ''}" href="#category/${activeKey}/brand/${b.slug}">${escHtml(b.name)} <em>${b.count}</em></a>`).join('')}
+    </div>` : ''}
+    ${!list.length ? `<p class="empty-note"><i class="fa fa-box-open"></i> No products in this category filter yet — check back soon!</p>` : `
+    <div class="cat-showcase-stage" id="catShowcaseStage" tabindex="0" aria-label="Interactive product showcase — scroll mouse wheel or swipe up and down">
+      <!-- Left/Center: Smooth Sliding, Slightly Rotating & Scaling Product Visual -->
+      <div class="cat-sc-visual" id="catScVisual">
+        ${list.map((p, i) => {
+          const imgSrc = p.img || p.image || './images/ceylon_botanical_elixir.jpg';
+          const imgAlt = p.alt || p.title || 'LUSH Cosmetics & Jewelleries product';
+          const priceLkr = productPrice(p);
+          const brandName = getBrand(p);
+          const favActive = typeof isFavourite === 'function' && isFavourite(p.id);
+          return `
+            <div class="cat-sc-card" data-sc-idx="${i}" onclick="handleCatCardClick(${i})">
+              <div class="cat-sc-card-img-wrap">
+                <span class="cat-sc-card-badge"><i class="fa fa-tag"></i> ${escHtml(brandName)}</span>
+                <button type="button" class="fav-card-btn${favActive ? ' is-fav' : ''}" data-fav-id="${p.id}" onclick="toggleFavourite(${p.id}, event)" title="Save to Favourites" aria-label="Save to Favourites">
+                  <i class="fa${favActive ? '-solid' : '-regular'} fa-heart"></i>
+                </button>
+                <img src="${imgSrc}" alt="${escHtml(imgAlt)}" loading="${i < 4 ? 'eager' : 'lazy'}" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
+                <span class="cat-sc-card-price-pill" data-sc-price="${priceLkr}">${fmt(priceLkr)}</span>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+
+      <!-- Center/Right: Synchronized Product Details Panel -->
+      <div class="cat-sc-details">
+        <div class="cat-sc-details-inner" id="catScDetailsInner">
+          <div class="cat-sc-meta-row">
+            <span class="cat-sc-num-pill" id="catScCounterPill">${pad2(initialIdx + 1)} <small>/ ${pad2(list.length)}</small></span>
+            <span class="cat-sc-cat-tag" id="catScCatTag"><i class="fa ${meta.icon}"></i> ${escHtml(meta.label)}</span>
+            <a class="cat-sc-brand-tag" id="catScBrandTag" href="#brands"><i class="fa fa-tag"></i> Lush Exclusive</a>
+          </div>
+          <h3 class="cat-sc-title" id="catScTitle"></h3>
+          <p class="cat-sc-desc" id="catScDesc"></p>
+          <div class="cat-sc-price-row">
+            <span class="cat-sc-price-main" id="catScPriceMain"></span>
+            <span class="cat-sc-price-alt" id="catScPriceAlt"></span>
+            <span class="cat-sc-stock-tag"><i class="fa fa-circle-check"></i> In Stock · Islandwide Delivery</span>
+          </div>
+          <div class="cat-sc-actions">
+            <button type="button" class="btn btn-pink cat-sc-add-btn" id="catScAddBtn">
+              <i class="fa fa-bag-shopping"></i> Add to Bag
+            </button>
+            <button type="button" class="cat-sc-fav-btn" id="catScFavBtn" title="Add to Favourites" aria-label="Add to Favourites">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <button type="button" class="cat-sc-nav-btn" onclick="stepCategoryShowcase(-1)" title="Previous Product (Scroll Up)" aria-label="Previous product">
+              <i class="fa fa-arrow-up"></i>
+            </button>
+            <button type="button" class="cat-sc-nav-btn" onclick="stepCategoryShowcase(1)" title="Next Product (Scroll Down)" aria-label="Next product">
+              <i class="fa fa-arrow-down"></i>
+            </button>
+          </div>
+          <div class="cat-sc-progress-bar-wrap">
+            <div class="cat-sc-progress-track">
+              <div class="cat-sc-progress-fill" id="catScProgressFill" style="width:${(((initialIdx + 1) / list.length) * 100).toFixed(1)}%"></div>
+            </div>
+            <div class="cat-sc-gesture-hint">
+              <i class="fa fa-computer-mouse"></i>
+              <span>Scroll wheel down/up (or swipe up/down on mobile) to glide through products</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Far Right Rail: Number Counter (01 / 25) + Smooth Progress Dots -->
+      <div class="cat-sc-rail" aria-label="Product progress indicator">
+        <span class="cat-sc-rail-num" id="catScRailCur">${pad2(initialIdx + 1)}</span>
+        <div class="cat-sc-dots-viewport" id="catScDotsViewport">
+          <div class="cat-sc-dots" id="catScDots">
+            ${list.map((p, i) => `<button type="button" class="cat-sc-dot${i === initialIdx ? ' active' : ''}" data-dot-idx="${i}" onclick="goToCategoryShowcaseIndex(${i}, ${i >= initialIdx ? 1 : -1})" title="Product ${pad2(i + 1)}: ${escHtml(p.title || '')}" aria-label="Go to product ${i + 1}"></button>`).join('')}
+          </div>
+        </div>
+        <span class="cat-sc-rail-num total" id="catScRailTot">${pad2(list.length)}</span>
+      </div>
+    </div>
+    <!-- AI PERSONALIZED SUGGESTIONS STRIP BELOW CATEGORY SHOWCASE -->
+    <div class="ai-recs-sec" style="margin-top:24px">
+      <div class="ai-recs-hdr">
+        <div>
+          <span class="ai-kicker"><i class="fa fa-wand-magic-sparkles"></i> AI Interest Intelligence</span>
+          <h3>✨ Suggested For You Based on Your Interest &amp; Favourites</h3>
+        </div>
+        <div class="ai-signals-bar" id="catAiSignalsBar"></div>
+      </div>
+      <div class="ai-recs-grid" id="catAiRecsGrid"></div>
+    </div>`}
+  `;
+}
+
+function handleCatCardClick(idx) {
+  if (!catShowcaseList.length || idx === catShowcaseIdx) return;
+  const len = catShowcaseList.length;
+  const nextIdx = (catShowcaseIdx + 1) % len;
+  const prevIdx = (catShowcaseIdx - 1 + len) % len;
+  if (idx === nextIdx) stepCategoryShowcase(1);
+  else if (idx === prevIdx) stepCategoryShowcase(-1);
+  else goToCategoryShowcaseIndex(idx, idx > catShowcaseIdx ? 1 : -1);
+}
+
+function updateCategoryShowcaseUI(dir) {
+  const len = catShowcaseList.length;
+  if (!len) return;
+  if (catShowcaseIdx < 0) catShowcaseIdx = 0;
+  if (catShowcaseIdx >= len) catShowcaseIdx = len - 1;
+
+  const prevIdx = len > 1 ? (catShowcaseIdx - 1 + len) % len : -1;
+  const nextIdx = len > 1 ? (catShowcaseIdx + 1) % len : -1;
+
+  const cards = document.querySelectorAll('#catScVisual .cat-sc-card');
+  cards.forEach(card => {
+    const i = parseInt(card.getAttribute('data-sc-idx') || '0', 10);
+    const wasFarAbove = card.classList.contains('is-far-above');
+    const wasFarBelow = card.classList.contains('is-far-below');
+    let nextClass = '';
+
+    if (i === catShowcaseIdx) {
+      nextClass = 'is-active';
+    } else if (len === 2 && i === nextIdx) {
+      nextClass = dir < 0 ? 'is-prev' : 'is-next';
+    } else if (i === prevIdx) {
+      nextClass = 'is-prev';
+    } else if (i === nextIdx) {
+      nextClass = 'is-next';
+    } else {
+      const diff = (i - catShowcaseIdx + len) % len;
+      nextClass = diff <= len / 2 ? 'is-far-below' : 'is-far-above';
+    }
+
+    // If an invisible background card wraps between far-above and far-below, reposition it silently
+    if ((wasFarAbove && nextClass === 'is-far-below') || (wasFarBelow && nextClass === 'is-far-above')) {
+      card.classList.add('no-trans');
+      card.classList.remove('is-active', 'is-prev', 'is-next', 'is-far-above', 'is-far-below');
+      card.classList.add(nextClass);
+      void card.offsetWidth;
+      card.classList.remove('no-trans');
+    } else {
+      card.classList.remove('is-active', 'is-prev', 'is-next', 'is-far-above', 'is-far-below');
+      card.classList.add(nextClass);
+    }
+  });
+
+  const p = catShowcaseList[catShowcaseIdx];
+  const priceLkr = productPrice(p);
+  const brand = getBrand(p);
+  const normCat = prodCat(p);
+  const meta = catMeta(normCat) || CATEGORY_META[0];
+
+  const detailsInner = document.getElementById('catScDetailsInner');
+  if (detailsInner && dir !== 0) {
+    detailsInner.classList.remove('anim-from-bottom', 'anim-from-top');
+    void detailsInner.offsetWidth;
+    detailsInner.classList.add(dir > 0 ? 'anim-from-bottom' : 'anim-from-top');
+  }
+
+  const counterPill = document.getElementById('catScCounterPill');
+  if (counterPill) counterPill.innerHTML = `${pad2(catShowcaseIdx + 1)} <small>/ ${pad2(len)}</small>`;
+
+  const catTag = document.getElementById('catScCatTag');
+  if (catTag && meta) catTag.innerHTML = `<i class="fa ${meta.icon}"></i> ${escHtml(meta.label)}`;
+
+  const brandTag = document.getElementById('catScBrandTag');
+  if (brandTag) {
+    brandTag.href = `#brand/${slugify(brand)}`;
+    brandTag.innerHTML = `<i class="fa fa-tag"></i> ${escHtml(brand)}`;
+  }
+
+  const titleEl = document.getElementById('catScTitle');
+  if (titleEl) titleEl.textContent = p.title || '';
+
+  const descEl = document.getElementById('catScDesc');
+  if (descEl) descEl.textContent = p.desc || p.description || '';
+
+  const priceMain = document.getElementById('catScPriceMain');
+  if (priceMain) priceMain.textContent = fmt(priceLkr);
+
+  const priceAlt = document.getElementById('catScPriceAlt');
+  if (priceAlt) {
+    priceAlt.textContent = currency === 'USD'
+      ? 'Rs. ' + priceLkr.toLocaleString()
+      : '$' + (priceLkr / RATE).toFixed(2);
+  }
+
+  const addBtn = document.getElementById('catScAddBtn');
+  if (addBtn) {
+    addBtn.onclick = () => addToCart(p.id);
+  }
+
+  const favBtn = document.getElementById('catScFavBtn');
+  if (favBtn && typeof isFavourite === 'function') {
+    const favOn = isFavourite(p.id);
+    favBtn.classList.toggle('is-fav', favOn);
+    favBtn.setAttribute('data-fav-id', p.id);
+    favBtn.title = favOn ? 'Remove from Favourites' : 'Save to Favourites';
+    favBtn.innerHTML = `<i class="fa${favOn ? '-solid' : '-regular'} fa-heart"></i>`;
+    favBtn.onclick = (e) => toggleFavourite(p.id, e);
+  }
+
+  if (typeof trackShowcaseProductView === 'function') {
+    trackShowcaseProductView(p);
+  }
+  if (dir === 0 && typeof renderAiRecommendations === 'function') {
+    renderAiRecommendations();
+  }
+
+  const progFill = document.getElementById('catScProgressFill');
+  if (progFill) {
+    progFill.style.width = (((catShowcaseIdx + 1) / len) * 100).toFixed(1) + '%';
+  }
+
+  const railCur = document.getElementById('catScRailCur');
+  if (railCur) railCur.textContent = pad2(catShowcaseIdx + 1);
+
+  const railTot = document.getElementById('catScRailTot');
+  if (railTot) railTot.textContent = pad2(len);
+
+  // Smoothly toggle active dot and translate track without rebuilding DOM
+  const dotsTrack = document.getElementById('catScDots');
+  if (dotsTrack) {
+    const dots = dotsTrack.querySelectorAll('.cat-sc-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === catShowcaseIdx);
+    });
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    const stepPx = 14;
+    const maxVisible = 11;
+    if (len > maxVisible) {
+      const shiftIndex = Math.max(0, Math.min(catShowcaseIdx - Math.floor(maxVisible / 2), len - maxVisible));
+      const offsetPx = -(shiftIndex * stepPx);
+      dotsTrack.style.transform = isMobile
+        ? `translate3d(${offsetPx}px, 0, 0)`
+        : `translate3d(0, ${offsetPx}px, 0)`;
+    } else {
+      dotsTrack.style.transform = 'translate3d(0, 0, 0)';
+    }
+  }
+}
+
+function goToCategoryShowcaseIndex(targetIdx, dir = 1) {
+  const len = catShowcaseList.length;
+  if (!len) return;
+  catShowcaseIdx = ((targetIdx % len) + len) % len;
+  updateCategoryShowcaseUI(dir);
+}
+
+function stepCategoryShowcase(delta) {
+  const len = catShowcaseList.length;
+  if (len <= 1 || catShowcaseBusy) return;
+  catShowcaseBusy = true;
+  const dir = delta >= 0 ? 1 : -1;
+  catShowcaseIdx = (catShowcaseIdx + dir + len) % len;
+  updateCategoryShowcaseUI(dir);
+  setTimeout(() => {
+    catShowcaseBusy = false;
+  }, 360);
+}
+
+function attachCategoryShowcaseEvents() {
+  const stage = document.getElementById('catShowcaseStage');
+  if (!stage) return;
+
+  // 1) Mouse Wheel Control: scroll down -> next product, scroll up -> previous product
+  stage.addEventListener('wheel', (e) => {
+    if (!catShowcaseList || catShowcaseList.length <= 1) return;
+    e.preventDefault();
+    catWheelAccum += e.deltaY;
+    clearTimeout(catWheelResetTimer);
+    catWheelResetTimer = setTimeout(() => { catWheelAccum = 0; }, 160);
+
+    if (Math.abs(catWheelAccum) >= 26) {
+      const dir = catWheelAccum > 0 ? 1 : -1;
+      catWheelAccum = 0;
+      stepCategoryShowcase(dir);
+    }
+  }, { passive: false });
+
+  // 2) Mobile Touch Swipe Up / Down Control
+  let touchStartY = 0;
+  let touchStartX = 0;
+  let touchDeltaY = 0;
+  let isVerticalSwipe = false;
+
+  stage.addEventListener('touchstart', (e) => {
+    if (!e.touches || !e.touches.length) return;
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+    touchDeltaY = 0;
+    isVerticalSwipe = false;
+  }, { passive: true });
+
+  stage.addEventListener('touchmove', (e) => {
+    if (!e.touches || !e.touches.length || catShowcaseList.length <= 1) return;
+    const dy = e.touches[0].clientY - touchStartY;
+    const dx = e.touches[0].clientX - touchStartX;
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8) {
+      isVerticalSwipe = true;
+      touchDeltaY = dy;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  stage.addEventListener('touchend', () => {
+    if (!isVerticalSwipe || Math.abs(touchDeltaY) < 28) return;
+    if (touchDeltaY < 0) {
+      stepCategoryShowcase(1);
+    } else {
+      stepCategoryShowcase(-1);
+    }
+    touchDeltaY = 0;
+    isVerticalSwipe = false;
+  }, { passive: true });
+}
+
+// Keyboard Arrow Up/Down support when in Categories showcase
+window.addEventListener('keydown', (e) => {
+  const r = typeof parseRoute === 'function' ? parseRoute() : {};
+  if (r.page !== 'category' && r.page !== 'categories') return;
+  if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+    e.preventDefault();
+    stepCategoryShowcase(1);
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    stepCategoryShowcase(-1);
+  }
+});
+
+// ── Page: all categories (opens interactive wheel/swipe showcase + category directory below) ──
 function renderCategoriesPage(inner) {
   const counts = {};
   products.forEach(p => { const c = prodCat(p); counts[c] = (counts[c] || 0) + 1; });
+  const activeKey = catActiveKey || 'cosmetics';
+  const meta = catMeta(activeKey) || CATEGORY_META[0];
+  const inCat = products.filter(p => prodCat(p) === activeKey);
+  const brands = brandIndex(inCat);
+  catShowcaseList = sortList(inCat);
+  const routeKey = 'categories:' + activeKey;
+  if (lastShowcaseRouteKey !== routeKey) {
+    catShowcaseIdx = 0;
+    lastShowcaseRouteKey = routeKey;
+  }
+
   inner.innerHTML = crumbsHTML([{ label:'Home', href:'#home' }, { label:'Categories' }]) + `
-    <div class="page-hero">
-      <span class="badge badge-gold"><i class="fa fa-th-large"></i> Shop by Category</span>
-      <h2>Product Categories</h2>
-      <p>Pick a category to see every product in it — then narrow it down by brand.</p>
+    <div class="page-hero" style="margin-bottom:16px">
+      <span class="badge badge-gold"><i class="fa fa-th-large"></i> Interactive Category Showcase</span>
+      <h2>${escHtml(meta.label)}</h2>
+      <p>Scroll your mouse wheel or swipe up &amp; down to glide through products in each category.</p>
+    </div>
+    ${buildCategoryShowcaseHTML(catShowcaseList, activeKey, null, brands, inCat.length)}
+    <div class="sec-hdr" style="margin:42px 0 22px">
+      <span class="badge badge-pink"><i class="fa fa-layer-group"></i> All Categories</span>
+      <h3 style="font-family:var(--font-h);font-size:28px;color:#0F2E1E;margin-top:8px">Browse All 10 Categories</h3>
     </div>
     <div class="cat-grid">
       ${CATEGORY_META.map(c => `
@@ -7433,12 +8564,16 @@ function renderCategoriesPage(inner) {
       <div><h3>Looking for a specific brand?</h3><p>Browse all ${brandIndex().length} brands in alphabetical order.</p></div>
       <a class="btn btn-gold" href="#brands"><i class="fa fa-arrow-down-a-z"></i> Brands A – Z</a>
     </div>`;
+
+  updateCategoryShowcaseUI(0);
+  attachCategoryShowcaseEvents();
 }
 
-// ── Page: single category (with brand filter A–Z) ──
+// ── Page: single category (Interactive Wheel & Swipe Showcase with brand filter A–Z) ──
 function renderCategoryPage(inner, key, brandSlug) {
   const meta = catMeta(key);
   if (!meta) { inner.innerHTML = notFoundHTML('Category not found', '#categories', 'See all categories'); return; }
+  catActiveKey = key;
   if (typeof trackCategoryInterest === 'function') trackCategoryInterest(key);
   const inCat = products.filter(p => prodCat(p) === key);
   const brands = brandIndex(inCat);
@@ -7446,27 +8581,26 @@ function renderCategoryPage(inner, key, brandSlug) {
   if (activeBrand && typeof trackBrandInterest === 'function') trackBrandInterest(activeBrand.name);
   const list = sortList(activeBrand ? inCat.filter(p => slugify(getBrand(p)) === activeBrand.slug) : inCat);
 
+  catShowcaseList = list;
+  const routeKey = 'category:' + key + ':' + (brandSlug || '');
+  if (lastShowcaseRouteKey !== routeKey) {
+    catShowcaseIdx = 0;
+    lastShowcaseRouteKey = routeKey;
+  }
+
   inner.innerHTML = crumbsHTML([
       { label:'Home', href:'#home' }, { label:'Categories', href:'#categories' },
       ...(activeBrand ? [{ label: meta.label, href:'#category/' + key }, { label: activeBrand.name }] : [{ label: meta.label }])
     ]) + `
-    <div class="page-hero cat-hero" style="--hero-img:url('${meta.img}')">
-      <span class="badge badge-pink"><i class="fa ${meta.icon}"></i> Category</span>
+    <div class="page-hero" style="margin-bottom:14px">
+      <span class="badge badge-pink"><i class="fa ${meta.icon}"></i> Category Showcase</span>
       <h2>${escHtml(meta.label)}${activeBrand ? ` <small>· ${escHtml(activeBrand.name)}</small>` : ''}</h2>
-      <p>${escHtml(meta.blurb)} · ${inCat.length} product${inCat.length === 1 ? '' : 's'} from ${brands.length} brand${brands.length === 1 ? '' : 's'}</p>
+      <p>${escHtml(meta.blurb)} · <strong>${list.length}</strong> product${list.length === 1 ? '' : 's'} — scroll wheel or swipe up/down</p>
     </div>
-    <div class="chip-row scroll" aria-label="Switch category">
-      <span class="filter-lbl"><i class="fa fa-th-large"></i> Category:</span>
-      ${CATEGORY_META.map(c => `<a class="chip${c.key === key ? ' active' : ''}" href="#category/${c.key}"><i class="fa ${c.icon}"></i> ${escHtml(c.label)}</a>`).join('')}
-    </div>
-    <div class="chip-row" aria-label="Filter by brand">
-      <span class="filter-lbl"><i class="fa fa-tags"></i> Brand (A – Z):</span>
-      <a class="chip${!activeBrand ? ' active' : ''}" href="#category/${key}">All Brands <em>${inCat.length}</em></a>
-      ${brands.map(b => `<a class="chip${activeBrand && activeBrand.slug === b.slug ? ' active' : ''}" href="#category/${key}/brand/${b.slug}">${escHtml(b.name)} <em>${b.count}</em></a>`).join('')}
-    </div>
-    ${toolbarHTML(list.length)}
-    <div class="prods-grid" id="catalogGrid"></div>`;
-  fillGrid(document.getElementById('catalogGrid'), list);
+    ${buildCategoryShowcaseHTML(list, key, activeBrand, brands, inCat.length)}`;
+
+  updateCategoryShowcaseUI(0);
+  attachCategoryShowcaseEvents();
 }
 
 // ── Page: brand directory A–Z ──
@@ -7612,8 +8746,8 @@ function router(keepScroll) {
     home.style.display = '';
     if (!keep) {
       const target = r.anchor && document.getElementById(r.anchor);
-      if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: lastPage === 'home' ? 'smooth' : 'auto' }));
-      else if (lastPage !== 'home') window.scrollTo(0, 0);
+      if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth' }));
+      else if (lastPage !== 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     lastPage = 'home';
     updateNavActive(r);
@@ -7625,10 +8759,10 @@ function router(keepScroll) {
   if (r.page === 'products') {
     page.classList.remove('active');
     if (colPage) {
-      if (!keep) {
+      if (!keep && !colPage.classList.contains('active')) {
         colPage.classList.remove('active');
         void colPage.offsetWidth;
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
       colPage.classList.add('active');
     }
@@ -7639,15 +8773,29 @@ function router(keepScroll) {
   }
 
   if (colPage) colPage.classList.remove('active');
+  const alreadyInCatalog = page.classList.contains('active');
   if (r.page === 'categories') renderCategoriesPage(inner);
   else if (r.page === 'category') renderCategoryPage(inner, r.cat, r.brand);
   else if (r.page === 'brands') renderBrandsPage(inner);
   else if (r.page === 'brand') renderBrandPage(inner, r.brand, r.cat);
 
   if (!keep) {
-    page.classList.remove('active');
-    void page.offsetWidth; // restart entrance animation
-    window.scrollTo(0, 0);
+    if (!alreadyInCatalog) {
+      page.classList.remove('active');
+      void page.offsetWidth;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const stageEl = document.getElementById('catShowcaseStage');
+      if (stageEl) {
+        stageEl.classList.add('stage-switching');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => stageEl.classList.remove('stage-switching'));
+        });
+      }
+      if (window.scrollY > 180) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   }
   page.classList.add('active');
   lastPage = r.page;
@@ -8223,6 +9371,632 @@ function launchConfetti() {
   document.addEventListener('DOMContentLoaded', () => setTimeout(requestHudTick, 60));
   requestHudTick();
 })();
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CUSTOMER FAVOURITES LIST & AI PRODUCT RECOMMENDATION ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+const FAVOURITES_STORAGE_KEY = 'lush_ceylon_favourites_v1';
+const RECENT_VIEWED_STORAGE_KEY = 'lush_ceylon_recent_views_v1';
+let favouriteIds = [];
+let recentViewedIds = [];
+
+// Cross-category gift & routine pairing matrix for AI intelligence
+const AI_CROSS_CATEGORY_PAIRINGS = {
+  valentine: {
+    cats: ['chocolate', 'perfume', 'gifts', 'jewelry'],
+    reason: "🎁 Perfect Valentine's & Romantic Gift Pairing"
+  },
+  gifts: {
+    cats: ['chocolate', 'valentine', 'birthday', 'perfume'],
+    reason: '🧸 Customers pair Plush Gifts with Sweet Treats & Scents'
+  },
+  chocolate: {
+    cats: ['valentine', 'gifts', 'birthday'],
+    reason: '🍫 Popular Gift Box Companion'
+  },
+  birthday: {
+    cats: ['gifts', 'chocolate', 'perfume', 'jewelry'],
+    reason: '🎂 Complete Birthday Celebration Pairing'
+  },
+  cosmetics: {
+    cats: ['makeup', 'perfume'],
+    reason: '🌿 Completes Your Skincare & Beauty Routine'
+  },
+  makeup: {
+    cats: ['cosmetics', 'accessories'],
+    reason: '💄 Beauty Routine Essential Match'
+  },
+  jewelry: {
+    cats: ['perfume', 'wallet', 'accessories'],
+    reason: '✨ Luxury Evening & Jewellery Ensemble'
+  },
+  perfume: {
+    cats: ['cosmetics', 'jewelry', 'gifts'],
+    reason: '🌸 Signature Fragrance & Beauty Match'
+  },
+  accessories: {
+    cats: ['jewelry', 'makeup', 'wallet'],
+    reason: '👑 Everyday Styling Companion'
+  },
+  wallet: {
+    cats: ['jewelry', 'accessories', 'perfume'],
+    reason: '👜 Chic Lifestyle & Accessory Match'
+  }
+};
+
+// High-signal beauty, ingredient & gift keywords for semantic similarity matching
+const AI_INTEREST_KEYWORDS = [
+  { key: 'vitamin c', label: 'Vitamin C Brightening' },
+  { key: 'gold', label: '24K / 18K Gold Luxury' },
+  { key: 'rose', label: 'Rose & Floral Romance' },
+  { key: 'serum', label: 'Concentrated Serums' },
+  { key: 'sandalwood', label: 'Ceylon Sandalwood & Herbal' },
+  { key: 'argan', label: 'Moroccan Argan Care' },
+  { key: 'plush', label: 'Cuddly Plush & Bears' },
+  { key: 'teddy', label: 'Cuddly Plush & Bears' },
+  { key: 'chocolate', label: 'Imported Chocolates' },
+  { key: 'dairy milk', label: 'Cadbury Silk Treats' },
+  { key: 'chain', label: 'Gold Chains & Necklaces' },
+  { key: 'pendant', label: 'Crystal & Gold Pendants' },
+  { key: 'bangle', label: 'Gold Bangles & Bracelets' },
+  { key: 'earring', label: 'Statement Earrings' },
+  { key: 'parfum', label: 'Eau de Parfum' },
+  { key: 'aloe', label: 'Soothing Aloe Vera' },
+  { key: 'collagen', label: 'Collagen Youth Care' },
+  { key: 'whitening', label: 'Radiance & Glow' },
+  { key: 'brightening', label: 'Radiance & Glow' },
+  { key: 'couple', label: 'Romantic Couple Keepsakes' }
+];
+
+function loadFavourites() {
+  try {
+    const raw = localStorage.getItem(FAVOURITES_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        favouriteIds = parsed.map(x => Number(x)).filter(Boolean);
+      }
+    }
+    const rawRec = localStorage.getItem(RECENT_VIEWED_STORAGE_KEY);
+    if (rawRec) {
+      const parsedRec = JSON.parse(rawRec);
+      if (Array.isArray(parsedRec)) {
+        recentViewedIds = parsedRec.map(x => Number(x)).filter(Boolean).slice(0, 18);
+      }
+    }
+    // Merge with logged-in customer profile if present
+    const cust = typeof getActiveCustomer === 'function' ? getActiveCustomer() : null;
+    if (cust && Array.isArray(cust.favourites)) {
+      cust.favourites.forEach(fid => {
+        const num = Number(fid);
+        if (num && !favouriteIds.includes(num)) favouriteIds.push(num);
+      });
+    }
+  } catch (err) {
+    console.warn('Favourites load error:', err);
+  }
+}
+
+function saveFavourites() {
+  try {
+    localStorage.setItem(FAVOURITES_STORAGE_KEY, JSON.stringify(favouriteIds));
+    const cust = typeof getActiveCustomer === 'function' ? getActiveCustomer() : null;
+    if (cust) {
+      cust.favourites = [...favouriteIds];
+      if (typeof saveCustomersToStorage === 'function') saveCustomersToStorage();
+    }
+  } catch (err) {
+    console.warn('Favourites save error:', err);
+  }
+}
+
+function isFavourite(id) {
+  return favouriteIds.includes(Number(id));
+}
+
+function toggleFavourite(id, evt) {
+  if (evt && typeof evt.stopPropagation === 'function') {
+    evt.stopPropagation();
+    evt.preventDefault();
+  }
+  const numId = Number(id);
+  if (!numId) return;
+  const idx = favouriteIds.indexOf(numId);
+  const prod = products.find(p => Number(p.id) === numId);
+  if (idx >= 0) {
+    favouriteIds.splice(idx, 1);
+  } else {
+    favouriteIds.unshift(numId);
+    // Boost interest signals when a customer hearts a product
+    if (prod) {
+      const cat = normalizeCategory(prod.cat || prod.category);
+      const brand = typeof getBrand === 'function' ? getBrand(prod) : '';
+      if (cat && storeAnalytics && storeAnalytics.categoryViews) {
+        storeAnalytics.categoryViews[cat] = (storeAnalytics.categoryViews[cat] || 0) + 2;
+      }
+      if (brand && storeAnalytics && storeAnalytics.brandViews) {
+        storeAnalytics.brandViews[brand] = (storeAnalytics.brandViews[brand] || 0) + 2;
+      }
+      if (typeof saveStoreAnalytics === 'function') saveStoreAnalytics(true);
+    }
+  }
+  saveFavourites();
+  updateFavouriteButtonsUI();
+  renderAiRecommendations();
+  const favDrawer = document.getElementById('favDrawer');
+  if (favDrawer && favDrawer.classList.contains('open')) {
+    renderFavDrawer();
+  }
+}
+
+// Inject floating heart buttons onto all 72 static product cards in #prodsGrid
+function initStaticProductCardFavButtons() {
+  document.querySelectorAll('#prodsGrid .prod-card').forEach(card => {
+    const pid = Number(card.getAttribute('data-id'));
+    if (!pid) return;
+    const wrap = card.querySelector('.prod-img-wrap');
+    if (!wrap || wrap.querySelector('.fav-card-btn')) return;
+    const btn = document.createElement('button');
+    const favOn = isFavourite(pid);
+    btn.type = 'button';
+    btn.className = 'fav-card-btn' + (favOn ? ' is-fav' : '');
+    btn.setAttribute('data-fav-id', String(pid));
+    btn.title = favOn ? 'Remove from Favourites' : 'Save to Favourites';
+    btn.setAttribute('aria-label', 'Save to Favourites');
+    btn.innerHTML = `<i class="fa${favOn ? '-solid' : '-regular'} fa-heart"></i>`;
+    btn.onclick = (e) => toggleFavourite(pid, e);
+    wrap.appendChild(btn);
+  });
+}
+
+function updateFavouriteButtonsUI() {
+  const cntEl = document.getElementById('favCnt');
+  if (cntEl) cntEl.textContent = String(favouriteIds.length);
+
+  document.querySelectorAll('[data-fav-id]').forEach(btn => {
+    const pid = Number(btn.getAttribute('data-fav-id'));
+    const favOn = isFavourite(pid);
+    btn.classList.toggle('is-fav', favOn);
+    btn.title = favOn ? 'Remove from Favourites' : 'Save to Favourites';
+    btn.innerHTML = `<i class="fa${favOn ? '-solid' : '-regular'} fa-heart"></i>`;
+  });
+}
+
+function toggleFavDrawer(forceOpen) {
+  const d = document.getElementById('favDrawer');
+  const ov = document.getElementById('favOverlay');
+  if (!d || !ov) return;
+  const isOpen = d.classList.contains('open');
+  if (forceOpen === true || (forceOpen === undefined && !isOpen)) {
+    d.classList.add('open');
+    ov.style.display = 'block';
+    renderFavDrawer();
+  } else {
+    d.classList.remove('open');
+    ov.style.display = 'none';
+  }
+}
+
+function addAllFavsToCart() {
+  if (!favouriteIds.length) return;
+  let added = 0;
+  favouriteIds.forEach(id => {
+    const p = products.find(x => Number(x.id) === Number(id));
+    if (!p) return;
+    const ex = cart.find(x => Number(x.id) === Number(id));
+    if (ex) ex.qty++;
+    else cart.push({ ...p, qty: 1 });
+    trackProductCartAdd(p);
+    added++;
+  });
+  if (added > 0) {
+    updateCartCount();
+    toggleFavDrawer(false);
+    toggleCart(true);
+  }
+}
+
+function clearAllFavourites() {
+  if (!favouriteIds.length) return;
+  if (!confirm('Clear all items from your Favourites list?')) return;
+  favouriteIds = [];
+  saveFavourites();
+  updateFavouriteButtonsUI();
+  renderFavDrawer();
+  renderAiRecommendations();
+}
+
+let showcaseTrackTimer = null;
+function trackShowcaseProductView(prod) {
+  if (!prod || !prod.id) return;
+  const pid = Number(prod.id);
+  recentViewedIds = [pid, ...recentViewedIds.filter(x => x !== pid)].slice(0, 18);
+  try {
+    localStorage.setItem(RECENT_VIEWED_STORAGE_KEY, JSON.stringify(recentViewedIds));
+  } catch (err) {}
+  clearTimeout(showcaseTrackTimer);
+  showcaseTrackTimer = setTimeout(() => {
+    renderAiRecommendations();
+  }, 240);
+}
+
+// ── AI PRODUCT RECOMMENDATION ENGINE ────────────────────────────────────────
+function buildCustomerInterestProfile() {
+  const catWeights = {};
+  const brandWeights = {};
+  const keywordWeights = {};
+  const excludeFast = new Set(); // Don't suggest exact items already in cart
+  const priceSamples = [];
+
+  const addProductSignals = (prod, weight) => {
+    if (!prod) return;
+    const c = normalizeCategory(prod.cat || prod.category);
+    if (c) catWeights[c] = (catWeights[c] || 0) + weight;
+    const b = typeof getBrand === 'function' ? getBrand(prod) : '';
+    if (b && b !== 'Lush Exclusive') brandWeights[b] = (brandWeights[b] || 0) + weight;
+    const lkr = typeof productPrice === 'function' ? productPrice(prod) : (Number(prod.lkr) || 2500);
+    if (lkr > 0) priceSamples.push(lkr);
+    const text = ((prod.title || '') + ' ' + (prod.desc || '')).toLowerCase();
+    AI_INTEREST_KEYWORDS.forEach(kw => {
+      if (text.includes(kw.key)) {
+        keywordWeights[kw.key] = (keywordWeights[kw.key] || 0) + weight;
+      }
+    });
+  };
+
+  // 1. Favourites List (Highest personal preference weight)
+  favouriteIds.forEach(id => {
+    const p = products.find(x => Number(x.id) === Number(id));
+    addProductSignals(p, 5.0);
+  });
+
+  // 2. Shopping Bag items
+  cart.forEach(item => {
+    excludeFast.add(Number(item.id));
+    addProductSignals(item, 4.2);
+  });
+
+  // 3. Recently Viewed Products in Category Showcase
+  recentViewedIds.slice(0, 8).forEach((id, idx) => {
+    const p = products.find(x => Number(x.id) === Number(id));
+    addProductSignals(p, Math.max(1.2, 3.0 - idx * 0.3));
+  });
+
+  // 4. Browsing Analytics (Category & Brand interest)
+  if (storeAnalytics) {
+    Object.entries(storeAnalytics.categoryViews || {}).forEach(([c, cnt]) => {
+      catWeights[c] = (catWeights[c] || 0) + Math.min(12, Number(cnt || 0)) * 1.1;
+    });
+    Object.entries(storeAnalytics.brandViews || {}).forEach(([b, cnt]) => {
+      brandWeights[b] = (brandWeights[b] || 0) + Math.min(10, Number(cnt || 0)) * 1.4;
+    });
+    Object.entries(storeAnalytics.productCartAdds || {}).forEach(([pid, cnt]) => {
+      const p = products.find(x => Number(x.id) === Number(pid));
+      if (p) addProductSignals(p, Math.min(6, Number(cnt || 0)) * 1.2);
+    });
+  }
+
+  // 5. Logged-in Customer's Past Order History
+  const cust = typeof getActiveCustomer === 'function' ? getActiveCustomer() : null;
+  if (cust && Array.isArray(cust.orders)) {
+    cust.orders.forEach(ord => {
+      (ord.items || []).forEach(it => {
+        const p = products.find(x => x.title === it.title);
+        if (p) addProductSignals(p, 3.5);
+      });
+    });
+  }
+
+  const avgPrice = priceSamples.length
+    ? priceSamples.reduce((a, b) => a + b, 0) / priceSamples.length
+    : 2800;
+
+  // Top categories & brands for explainable AI signal pills
+  const topCats = Object.entries(catWeights)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(e => e[0]);
+  const topBrands = Object.entries(brandWeights)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map(e => e[0]);
+
+  return {
+    catWeights,
+    brandWeights,
+    keywordWeights,
+    excludeFast,
+    avgPrice,
+    topCats,
+    topBrands,
+    hasPersonalSignals: favouriteIds.length > 0 || cart.length > 0 || topCats.length > 0 || recentViewedIds.length > 0
+  };
+}
+
+function getAiRecommendedProducts(limit = 4, contextCatKey = '') {
+  const profile = buildCustomerInterestProfile();
+  const catLabels = {
+    cosmetics: 'Cosmetics & Skincare',
+    perfume: 'Perfumes',
+    jewelry: '18K Gold Jewellery',
+    gifts: 'Teddy Bears & Plush',
+    valentine: "Valentine's Gifts",
+    birthday: 'Birthday Collection',
+    chocolate: 'Chocolates',
+    makeup: 'Makeup Tools',
+    accessories: 'Hair & Accessories',
+    wallet: 'Wallets & Bags'
+  };
+
+  const activeShowcaseProd = (catShowcaseList && catShowcaseList[catShowcaseIdx]) ? catShowcaseList[catShowcaseIdx] : null;
+
+  const scored = products
+    .filter(p => !profile.excludeFast.has(Number(p.id)))
+    // Don't recommend items already in Favourites at the very top so customers discover new items
+    .map(p => {
+      let score = 10; // Base score
+      const reasons = [];
+      const pid = Number(p.id);
+      const c = normalizeCategory(p.cat || p.category);
+      const b = typeof getBrand === 'function' ? getBrand(p) : '';
+      const lkr = typeof productPrice === 'function' ? productPrice(p) : (Number(p.lkr) || 2500);
+      const text = ((p.title || '') + ' ' + (p.desc || '')).toLowerCase();
+
+      // Penalize if already in Favourites so AI introduces fresh discoveries (unless catalog is tiny)
+      if (isFavourite(pid)) {
+        score -= 18;
+      }
+      // Penalize currently active showcase item so we don't duplicate what's right above
+      if (activeShowcaseProd && Number(activeShowcaseProd.id) === pid) {
+        score -= 40;
+      }
+
+      // 1. Direct Brand Affinity (from Favourites, Bag, or Browsing)
+      if (b && profile.brandWeights[b]) {
+        const bw = profile.brandWeights[b];
+        score += bw * 4.2;
+        reasons.push({ weight: bw * 4.2, text: `✨ Matches your love for ${b}` });
+      }
+
+      // 2. Direct Category Interest Affinity
+      if (c && profile.catWeights[c]) {
+        const cw = profile.catWeights[c];
+        score += cw * 3.1;
+        const favInSameCat = favouriteIds
+          .map(fid => products.find(x => Number(x.id) === Number(fid)))
+          .find(fp => fp && normalizeCategory(fp.cat || fp.category) === c);
+        if (favInSameCat) {
+          reasons.push({ weight: cw * 3.4, text: `💖 Inspired by your Favourites in ${catLabels[c] || c}` });
+        } else {
+          reasons.push({ weight: cw * 3.0, text: `🌿 Tailored to your ${catLabels[c] || c} interest` });
+        }
+      }
+
+      // 3. Semantic Keyword / Ingredient Similarity (e.g. Vitamin C, Gold, Rose, Sandalwood, Plush)
+      AI_INTEREST_KEYWORDS.forEach(kw => {
+        if (profile.keywordWeights[kw.key] && text.includes(kw.key)) {
+          const kwScore = profile.keywordWeights[kw.key] * 3.6;
+          score += kwScore;
+          reasons.push({ weight: kwScore + 2, text: `🪄 Matches your interest in ${kw.label}` });
+        }
+      });
+
+      // 4. Smart Cross-Category Gift & Beauty Routine Pairing
+      const primaryInterestCat = contextCatKey || profile.topCats[0] || '';
+      if (primaryInterestCat && AI_CROSS_CATEGORY_PAIRINGS[primaryInterestCat]) {
+        const pairRule = AI_CROSS_CATEGORY_PAIRINGS[primaryInterestCat];
+        if (pairRule.cats.includes(c)) {
+          score += 14;
+          reasons.push({ weight: 15, text: pairRule.reason });
+        }
+      }
+
+      // 5. Price Comfort Band Affinity
+      const priceDiffRatio = Math.abs(lkr - profile.avgPrice) / Math.max(1000, profile.avgPrice);
+      if (priceDiffRatio <= 0.35) {
+        score += 5;
+      }
+
+      // 6. Store Bestseller / Popularity Signal
+      const popAdds = (storeAnalytics && storeAnalytics.productCartAdds && storeAnalytics.productCartAdds[String(pid)]) || 0;
+      if (popAdds > 0) {
+        score += Math.min(10, popAdds * 2.5);
+        reasons.push({ weight: 8, text: '🔥 Trending Customer Favourite' });
+      }
+
+      // Sort reasons by strongest signal
+      reasons.sort((a, b) => b.weight - a.weight);
+      const topReason = reasons.length
+        ? reasons[0].text
+        : (c === 'cosmetics' ? '🌿 Top-Rated Ceylon Skincare Pick' : '✨ AI Curated Bestseller For You');
+
+      // Normalize confidence match % between 86% and 99%
+      const matchPct = Math.min(99, Math.max(86, Math.round(84 + Math.min(15, score / 4.5))));
+
+      return {
+        product: p,
+        score,
+        reason: topReason,
+        matchPct
+      };
+    });
+
+  // Sort by highest AI score and diversify categories/brands so the grid feels rich
+  scored.sort((a, b) => b.score - a.score);
+
+  const selected = [];
+  const catCounts = {};
+  for (const item of scored) {
+    if (selected.length >= limit) break;
+    const c = normalizeCategory(item.product.cat || item.product.category);
+    if ((catCounts[c] || 0) >= 2 && scored.length > limit * 2) continue;
+    catCounts[c] = (catCounts[c] || 0) + 1;
+    selected.push(item);
+  }
+  return { recommendations: selected, profile };
+}
+
+function buildAiSignalPillsHTML(profile) {
+  const catLabels = {
+    cosmetics: 'Cosmetics',
+    perfume: 'Perfumes',
+    jewelry: 'Gold Jewellery',
+    gifts: 'Plush & Gifts',
+    valentine: "Valentine's",
+    birthday: 'Birthday',
+    chocolate: 'Chocolates',
+    makeup: 'Makeup',
+    accessories: 'Accessories',
+    wallet: 'Wallets'
+  };
+  const pills = [];
+  if (favouriteIds.length > 0) {
+    pills.push(`<span class="ai-signal-pill"><i class="fa-solid fa-heart" style="color:#E11D48"></i> ${favouriteIds.length} Saved Favourite${favouriteIds.length === 1 ? '' : 's'}</span>`);
+  }
+  profile.topCats.slice(0, 2).forEach(c => {
+    pills.push(`<span class="ai-signal-pill"><i class="fa fa-sparkles" style="color:var(--accent-gold-warm)"></i> ${escHtml(catLabels[c] || c)}</span>`);
+  });
+  profile.topBrands.slice(0, 1).forEach(b => {
+    pills.push(`<span class="ai-signal-pill"><i class="fa fa-tag" style="color:var(--accent-emerald)"></i> ${escHtml(b)}</span>`);
+  });
+  if (!pills.length) {
+    pills.push(`<span class="ai-signal-pill"><i class="fa fa-wand-magic-sparkles"></i> Tap ♥ on any product to train your AI picks</span>`);
+  }
+  return pills.join('');
+}
+
+function buildAiRecCardHTML(rec) {
+  const p = rec.product;
+  const catLabels = { cosmetics:'Cosmetics', perfume:'Perfume', jewelry:'Gold Jewellery', gifts:'Gifts & Bears', valentine:"Valentine's", birthday:'Birthday', chocolate:'Chocolates', makeup:'Makeup Tools', accessories:'Hair & Accessories', wallet:'Wallets' };
+  const normCat = normalizeCategory(p.cat || p.category);
+  const imgSrc = p.img || p.image || './images/ceylon_botanical_elixir.jpg';
+  const imgAlt = p.alt || p.title || 'LUSH Cosmetics & Jewelleries product';
+  const priceLkr = typeof productPrice === 'function' ? productPrice(p) : (Number(p.lkr) || 1500);
+  const brand = typeof getBrand === 'function' ? getBrand(p) : 'Lush Exclusive';
+  const favOn = isFavourite(p.id);
+
+  return `
+    <div class="prod-card" data-id="${p.id}">
+      <div class="prod-img-wrap">
+        <span class="ai-match-score"><i class="fa fa-wand-magic-sparkles"></i> ${rec.matchPct}% AI Match</span>
+        <button type="button" class="fav-card-btn${favOn ? ' is-fav' : ''}" data-fav-id="${p.id}" onclick="toggleFavourite(${p.id}, event)" title="${favOn ? 'Remove from Favourites' : 'Save to Favourites'}" aria-label="Save to Favourites">
+          <i class="fa${favOn ? '-solid' : '-regular'} fa-heart"></i>
+        </button>
+        <img src="${imgSrc}" alt="${escHtml(imgAlt)}" loading="lazy" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
+      </div>
+      <div class="prod-body">
+        <div class="ai-reason-badge">${escHtml(rec.reason)}</div>
+        <div class="prod-meta">
+          <a class="prod-cat" href="#category/${normCat}">${catLabels[normCat] || normCat}</a>
+          <a class="prod-brand" href="#brand/${slugify(brand)}"><i class="fa fa-tag"></i> ${escHtml(brand)}</a>
+        </div>
+        <h4 class="prod-title">${escHtml(p.title)}</h4>
+        <p class="prod-desc">${escHtml(p.desc || p.description || '')}</p>
+        <div class="prod-footer">
+          <div>
+            <span class="prod-price">${fmt(priceLkr)}</span>
+            <span class="prod-price-alt">${currency === 'USD' ? 'Rs. ' + priceLkr.toLocaleString() : '$' + (priceLkr / RATE).toFixed(2)}</span>
+          </div>
+          <button class="btn btn-pink btn-sm" onclick="addToCart(${p.id})"><i class="fa fa-plus"></i> Add</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAiRecommendations() {
+  const { recommendations, profile } = getAiRecommendedProducts(4, catActiveKey);
+  const signalsHtml = buildAiSignalPillsHTML(profile);
+  const cardsHtml = recommendations.map(buildAiRecCardHTML).join('');
+
+  const homeGrid = document.getElementById('homeAiRecsGrid');
+  const homeSignals = document.getElementById('homeAiSignalsBar');
+  if (homeGrid) homeGrid.innerHTML = cardsHtml;
+  if (homeSignals) homeSignals.innerHTML = signalsHtml;
+
+  const shopGrid = document.getElementById('shopAiRecsGrid');
+  const shopSignals = document.getElementById('shopAiSignalsBar');
+  if (shopGrid) shopGrid.innerHTML = cardsHtml;
+  if (shopSignals) shopSignals.innerHTML = signalsHtml;
+
+  const catGrid = document.getElementById('catAiRecsGrid');
+  const catSignals = document.getElementById('catAiSignalsBar');
+  if (catGrid) catGrid.innerHTML = cardsHtml;
+  if (catSignals) catSignals.innerHTML = signalsHtml;
+}
+
+function renderFavDrawer() {
+  const body = document.getElementById('favDrawerBody');
+  const foot = document.getElementById('favDrawerFoot');
+  if (!body) return;
+
+  const favProducts = favouriteIds
+    .map(id => products.find(p => Number(p.id) === Number(id)))
+    .filter(Boolean);
+
+  if (foot) {
+    foot.style.display = favProducts.length ? 'block' : 'none';
+  }
+
+  const favListHtml = !favProducts.length
+    ? `<div class="cart-empty" style="padding:26px 12px">
+         <i class="fa-regular fa-heart" style="color:#E11D48;font-size:32px;margin-bottom:8px"></i>
+         <p style="margin:0 0 4px;font-weight:600;color:var(--text-main)">Your Favourites list is empty</p>
+         <span style="font-size:12px;color:var(--text-muted)">Tap the ♥ heart on any product while browsing to save it here and unlock smarter AI suggestions.</span>
+       </div>`
+    : `<div class="fav-drawer-sec-title">
+         <span><i class="fa-solid fa-heart" style="color:#E11D48"></i> Saved Favourites (${favProducts.length})</span>
+       </div>` +
+      favProducts.map(item => {
+        const priceLkr = typeof productPrice === 'function' ? productPrice(item) : (Number(item.lkr) || 1500);
+        return `
+          <div class="ci">
+            <img src="${item.img}" alt="${escHtml(item.alt || item.title)}" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
+            <div class="ci-info">
+              <h5>${escHtml(item.title)}</h5>
+              <span class="ci-price">${fmt(priceLkr)}</span>
+              <div style="margin-top:6px;display:flex;gap:6px;">
+                <button type="button" class="btn btn-pink btn-sm" style="padding:4px 10px;font-size:11px" onclick="addToCart(${item.id})">
+                  <i class="fa fa-bag-shopping"></i> Add to Bag
+                </button>
+              </div>
+            </div>
+            <button class="rm-btn" onclick="toggleFavourite(${item.id}, event)" title="Remove from Favourites"><i class="fa fa-xmark"></i></button>
+          </div>`;
+      }).join('');
+
+  // Also show top 3 AI-suggested products right inside the Favourites drawer
+  const { recommendations } = getAiRecommendedProducts(3, catActiveKey);
+  const aiMiniHtml = recommendations.length ? `
+    <div class="fav-ai-box">
+      <div class="fav-drawer-sec-title">
+        <span><i class="fa fa-wand-magic-sparkles" style="color:var(--accent-gold-warm)"></i> AI Suggested For You</span>
+        <span style="font-size:10px;color:var(--text-muted);text-transform:none;letter-spacing:0">Live Match</span>
+      </div>
+      ${recommendations.map(rec => {
+        const p = rec.product;
+        const priceLkr = typeof productPrice === 'function' ? productPrice(p) : (Number(p.lkr) || 1500);
+        return `
+          <div class="ci" style="background:linear-gradient(135deg,#F4FBF7,#FFFDF7);border-color:rgba(184,134,11,0.28)">
+            <img src="${p.img}" alt="${escHtml(p.alt || p.title)}" onerror="this.onerror=null;this.src='./images/ceylon_botanical_elixir.jpg';">
+            <div class="ci-info">
+              <div style="font-size:10px;font-weight:700;color:var(--accent-emerald);margin-bottom:2px">${escHtml(rec.reason)}</div>
+              <h5>${escHtml(p.title)}</h5>
+              <span class="ci-price">${fmt(priceLkr)} <small style="color:var(--accent-gold-warm);font-weight:700">(${rec.matchPct}% match)</small></span>
+              <div style="margin-top:6px;display:flex;gap:6px;">
+                <button type="button" class="btn btn-pink btn-sm" style="padding:4px 10px;font-size:11px" onclick="addToCart(${p.id})">
+                  <i class="fa fa-plus"></i> Add
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="padding:4px 9px;font-size:11px;color:#E11D48;border-color:rgba(225,29,72,0.3)" onclick="toggleFavourite(${p.id}, event)">
+                  <i class="fa-regular fa-heart"></i> Save
+                </button>
+              </div>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>` : '';
+
+  body.innerHTML = favListHtml + aiMiniHtml;
+}
 </script>
 </body>
 </html>
